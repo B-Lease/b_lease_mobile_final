@@ -1,0 +1,22 @@
+<ion-content>
+  <div class="main-container">
+    <div class="form">
+
+      <div><ion-card-title class="title" align="center">Delete Account</ion-card-title></div>
+      <br>
+      <br>
+
+      <ion-text><p align="center">Your account will be deleted in the system and will not be used again</p></ion-text>
+      <br>
+      <ion-text><p align="center">Do you want to delete your account?</p></ion-text>       
+        <br>
+        <br>
+        <br>
+
+        <div align="center" class="action_buttons">
+       <ion-button class="cancel-button" shape="round" color="light" slot="start" style="margin-left: 10px;" [routerLink] = "['/settings']">Cancel</ion-button>
+       <ion-button class="update-button" shape="round" color="success" slot="end" style="margin-right: 10px;" (click)="deleteAccount()">Yes</ion-button>
+      </div>
+    </div>
+  </div>
+</ion-content>

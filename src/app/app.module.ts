@@ -1,0 +1,59 @@
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { RouteReuseStrategy } from '@angular/router';
+
+import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+
+import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
+
+import { HttpClientModule } from '@angular/common/http';
+
+import { ReactiveFormsModule } from '@angular/forms';
+
+import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
+import { FormsModule } from '@angular/forms';
+
+import { NgxDropzoneModule } from 'ngx-dropzone';
+
+import { Network } from '@ionic-native/network/ngx';
+import { NetworkInterface } from '@ionic-native/network-interface/ngx';
+import { IonicStorageModule } from '@ionic/storage-angular';
+import { NavParams } from '@ionic/angular';
+
+import { Drivers } from '@ionic/storage';
+import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
+
+import { File } from '@ionic-native/file/ngx';
+import { FileTransfer } from '@ionic-native/file-transfer/ngx';
+
+const config: SocketIoConfig = { url: 'http://127.0.0.1:5000', options: {}};
+
+@NgModule({
+  declarations: [AppComponent],
+  imports: [
+    BrowserModule, 
+    IonicModule.forRoot(), 
+    AppRoutingModule, 
+    HttpClientModule, 
+    NgxDropzoneModule,
+    FormsModule,
+    ReactiveFormsModule,  
+    SocketIoModule.forRoot({ url: 'http://127.0.0.1:5000/' }),
+   
+    IonicStorageModule.forRoot({
+      name:"sessionstorage",
+      driverOrder:[CordovaSQLiteDriver._driver,Drivers.IndexedDB, Drivers.LocalStorage]
+    })
+  ],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    Network,NetworkInterface, File,
+    FileTransfer,
+ 
+  ],
+
+
+  bootstrap: [AppComponent],
+})
+export class AppModule {}
+

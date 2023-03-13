@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button slot="start" (click)="goBack()">Go</ion-button>
+    <ion-title>
+      Messages
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<!-- <div>
+  <div *ngFor="let item of response">
+    {{item.msg_content}}
+  </div>
+  <form (ngSubmit)="sendMessage()">
+    <input type="text" #message>
+    <button type="submit">Send</button>
+  </form>
+</div> -->
+<ion-content #myContent>
+  <ion-grid>
+    <ion-row *ngFor="let message of messages" class="ion-align-items-end ion-padding">
+      <ion-col size="9" class="message left" *ngIf="message.msg_senderID !== userID"> 
+        <!-- <span class = "user_name">{{message.msg_senderID}}</span> -->
+        <span>{{ message.msg_content }}</span>
+        <div class="time">{{ message.created | date: 'dd.MM hh:MM' }}</div>
+      </ion-col>
+
+      <ion-col offset="3" size="9" class="message right" *ngIf="message.msg_senderID === userID">
+        <span>{{ message.msg_content }} </span>
+        <div class="time">{{ message.created | date: 'dd.MM hh:MM' }}</div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>  
+</ion-content>
+
+<ion-footer>
+  <ion-row class="center">
+    <ion-item lines="none">
+      <ion-text color="primary"><p style="margin-right:4px">Interested in leasing?</p></ion-text>
+      <ion-text color="success" class="links" (click)="setContract()">Set a contract now.</ion-text>
+    </ion-item>
+  </ion-row>
+  <ion-toolbar>
+    <ion-row class="message_row">
+      <ion-col size="9">
+        <ion-item no-lines>
+          <ion-input type="text" placeholder="Message" [(ngModel)]="message"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col col-3>
+        <ion-button clear color="primary" (click)="sendMessage(leasingID, msg_senderID, msg_receiverID)" [disabled]="message === ''">
+          Send
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,29 @@
+.date-placeholder{
+    font-size: 12px;
+}
+
+.links{
+    font-size: x-small;
+}
+
+.lease-labels{
+    font-size: smaller;
+}
+
+.lease-fields {
+    border: 1px solid #B4B4BB;
+    border-radius: 5.62px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    color: #B4B4BB;
+    --padding-start: 10px;
+}
+
+ion-toggle{
+    --handle-height: 15px;
+    --handle-width: 15px;
+    height: 20px;
+    width: 30px;
+    padding: 0;
+}
+

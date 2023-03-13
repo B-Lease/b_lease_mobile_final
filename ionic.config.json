@@ -1,0 +1,12 @@
+{
+  "name": "B-Lease",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular",
+"server": {
+  "url": "http://192.168.1.2:4200",
+  "cleartext": true
+}
+
+}

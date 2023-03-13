@@ -1,0 +1,86 @@
+.container{
+    display:flex;
+    justify-content:center;
+}
+
+.form{
+    width:80%;
+}
+
+.signup-fields {
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    border-radius: 5.62px;
+    margin-bottom: 10px;
+    height: 35px;
+}
+
+.cancel-button{
+    text-align: left;
+}
+.update-button{
+    text-align: left;
+}
+
+.avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 7px solid green;
+  }
+
+
+//elements
+
+p {
+    font-size: smaller;
+}
+
+div {
+    text-align: center;
+    border-color: green; 
+}
+
+
+.signup-with-icons{
+
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    border-radius: 5.62px;
+    padding:1px;
+    height:35px;
+    width: 100%;
+}
+.signup-placeholder{
+    font-family: Inter Light;
+    --placeholder-color: #363636;
+    --placeholder-opacity: 100%;
+    --padding-top: 0px;
+    --padding-bottom: 0px;
+    --padding-start: 0px;
+}
+
+.signup-placeholder-with-icons{
+    --padding-start: 5px; 
+}
+@media only screen and (min-width: 1000px) {
+    /* For web: */
+
+    .container img { 
+        width:20%;
+      }
+    
+    .form{
+        width:50%;
+    }
+
+    .signup-fields {
+        box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+        border-radius: 5.62px;
+        margin-bottom: 10px;
+        height: 50px;
+    }
+
+
+}
+
+
+

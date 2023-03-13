@@ -1,0 +1,39 @@
+
+<ion-header>
+  <ion-row class="header">
+    <ion-col>
+      <ion-text color="dark" id="header_favorites" [routerLink]="['/profile']"><ion-icon name="arrow-back-outline"></ion-icon></ion-text>
+    </ion-col>
+    <ion-col>  <ion-title color="success">Settings</ion-title> </ion-col>
+    <ion-col></ion-col>
+  </ion-row>
+</ion-header>
+
+<ion-content>
+  <div class="container">
+    <ion-list>
+      <ion-item button detail="false" routerLink="/edit-profile">
+        <ion-icon name="pencil" color="success" style="zoom:1.5"></ion-icon>
+        <span class="text">Edit Profile</span>
+      </ion-item>
+
+      <ion-item button detail="false" routerLink="/account-deactivation">
+        <ion-icon name="close-circle" color="success" style="zoom:1.5"></ion-icon>
+        <span class="text">Account Deactivation</span>
+      </ion-item>
+
+      <ion-item button detail="false" routerLink="/account-deletion">
+        <ion-icon name="trash" color="success" style="zoom:1.5"></ion-icon>
+        <span class="text">Account Deletion</span>
+      </ion-item>
+      <ion-item button detail="false" routerLink="/changepassword">
+        <ion-icon name="lock-closed" color="success"   style="zoom:1.5"></ion-icon>
+        <span class="text">Change Password</span>
+      </ion-item>
+    
+    </ion-list>      
+  </div>
+</ion-content>
+
+
+

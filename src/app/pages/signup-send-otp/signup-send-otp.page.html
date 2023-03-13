@@ -1,0 +1,53 @@
+<!-- <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="end">
+        <ion-button [routerLink]="['/signup-number']" color="danger" class="cancel">Cancel</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+</ion-header> -->
+
+<ion-content>
+  <div class="main-container">
+    <ion-grid [fixed]="true" class="container">
+      <br><br><br><ion-row class="center"><img src="assets\logo\b-lease_main.svg"></ion-row><br>
+      
+      <ion-row class="center"><ion-text style="font-weight: bold;" color="primary">Fill in the code</ion-text></ion-row><br>
+      <ion-row>
+        <ion-col><ion-input inputmode="numeric" [(ngModel)]="otp_input_1" maxlength="1" class="signup-fields"></ion-input></ion-col>
+        <ion-col><ion-input inputmode="numeric" [(ngModel)]="otp_input_2" maxlength="1" class="signup-fields"></ion-input></ion-col>
+        <ion-col><ion-input inputmode="numeric" [(ngModel)]="otp_input_3" maxlength="1" class="signup-fields"></ion-input></ion-col>
+        <ion-col><ion-input inputmode="numeric" [(ngModel)]="otp_input_4" maxlength="1" class="signup-fields"></ion-input></ion-col>
+        <ion-col><ion-input inputmode="numeric" [(ngModel)]="otp_input_5" maxlength="1" class="signup-fields"></ion-input></ion-col>
+        <ion-col><ion-input inputmode="numeric" [(ngModel)]="otp_input_6" maxlength="1" class="signup-fields"></ion-input></ion-col>
+      </ion-row>
+      
+      <ion-row class="center">
+        <ion-item lines="none">
+          <ion-text color="primary"><p style="margin-right:4px;font-size:11px">This code expires in {{minutes}}:{{seconds}}</p></ion-text>
+        
+        </ion-item>
+      </ion-row>
+      <ion-row>
+        <ion-item lines="none" style="margin:auto">
+          <ion-text color="success" style="font-weight:bold;font-size:11px" *ngIf="isTimeOut" (click)="generateOTP()" >Resend OTP</ion-text>
+        </ion-item>
+     
+      </ion-row>
+      <br><br><br><br><br>
+
+      <ion-row class="center">
+        <ion-button class="success-button" shape="round" color="success" (click)="verifyOTP()" >Verify OTP</ion-button>
+        <!-- [routerLink]="['/signup']" -->
+      </ion-row>
+      <br>
+
+      <ion-row class="center">
+        <ion-item lines="none">
+          <ion-text color="primary"><p style="margin-right:4px">Already signed up?</p></ion-text>
+          <ion-text color="success" class="links" [routerLink]="['/login']">Log In</ion-text>
+        </ion-item>
+      </ion-row>
+
+    </ion-grid>
+  </div>
+</ion-content>

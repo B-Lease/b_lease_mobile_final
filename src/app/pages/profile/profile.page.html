@@ -1,0 +1,96 @@
+<ion-content>
+  <div class="user_info">
+    <div class="title"><ion-text><h3>Profile</h3></ion-text></div>
+    <ion-row>
+  <ion-avatar>
+    <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+  </ion-avatar>
+</ion-row>
+<ion-row>
+  <ion-text><h3><span>{{firstname}} {{middlename | slice:0:1 }}. {{lastname}}</span></h3></ion-text>
+</ion-row>
+<div class="info">
+<div class="contact_info">
+  <div class="colspan"></div>
+  <div class="contact_info_details"><ion-icon name="call"></ion-icon><ion-text class="details"><span>{{phone}}</span></ion-text></div>
+</div>
+<div class="contact_info">
+  <div class="colspan"></div>
+  <div class="contact_info_details"><ion-icon name="mail"></ion-icon><ion-text class="details"><span>{{email}}</span></ion-text></div>
+</div>
+<div class="contact_info">
+  <div class="colspan"></div>
+  <div class="contact_info_details">
+    <div class="icon">
+    <ion-icon src="..\assets\icon\location-pin.svg" color="white"></ion-icon>
+  </div>
+  <div class="details">
+    <ion-text><span >{{address}}</span></ion-text>
+  </div>
+  </div>
+</div>
+</div>
+</div>
+ 
+<div class="profile_actions">
+  <ion-row (click)="navigateMyListing()">
+    <ion-col size="auto"><ion-icon name="list"></ion-icon></ion-col>
+    <ion-col><ion-text>My Listings</ion-text></ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="auto"><ion-icon src="..\assets\icon\my_contract.svg"></ion-icon></ion-col>
+    <ion-col><ion-text>My Contract</ion-text></ion-col>
+  </ion-row>
+  <ion-row [routerLink] = "['/settings']" >
+    <ion-col size="auto"><ion-icon src="..\assets\icon\setting.svg"></ion-icon></ion-col>
+    <ion-col><ion-text>Settings</ion-text></ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="auto"><ion-icon name="link"></ion-icon></ion-col>
+    <ion-col><ion-text>Linked Accounts</ion-text></ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="auto"><ion-icon name="help-circle"></ion-icon></ion-col>
+    <ion-col><ion-text>Help and Support</ion-text></ion-col>
+  </ion-row>
+  <ion-row (click)="logoutActionSheet()">
+    <ion-col size="auto"><ion-icon name="log-out"></ion-icon></ion-col>
+    <ion-col><ion-text>Log out</ion-text></ion-col>
+  </ion-row>
+</div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="browse"  [routerLink] = "['/dashboard']">
+      <ion-icon name="search"></ion-icon>
+      <ion-label>Browse</ion-label>
+      <ion-badge>6</ion-badge>
+    </ion-tab-button>
+
+    <ion-tab-button tab="transactions">
+      <ion-icon src="..\assets\icon\transaction.svg"></ion-icon>
+      <ion-label>Transactions</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="inbox">
+      <ion-icon src="..\assets\icon\inbox.svg"></ion-icon>
+      <ion-label>Inbox</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="notifications">
+      <ion-icon name="notifications"></ion-icon>
+      <ion-label>Notifications</ion-label>
+    </ion-tab-button> 
+    <ion-tab-button tab="profile"  [routerLink] = "['/profile']" class="selected">
+      <ion-icon name="person-circle"></ion-icon>
+      <ion-label>Profile</ion-label>
+    </ion-tab-button> 
+  </ion-tab-bar>
+</ion-tabs>
+
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,43 @@
+@media only screen and (max-width: 1000px) {
+    /* For mobile phones: */
+    .remember-me { 
+        visibility: hidden; 
+        margin-bottom: 0px;
+    }
+  }
+
+//classes
+.signin-fields {
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    border-radius: 5.62px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    color: #363636;
+}
+
+.signin-labels{
+    font-size: medium;
+}
+
+.remember-me-label{
+    font-size: medium;
+    font-family: Inter Light;
+    margin-inline: 0;
+}
+
+//elements
+img {
+    width: 200px; 
+}
+
+ion-checkbox {
+    --size: 12px;
+}
+
+p {
+    font-size: smaller;
+}
+
+
+  
+

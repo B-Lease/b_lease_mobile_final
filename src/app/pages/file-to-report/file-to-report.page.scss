@@ -1,0 +1,46 @@
+@media only screen and (max-width: 1000px) {
+    /* For mobile phones: */
+    .remember-me { 
+        visibility: hidden; 
+        margin-bottom: 0px;
+    }
+  }
+
+//classes
+.container{
+    display:flex;
+    justify-content:center;
+}
+
+.title {
+    margin-top: 50px;
+    color: green;
+}
+.option-fields{
+    margin-left: 10px;
+    margin-right: 10px;
+    border: 1px solid #B4B4BB;
+    border-radius: 5.62px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    --padding-start: 10px;
+}
+
+.des-fields {
+    border: 1px solid #B4B4BB;
+    border-radius: 5.62px;
+    margin-bottom: 10px;
+    height: 120px;
+    font-style: italic;
+}
+
+
+//elements
+img {
+    width: 100px; 
+}
+
+
+
+  
+

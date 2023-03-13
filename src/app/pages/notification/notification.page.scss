@@ -1,0 +1,26 @@
+.container{
+  align-items:left;
+  display: flex;
+}
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}   
+.text{
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 30px;
+  font-size: 18px;
+  font-size: 17px;
+}    
+
+.img{
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 30px;
+  font-size: 18px;
+}
+.thick{
+  font-weight: bold;
+}

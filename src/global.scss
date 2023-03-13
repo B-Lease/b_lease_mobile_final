@@ -1,0 +1,236 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import '~@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+
+@font-face {   
+    font-family: 'Inter Bold';    //This is what we are going to call
+    src: url('assets/fonts/Inter/static/Inter-Bold.ttf');
+  }
+  
+@font-face {   
+  font-family: 'Inter Regular';  //This is what we are going to call  
+  src: url('assets/fonts/Inter/static/Inter-Regular.ttf');
+}
+
+@font-face {   
+  font-family: 'Inter Light';  //This is what we are going to call  
+  src: url('assets/fonts/Inter/static/Inter-Light.ttf');
+}
+
+@font-face {   
+  font-family: 'Inter Semibold';  //This is what we are going to call  
+  src: url('assets/fonts/Inter/static/Inter-SemiBold.ttf');
+}
+
+@media only screen and (max-width: 1000px) {
+  /* For mobile phones: */
+
+  .container {
+      padding:20px;
+  }
+}
+
+.main-container{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    height:100%;
+    font-family: Inter Regular;
+    overflow:hidden;
+}
+
+.center{
+  justify-content:center;
+}
+
+.container {
+  --ion-grid-padding: 250px;
+}
+
+.links {
+  text-decoration: none;
+  color: #40A047;
+  font-size: smaller;
+  font-family: Inter SemiBold;
+  cursor: pointer;
+}
+
+.make-green{
+  filter: invert(51%) sepia(69%) saturate(422%) hue-rotate(74deg) brightness(90%) contrast(88%);
+}
+
+.success-button{
+  font-family: Inter SemiBold;
+  text-transform: capitalize;
+  cursor:pointer;
+
+}
+
+//tags
+p {
+  font-size: smaller;
+}
+
+////////////////////////////////////
+
+// HEADER STYLES
+.header{
+  height:65px;
+  justify-content: center;
+  align-items: center;
+}
+
+.header #header_logo{
+  width:40%;
+  margin:auto;
+  height:100%;
+}
+
+.header #header_favorites{
+  font-size:x-large;
+  margin: auto;
+
+}
+
+// END HEADER STYLES
+
+
+
+// FOOTER STYLES
+ion-footer ion-toolbar{
+  height:70px;
+}
+ion-footer ion-toolbar ion-tabs ion-tab-bar{
+  display:flex;
+
+}
+
+ion-footer ion-toolbar ion-tabs ion-tab-bar ion-tab-button{
+  --color-selected: #40A047;
+}
+ion-footer ion-toolbar ion-tabs ion-tab-bar .selected{
+  --color: #40A047;
+}
+ion-footer ion-toolbar ion-tabs ion-tab-bar ion-tab-button ion-label{
+  font-size:xx-small;
+  margin-top:3px;
+}
+// END FOOTER STYLES
+
+
+//PRODUCT CARD STYLE
+.product_card{
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgb(209, 213, 219) 0px 0px 0px 1px inset;
+}
+.product_card ion-card-header ion-title{
+  
+}
+.product_card ion-card-header ion-title ion-row{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  width:100%;
+
+}
+.product_card ion-card-header ion-title ion-row .product_title{
+  flex-basis:88%;
+}
+.product_card ion-card-header ion-title ion-row .product_bookmark{
+  flex-basis:11%;
+}
+
+.cover{
+  object-fit: cover;
+}
+
+.list_image_slides ion-slide img{
+  width:100%;
+  height:100%;
+}
+//END PRODUCT CARD STYLE
+
+
+// LIST IMAGE SLIDES STYLE
+.list_image_slides{
+  width:100%;
+  height:180px;
+  background-color: gainsboro;
+  --bullet-background-active: #40A047;
+  --bullet-background:white;
+}
+
+.listing_actions_row{
+  display:flex;
+  width:100%;
+  margin-bottom:-20px;
+}
+
+.list_image_slides ion-slide{
+  justify-content: center;
+  align-items: center;
+  width:100%;
+}
+
+.listing_actions_colspan{
+  flex-basis:75%;
+}
+.listing_actions{
+  font-size:28px;
+  flex-basis:25%;
+}
+
+.listing_price{
+  margin-bottom:-30px;
+}
+.listing_address{
+  
+}
+
+.list_owner_row{
+  display:flex;
+  width:100%;
+}
+
+.list_owner{
+  flex-basis:70%;
+  justify-content: center;
+  align-items: center;
+}
+.list_owner_actions{
+  flex-basis:30%;
+}
+
+.list_reviews{
+  margin-top:10px;
+  margin-bottom:10px;
+}
+
+// END LIST IMAGE SLIDES STYLE
+
+hr {
+  background: black;
+  opacity:0.2;
+}

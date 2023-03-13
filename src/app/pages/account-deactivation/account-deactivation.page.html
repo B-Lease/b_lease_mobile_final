@@ -1,0 +1,22 @@
+<ion-content>
+  <div class="main-container">
+    <div class="form">
+
+      <div><ion-card-title class="title" align="center">Deactivate Account</ion-card-title></div>
+      <br>
+      <br>
+
+      <ion-text><p align="center">Your profile will be disabled. You can log in again to use your account</p></ion-text>
+      <br>
+      <ion-text><p align="center">Do you want to deactivate your account?</p></ion-text>       
+        <br>
+        <br>
+        <br>
+
+        <div align="center">
+       <ion-button class="cancel-button" shape="round" color="light" slot="start" style="margin-left: 10px;" [routerLink] = "['/settings']">Cancel</ion-button>
+       <ion-button class="update-button" shape="round" color="success" slot="end" style="margin-right: 10px;" (click)="deactivateAccount()">Yes</ion-button>
+      </div>
+    </div>
+  </div>
+</ion-content>

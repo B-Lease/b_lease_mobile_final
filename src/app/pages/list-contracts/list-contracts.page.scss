@@ -1,0 +1,25 @@
+.button-labels{
+    text-transform: capitalize;
+    font-size: x-small;
+}
+
+.links{
+    font-size: medium;
+}
+
+ion-segment{
+    --background: #fff;
+}
+
+ion-segment-button{
+    --background-checked: #40A047;
+    --color-checked: #fff;
+    --border-radius: 25px;
+    --indicator-color: transparent !important;
+    --indicator-color-checked: transparent !important;
+    width: 40px;
+    min-width: 20px;
+    height: 35px;
+    min-height: 35px;
+    padding:0;
+}

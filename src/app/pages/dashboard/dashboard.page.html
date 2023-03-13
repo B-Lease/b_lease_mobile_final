@@ -1,0 +1,186 @@
+
+<ion-header>
+  <ion-toolbar>
+   
+    <ion-row class="header">
+      <ion-col>  <ion-img id="header_logo" src="assets\logo\b-lease_main.svg"></ion-img>  </ion-col>
+      <ion-col size="auto">
+        <ion-text color="success" id="header_favorites" [routerLink]="['/property-favorites']"><ion-icon name="bookmark"></ion-icon></ion-text>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="search">
+    <ion-row>
+      <ion-col class="search_bar_col">
+  <ion-searchbar animated="true" placeholder="Search"></ion-searchbar>
+</ion-col>
+<ion-col class="search_filter_col">
+  <ion-text color="medium" id="search_filter" id="open-modal" expand="block"><ion-icon src="..\assets\icon\filter.svg"></ion-icon></ion-text>
+</ion-col>
+</ion-row>
+</div>
+
+
+<!-- filter modal -->
+<p></p>
+  <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="cancel()">Cancel</ion-button>
+          </ion-buttons>
+          <ion-title>Filter</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="confirm()" [strong]="true">Done</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <div class="ion-padding"> <strong> Price Range</strong></div>
+     
+        <ion-item>
+          <ion-label position="floating">Minimum Price</ion-label>
+          <ion-input placeholder="Enter minimum price"></ion-input>
+        </ion-item>
+     
+        <ion-item>
+          <ion-label position="floating">Maximum Price</ion-label>
+          <ion-input placeholder="Enter maximum price"></ion-input>
+        </ion-item>
+        
+        <div class="ion-padding"><strong>Rating</strong></div>
+        <ion-item>
+          <ion-label>Minimum Rating</ion-label>
+          <ion-select placeholder="0" okText="Choose rating" cancelText="Cancel">
+            <ion-select-option value="1">1</ion-select-option>
+            <ion-select-option value="2">2</ion-select-option>
+            <ion-select-option value="3">3</ion-select-option>
+            <ion-select-option value="4">4</ion-select-option>
+            <ion-select-option value="5">5</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>Maximum Rating</ion-label>
+          <ion-select placeholder="5" okText="Choose rating" cancelText="Cancel">
+            <ion-select-option value="1">1</ion-select-option>
+            <ion-select-option value="2">2</ion-select-option>
+            <ion-select-option value="3">3</ion-select-option>
+            <ion-select-option value="4">4</ion-select-option>
+            <ion-select-option value="5">5</ion-select-option>
+          </ion-select>
+        </ion-item>
+    
+        <div class="ion-padding"> <strong> Property Size</strong></div>
+     
+        <ion-item>
+          <ion-label position="floating">Minimum Size</ion-label>
+          <ion-input placeholder="Enter minimum size"></ion-input>
+        </ion-item>
+     
+        <ion-item>
+          <ion-label position="floating">Maximum Size</ion-label>
+          <ion-input placeholder="Enter maximum size"></ion-input>
+        </ion-item>
+   
+    
+   
+            <ion-item>
+              <ion-label>Property Type</ion-label>
+              <ion-select  placeholder="Select One">
+                <ion-select-option value="any">Any</ion-select-option>
+                <ion-select-option value="farmland">Farmland</ion-select-option>
+                <ion-select-option value="barn">Barn</ion-select-option>
+              </ion-select>
+            </ion-item>
+
+            <ion-item>
+              <ion-label>Unit Measurement</ion-label>
+              <ion-select  placeholder="Select One">
+                <ion-select-option value="sqm">Sqm</ion-select-option>
+                <ion-select-option value="hectare">Hectare</ion-select-option>
+         
+              </ion-select>
+            </ion-item>
+            
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+<!-- end modal -->
+
+<ion-card class="product_card" [routerLink]="['/view-individual-listing']">
+  <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" />
+  <ion-card-header>
+    <ion-card-title>
+      <ion-row>
+        <ion-col class="product_title">
+      Kabasalan, Zamboanga Sibugay
+    </ion-col>
+    <ion-col class="product_bookmark" size="auto">
+      <ion-text color="medium" id="" [routerLink]="['/signup']"><ion-icon name="bookmark-outline"></ion-icon></ion-text>
+
+    </ion-col>
+    </ion-row>
+    </ion-card-title>
+    <ion-card-subtitle>
+  
+      <ion-row>
+        <ion-col>
+          <ion-text><ion-icon name="star"></ion-icon> 4.85</ion-text>
+        </ion-col>
+        <ion-col>
+          <ion-text><ion-icon src="..\assets\icon\land_size.svg"></ion-icon> 4.85</ion-text>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col><ion-text><span><strong>Php 100,000</strong></span><span>/ monthly</span></ion-text></ion-col>
+      </ion-row>
+   
+    </ion-card-subtitle>
+  </ion-card-header>
+
+ 
+</ion-card>
+
+
+  
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="browse" [routerLink] = "['/dashboard']">
+      <ion-icon name="search"></ion-icon>
+      <ion-label>Browse</ion-label>
+      <ion-badge>6</ion-badge>
+    </ion-tab-button>
+
+    <ion-tab-button tab="transactions">
+      <ion-icon src="..\assets\icon\transaction.svg"></ion-icon>
+      <ion-label>Transactions</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="inbox" (click)="openInbox()">
+      <ion-icon src="..\assets\icon\inbox.svg"></ion-icon>
+      <ion-label>Inbox</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="notifications">
+      <ion-icon name="notifications"></ion-icon>
+      <ion-label>Notifications</ion-label>
+    </ion-tab-button> 
+    <ion-tab-button tab="profile" (click)="navigateProfile()">
+      <ion-icon name="person-circle"></ion-icon>
+      <ion-label>Profile</ion-label>
+    </ion-tab-button> 
+  </ion-tab-bar>
+</ion-tabs>
+
+  </ion-toolbar>
+</ion-footer>

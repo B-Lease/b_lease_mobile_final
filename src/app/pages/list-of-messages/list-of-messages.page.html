@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Inbox</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid [fixed]="true" class="container">
+    <!-- <ion-segment value="acting_lessor" class="ion-no-padding">
+      <ion-segment-button value="acting_lessor">
+        <ion-label>Lessor</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="acting_lessee">
+        <ion-label>Lessee</ion-label>
+      </ion-segment-button>
+    </ion-segment> -->
+
+    <ion-item lines ="none" *ngFor="let item of response" (click)="saveFields(item.LEASINGID,item.USER_FNAME, item.USERID)">
+      <ion-avatar style="margin-right:9px">
+        <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+      </ion-avatar>
+      <ion-label>
+        <ion-text class="links">{{item.LEASINGID}} | {{item.USER_FNAME}} | </ion-text>
+
+        <ion-text class="links">{{item.ADDRESS}}</ion-text>
+        <p>{{item.MSG_CONTENT}}</p>
+      </ion-label>
+    </ion-item>
+    
+  </ion-grid>
+
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="browse" [routerLink] = "['/dashboard']">
+      <ion-icon name="search"></ion-icon>
+      <ion-label>Browse</ion-label>
+      <ion-badge>6</ion-badge>
+    </ion-tab-button>
+
+    <ion-tab-button tab="transactions">
+      <ion-icon src="..\assets\icon\transaction.svg"></ion-icon>
+      <ion-label>Transactions</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="inbox" (click)="openInbox()">
+      <ion-icon src="..\assets\icon\inbox.svg"></ion-icon>
+      <ion-label>Inbox</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="notifications">
+      <ion-icon name="notifications"></ion-icon>
+      <ion-label>Notifications</ion-label>
+    </ion-tab-button> 
+    <ion-tab-button tab="profile" (click)="navigateProfile()">
+      <ion-icon name="person-circle"></ion-icon>
+      <ion-label>Profile</ion-label>
+    </ion-tab-button> 
+  </ion-tab-bar>
+</ion-tabs>
+
+  </ion-toolbar>
+</ion-footer>

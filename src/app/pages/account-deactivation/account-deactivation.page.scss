@@ -1,0 +1,59 @@
+.container{
+    display:flex;
+    justify-content:center;
+}
+
+.form{
+    width:80%;
+}
+.filter-green{
+    filter: invert(24%) sepia(57%) saturate(7500%) hue-rotate(103deg) brightness(98%) contrast(103%);
+}
+
+.no-button{
+    text-align: center;
+}
+.yes-button{
+    text-align: center;
+}
+
+.title {
+    text-align: center;
+    font-size: 25px;
+    font-weight: 900;
+}
+//elements
+
+img { 
+    width:35%;
+  }
+
+
+p {
+    font-size: smaller;
+}
+
+
+
+@media only screen and (min-width: 1000px) {
+    /* For web: */
+    .container img { 
+        width:20%;
+      }
+    
+
+    h1 {
+        color: #008000;
+        text-align: center;
+        font-size: 50px;
+        font-weight: bold;
+        font-family: Inter Bold;
+        margin-top:2px;
+        margin-bottom: 20px;
+    }
+
+
+}
+
+
+

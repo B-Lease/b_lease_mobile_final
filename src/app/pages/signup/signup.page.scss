@@ -1,0 +1,111 @@
+.warning_text{
+    padding-top:10px;
+    padding-bottom:10px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
+
+.links {
+    text-decoration: none;
+    color: #40A047;
+    font-size: smaller;
+    font-family: Inter SemiBold;
+    cursor: pointer;
+}
+
+
+.signup-fields {
+    display:flex;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    border-radius: 5.62px;
+    padding:10px;
+    height:50px;
+}
+
+.signup-with-icons{
+
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    border-radius: 5.62px;
+    padding:1px;
+    height:50px;
+    width: 100%;
+}
+
+.signup-placeholder{
+    font-family: Inter Light;
+    --placeholder-color: #363636;
+    --placeholder-opacity: 100%;
+    --padding-top: 0px;
+    --padding-bottom: 0px;
+    --padding-start: 0px;
+}
+
+.signup-placeholder-with-icons{
+    --padding-start: 5px; 
+}
+
+.terms {
+    display: flex;
+   
+    
+
+}
+
+.terms-check {
+    margin-right: 20px;
+    align-items: center;
+    justify-content: center;
+    margin-top:10px;
+}
+
+.terms-desc {
+    font-family: Inter Light;
+}
+
+
+//elements
+h1 {
+    color: #363636;
+    text-align: center;
+    font-weight: bold;
+    font-family: Inter Bold;
+    margin-top:2px;
+    margin-bottom: 20px;
+}
+
+img { 
+    width:35%;
+  }
+
+ion-checkbox {
+    --size: 15px;
+}
+
+ion-icon {
+    padding: 3px;
+}
+
+p {
+    font-size: smaller;
+}
+
+@media only screen and (min-width: 1000px) {
+    /* For web: */
+    .terms-desc { 
+        display:flex;
+    }
+    .container img { 
+        width:20%;
+      }
+
+}
+
+
+
+.no-arrows::-webkit-outer-spin-button,
+.no-arrows::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+}

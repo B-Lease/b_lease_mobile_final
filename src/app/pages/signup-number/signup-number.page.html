@@ -1,0 +1,28 @@
+<ion-content>
+  <div class="main-container">
+    <ion-grid [fixed]="true" class="container">
+      <br><br><br><br><ion-row class="center"><img src="assets\logo\b-lease_main.svg"></ion-row><br>
+      
+      <ion-label color="primary"  class="signup-labels">Email</ion-label>
+      <ion-item class="signup-fields" lines="none">
+ 
+        <ion-input inputmode="email" [(ngModel)]="email" name='email' [email]="true"></ion-input>
+      </ion-item>
+      <br><br><br><br><br><br><br>
+
+      <ion-row class="center">
+        <ion-button class="success-button" shape="round" color="success" (click)="checkEmail()">Send OTP</ion-button>
+      </ion-row>
+
+      <br>
+      <ion-row class="center">
+        <ion-item lines="none">
+          <ion-text color="primary"><p style="margin-right:4px">Already signed up?</p></ion-text>
+          <ion-text color="success" class="links" [routerLink]="['/login']">Log In</ion-text>
+        </ion-item>
+      </ion-row>
+      
+    </ion-grid>
+  </div>
+</ion-content>
+

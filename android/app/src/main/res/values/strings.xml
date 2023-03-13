@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">b-lease</string>
+    <string name="title_activity_main">b-lease</string>
+    <string name="package_name">com.hnc.blease</string>
+    <string name="custom_url_scheme">com.hnc.blease</string>
+</resources>

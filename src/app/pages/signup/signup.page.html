@@ -1,0 +1,139 @@
+
+
+<ion-content [fullscreen]="true" >
+  <div class="main-container">
+    
+    <ion-grid [fixed]="true" class="container">
+      <ion-row class="center"><img src="assets\logo\b-lease_main.svg"></ion-row>
+      
+      <br> <br> 
+      <h1>Signup</h1>
+
+      <!--form-->
+
+      <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+        <ion-row style="padding-bottom:10px">
+          <ion-col class="signup-fields"><ion-input class="signup-placeholder" placeholder="First Name" formControlName="first_name"></ion-input></ion-col>
+        </ion-row >
+        <ion-row style="margin-top:-15px;" *ngIf="!signupForm.get('first_name').valid && signupForm.get('first_name').touched">
+   
+          <ion-text color="danger"  class="warning_text" >
+           <ion-icon name="alert-circle-outline"></ion-icon> Firstname is required
+          </ion-text>
+      
+        </ion-row>
+        
+        <ion-row style="padding-bottom:10px">
+          <ion-col class="signup-fields"><ion-input class="signup-placeholder" placeholder="Middle Name" formControlName="middle_name"></ion-input></ion-col>
+        </ion-row>
+    
+        
+        <ion-row style="padding-bottom:10px">
+          <ion-col class="signup-fields"><ion-input class="signup-placeholder" placeholder="Last Name" formControlName="last_name"></ion-input></ion-col>
+        </ion-row>
+        <ion-row style="margin-top:-15px;" *ngIf="!signupForm.get('last_name').valid && signupForm.get('last_name').touched">
+          <ion-text color="danger" class="warning_text">
+            
+           <ion-icon name="alert-circle-outline"></ion-icon> Lastname is required
+          </ion-text>
+        </ion-row>
+
+        <ion-row style="padding-bottom:10px">
+          <ion-col class="signup-fields"><ion-input type="date" class="make-green" formControlName="birthdate"></ion-input></ion-col>
+        </ion-row>
+        <ion-row style="margin-top:-15px;" *ngIf="!signupForm.get('birthdate').valid && signupForm.get('birthdate').touched">
+          <ion-text color="danger" class="warning_text">
+            
+           <ion-icon name="alert-circle-outline"></ion-icon> Birthdate is required
+          </ion-text>
+        </ion-row>
+        
+
+        <ion-row style="padding-bottom:10px">
+          <ion-row class="signup-with-icons">
+            <ion-col><ion-input placeholder="Address" class="signup-placeholder signup-placeholder-with-icons" formControlName="address"></ion-input></ion-col>
+            <ion-col size="auto"><ion-icon src="../assets/icon/location.svg" class="make-green"></ion-icon></ion-col>
+          </ion-row>
+        </ion-row>
+        <ion-row style="margin-top:-15px;" *ngIf="!signupForm.get('address').valid && signupForm.get('address').touched">
+          <ion-text color="danger" class="warning_text">
+            
+           <ion-icon name="alert-circle-outline"></ion-icon> Address is required
+          </ion-text>
+        </ion-row>
+
+        <ion-row style="padding-bottom:10px">
+          <ion-row class="signup-with-icons">
+            <ion-col><ion-input placeholder="Phone Number" class="signup-placeholder signup-placeholder-with-icons" formControlName="phone_number" maxlength="11" type="text"></ion-input></ion-col>
+            <ion-col size="auto"><ion-icon name="call" color="success"></ion-icon></ion-col>
+          </ion-row>
+        </ion-row>
+        <ion-row style="margin-top:-15px;" *ngIf="!signupForm.get('phone_number').valid && signupForm.get('phone_number').touched">
+          <ion-text color="danger" class="warning_text">
+            
+           <ion-icon name="alert-circle-outline"></ion-icon> Phone number is required
+          </ion-text>
+        </ion-row>
+
+        <ion-row style="padding-bottom:10px">
+          <ion-row class="signup-with-icons">
+            <ion-col>
+              <ion-input placeholder="Password" class="signup-placeholder signup-placeholder-with-icons" (keyup)="checkPasswordStrength()"
+                formControlName="password" [type]="showPwd ? 'text' : 'password'">
+              </ion-input>
+            </ion-col>
+            <ion-col size="auto"><ion-icon [name]="pwdIcon" (click)="togglePwd()" color="success"></ion-icon></ion-col>
+          </ion-row>
+        </ion-row>
+        <ion-row style="margin-top:-15px;" *ngIf="isPassStrong == false && signupForm.get('password').touched && isPassCheck !== 'Strong'">
+          <ion-text color="danger" class="warning_text">
+            
+           <ion-icon name="alert-circle-outline"></ion-icon> 
+           {{isPassCheck}}
+          </ion-text>
+        </ion-row>
+  
+        <ion-row style="padding-bottom:10px">
+          <ion-row class="signup-with-icons">
+            <ion-col>
+              <ion-input placeholder="Confirm Password" class="signup-placeholder signup-placeholder-with-icons" (keyup)="checkPasswordSame()"
+                formControlName="confirm_password" [type]="confirm_showPwd ? 'text' : 'password'">
+              </ion-input>
+            </ion-col>
+            <ion-col size="auto"><ion-icon [name]="confirm_pwdIcon" (click)="toggleConfirmPwd()" color="success"></ion-icon></ion-col>
+          </ion-row>
+        </ion-row>
+        <ion-row style="margin-top:-15px;" *ngIf="isPassSame == false">
+          <ion-text color="danger" class="warning_text">
+            
+           <ion-icon name="alert-circle-outline"></ion-icon> Passwords does not match
+          </ion-text>
+        </ion-row>
+
+        <!--I agree to the terms and conditions-->
+        <div class="terms">
+          <ion-checkbox slot="start" class="terms-check" formControlName="check_agree" ></ion-checkbox>
+          <div class="terms-desc">
+            <ion-label><p style="margin-right:4px">I agree to B-Lease's</p></ion-label>
+            <ion-label [routerLink]="['/login']"><p class="links">Privacy Policy and Terms</p></ion-label>
+          </div>
+        </div>
+        
+        <br>
+      
+          <ion-button class="success-button" shape="round" color="success" expand="block" size="default" type="submit">Signup</ion-button>
+       
+      </form>
+      <!---->
+      
+      <ion-row class="center">
+        <ion-item lines="none">
+          <ion-text color="primary"><p style="margin-right:4px">Already signed up?</p></ion-text>
+          <ion-text color="success" class="links" [routerLink]="['/login']">Log In</ion-text>
+          <!-- <ion-text color="success" class="links" (click)="getAddress()">Google Maps</ion-text> -->
+        </ion-item>
+      </ion-row>
+    </ion-grid>
+  </div>
+  <br> <br> <br>
+</ion-content>

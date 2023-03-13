@@ -1,0 +1,105 @@
+<ion-header>
+  <ion-toolbar>
+   
+    <ion-row class="header">
+      <ion-col>
+        <ion-text color="dark" id="header_favorites" [routerLink]="['/my-listing']"><ion-icon name="arrow-back-outline"></ion-icon></ion-text>
+      </ion-col>
+      <ion-col>  <ion-title color="success">Add Listing</ion-title> </ion-col>
+      <ion-col></ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="propertyForm" >
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-input formControlName="address" placeholder="Address"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="7">
+        <ion-item>
+          <ion-input type="number" formControlName="propertyLandSize" placeholder="Property Land Size"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size="5">
+        <ion-item>
+          <ion-select formControlName="propertyLandSizeUnit">
+            <ion-select-option value="sq.m">sq.m</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-textarea formControlName="legalLandDescription" placeholder="Legal land description"></ion-textarea>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="7">
+        <ion-item>
+          <ion-input type="number" formControlName="price" placeholder="Price"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size="5">
+        <ion-item>
+          <ion-select formControlName="propertyType">
+            <ion-select-option value="farmland">Farmland</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-textarea formControlName="moreDetails" placeholder="More details about your property"></ion-textarea>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col> <ion-text>Property Images</ion-text></ion-col>
+    
+    </ion-row>
+    <h3 *ngIf="images.length==0" align="center">Upload image</h3>
+    <ion-list>
+        <ion-item *ngFor="let file of images">
+          <ion-thumbnail slot="start">
+             <ion-img [src]="file.data"></ion-img>
+          </ion-thumbnail>
+          <ion-label>
+            {{file.name}}
+          </ion-label>
+      
+          <ion-button slot="end" fill="clear" (click)="deleteImage(file)">
+              <ion-icon slot="icon-only" name="trash"></ion-icon>
+          </ion-button>
+        </ion-item>
+    </ion-list>
+    <ion-row>
+      <ion-col><ion-button type="submit" expand="full" (click)="selectImage()">Add Image</ion-button></ion-col>
+    
+    </ion-row>
+    <br> <br>
+
+
+      <input type="file" (change)="onFileSelected($event)" multiple formControlName="documents">
+   
+ 
+      
+    <ion-row>
+  
+
+      <ion-col>
+        <ion-button type="submit" expand="full" (click)="onSubmit()">Submit</ion-button>
+      </ion-col>
+    </ion-row>
+
+
+  </form>
+</ion-content>

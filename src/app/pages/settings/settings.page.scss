@@ -1,0 +1,39 @@
+.container{
+    align-items:left;
+    display: flex;
+    margin-left: 20px;
+    margin-top: 20px;
+
+}
+.icon {
+    display: inline-block;
+    font-size: 35px;
+    color: #ffC977;
+    vertical-align: middle;
+    size: medium;
+   }
+   
+.text{
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 30px;;
+    font-size: 18px;
+    font-family: Inter Bold;
+}
+
+
+//elements
+
+p {
+    font-size: smaller;
+}
+
+@media only screen and (min-width: 1000px) {
+    /* For web: */
+    .container img { 
+        width:20%;
+      }
+}
+
+
+

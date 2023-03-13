@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-toolbar>
+   
+    <ion-row class="header">
+      <ion-col>
+        <ion-text color="dark" id="header_favorites" [routerLink]="['/profile']"><ion-icon name="arrow-back-outline"></ion-icon></ion-text>
+      </ion-col>
+      <ion-col>  <ion-title color="success">My Listings</ion-title> </ion-col>
+      <ion-col></ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card class="product_card" [routerLink]="['/viewmylistingproperty/'+property.propertyID]"  *ngFor="let property of propertyData">
+ 
+    <ion-slides pager="true" class="list_image_slides">
+      <ion-slide *ngFor="let img of property.images">
+        <img alt="Silhouette of mountains" [src]="IMAGES_URL+property.propertyID+'/'+img" class="cover"/>
+    
+      </ion-slide>
+
+    </ion-slides>
+  
+    <ion-card-header>
+      <ion-card-title>
+        <ion-row>
+          <ion-col class="product_title">
+            {{property.address}}
+      </ion-col>
+      <ion-col class="product_bookmark" size="auto">
+        <ion-text color="medium" id="" [routerLink]="['/signup']"><ion-icon name="bookmark-outline"></ion-icon></ion-text>
+  
+      </ion-col>
+      </ion-row>
+      </ion-card-title>
+      <ion-card-subtitle>
+    
+        <ion-row>
+          <ion-col>
+            <ion-text><ion-icon name="star"></ion-icon> 4.85</ion-text>
+          </ion-col>
+          <ion-col>
+            <ion-text><ion-icon src="..\assets\icon\land_size.svg"></ion-icon> {{property.size}} {{property.unit_type}}</ion-text>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col><ion-text><span><strong>Php {{property.price}}</strong></span><span>/ monthly</span></ion-text></ion-col>
+        </ion-row>
+     
+      </ion-card-subtitle>
+    </ion-card-header>
+  
+   
+  </ion-card>
+  <ion-fab slot="fixed" vertical="bottom" horizontal="center" (click)="addListing()">
+    <ion-fab-button color="success">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  
+  </ion-fab>
+</ion-content>
+
+
+
+
+
