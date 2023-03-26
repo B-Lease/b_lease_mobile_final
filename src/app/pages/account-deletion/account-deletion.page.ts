@@ -13,7 +13,7 @@ import { AlertController } from '@ionic/angular';
 export class AccountDeletionPage {
   sessionID:any;
   userID:any;
-
+  confirmpasswordAlert:any;
   constructor(
     private animationCtrl: AnimationController,
     private loading:LoadingService,
@@ -31,7 +31,7 @@ export class AccountDeletionPage {
     await this.session.init();
     await this.getSessionData();
   }
-  async deleteAccount(){
+  async deleteAccount(password){
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
@@ -39,20 +39,46 @@ export class AccountDeletionPage {
       observe: 'response' as const
     };
 
-     this.loading.present('Deleting Account');
+    let deleteData = {
+      'sessionID': this.sessionID,
+      'userID': this.userID,
+      'user_password': password
+    }
+    var errorcode = null;
 
-    try{
-        
+    try {
+      this.loading.present('Deleting Account');
+      const response: HttpResponse<any> = await this.http.patch('http://192.168.1.2:5000/delete_user', deleteData, httpOptions).toPromise();
+      
+    
       this.loading.dismiss();
-      const response: HttpResponse<any> = await this.http.delete('http://192.168.1.2:5000/user?sessionID='+this.sessionID+"&userID="+this.userID, httpOptions).toPromise();
-      
-      if(response.body.message === 'deleted')
+      console.log(response.body.message);
+      if( response.body.message == 'deleted')
       {
-       await this.deleteAlert();
-      
-      } 
-    }catch(error){
-      console.log(error);
+        this.deleteAlert();
+      }
+
+      if(response.body.message === 'incorrect password')
+      {
+        await this.dismissConfirmPasswordAlert();
+        await this.passwordNotEqualAlert();
+      }
+      if(response.body.message === 'error deleting')
+      {
+        await this.dismissConfirmPasswordAlert();
+        await this.errorDeletingAlert();
+      }
+      if(response.body.message === 'user not found')
+      {
+        await this.dismissConfirmPasswordAlert();
+        await this.errorUserDoesNotExistAlert();
+      }
+     
+   
+    } catch (error) {
+      console.log('ERROR: ');
+   
+
     }
 
 
@@ -90,5 +116,91 @@ export class AccountDeletionPage {
     const { role } = await alert.onDidDismiss();
   
   }
+
+  async confirmPassword() {
+    this.confirmpasswordAlert = await this.alertController.create({
+      header: 'Enter password to continue',
+      inputs: [
+        {
+          name: 'password',
+          type: 'password',
+          placeholder: 'Enter Password'
+        },
+        {
+          name: 'confirmPassword',
+          type: 'password',
+          placeholder: 'Confirm Password'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }, {
+          text: 'Delete Account',
+          handler: (data) => {
+            console.log('Save clicked', data.password, data.confirmPassword);
+            // Do something with the password and confirm password values
+          
+            if(data.password === data.confirmPassword){
+              console.log('Executed');
+              this.deleteAccount(data.password);
+            }
+            else{
+              this.passwordNotEqualAlert();
+            }
+          }
+        }
+      ]
+
+      
+    });
+
+    await this.confirmpasswordAlert.present();
+  
+    
+  }
+
+  dismissConfirmPasswordAlert() {
+    if (this.confirmpasswordAlert) {
+      this.confirmpasswordAlert.dismiss();
+    }
+  }
+
+  async passwordNotEqualAlert() {
+    const alert = await this.alertController.create({
+      header: 'Password Input',
+      subHeader: '',
+      message: 'The password you have entered are not equal',
+      buttons: ['OK'],
+    });
+
+    await alert.present();
+  }
+
+  async errorDeletingAlert() {
+    const alert = await this.alertController.create({
+      header: 'Error Deleting',
+      subHeader: '',
+      message: 'Error deleting your account. Please try again.',
+      buttons: ['OK'],
+    });
+
+    await alert.present();
+  }
+  async errorUserDoesNotExistAlert() {
+    const alert = await this.alertController.create({
+      header: 'Error Deleting',
+      subHeader: '',
+      message: "Error deleting your account. It seems that your account doesn't exists. Please contact the admin. ",
+      buttons: ['OK'],
+    });
+
+    await alert.present();
+  }
+
 
 }

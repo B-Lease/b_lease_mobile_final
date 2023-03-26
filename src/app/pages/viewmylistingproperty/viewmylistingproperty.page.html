@@ -3,7 +3,7 @@
    
     <ion-row class="header">
       <ion-col size="auto">
-        <ion-text color="dark" id="header_favorites" [routerLink]="['/dashboard']"><ion-icon name="arrow-back-outline"></ion-icon></ion-text>
+        <ion-text color="dark" id="header_favorites" [routerLink]="['/my-listing']"><ion-icon name="arrow-back-outline"></ion-icon></ion-text>
       </ion-col>
       <ion-col>  <ion-img id="header_logo" src="assets\logo\b-lease_main.svg"></ion-img>  </ion-col>
 
@@ -26,11 +26,11 @@
  <div class="ion-padding">
   <ion-row class="listing_actions_row">
     <ion-col class="listing_actions_colspan"></ion-col>
-   
+<!--    
     <ion-col class="listing_actions">
       <ion-text> <ion-icon name="bookmark-outline"></ion-icon></ion-text>
       <ion-text> <ion-icon name="arrow-redo-outline"></ion-icon></ion-text>
-    </ion-col>
+    </ion-col> -->
   </ion-row>
   <ion-row class="listing_price">
     <ion-col>
@@ -46,9 +46,11 @@
   <hr>
   <ion-row>
     <ion-text color="success"> <h6>About this property</h6></ion-text>
-    <br>
+ 
+  </ion-row>
+  <ion-row>
     <ion-text>
-      <br>
+  
       <p>{{propertyData['property_description']}}</p>
     </ion-text>
   </ion-row>
@@ -64,12 +66,12 @@
  
    
   </ion-row>
-  <ion-row>
+  <!-- <ion-row>
     <ion-col>
       <ion-icon src="..\assets\icon\horticulture.svg"></ion-icon>
       <ion-text><span> </span></ion-text>
     </ion-col>
-  </ion-row>
+  </ion-row> -->
   <hr>
   <ion-row class="list_owner_row">
     <ion-col class="list_owner">
@@ -80,28 +82,28 @@
               </ion-avatar>
             </ion-col>
             <ion-col>
-              <ion-text color="success">Slater Young</ion-text> <br>
+              <ion-text color="success">{{user_fname}} {{user_lname}} </ion-text> <br>
               <ion-text>B-Lessor</ion-text>
             </ion-col>
         </ion-row>
     </ion-col>
-    <ion-col class="list_owner_actions">
+    <!-- <ion-col class="list_owner_actions">
       <ion-button color="danger"><ion-icon name="flag-outline"></ion-icon></ion-button> <br>
       <ion-text style="font-size:14px;">Report</ion-text>
-    </ion-col>
+    </ion-col> -->
     
   </ion-row>
   <hr>
-  <ion-row>
+  <!-- <ion-row>
     <ion-col>
       <ion-icon name="star"></ion-icon> <span> 4.3</span>
     </ion-col>
     <ion-col>
       <span>12</span> <span> reviews</span>
     </ion-col>
-  </ion-row>
+  </ion-row> -->
 
-  <div class="list_reviews">
+  <!-- <div class="list_reviews">
     <ion-row>
       <ion-col size="auto">     
         <ion-avatar>
@@ -154,15 +156,19 @@
         Very good farmland for your business! The owner of the property is accommodating and a pleasure to work with. 
       </ion-text>
     </ion-row>
-  </div>
+  </div> -->
 
-  <ion-text color="success">See more</ion-text>
+  <!-- <ion-text color="success">See more</ion-text>
 
-  <hr>
+  <hr> -->
 
   <ion-row>
     <ion-text color="success"> <h6>Location</h6></ion-text>
   </ion-row>
+<br>
+  <div id="mapId" >
+
+  </div>
 </div>
 
 </ion-content>

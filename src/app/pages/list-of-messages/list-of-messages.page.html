@@ -46,7 +46,7 @@
       <ion-label>Transactions</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="inbox">
+    <ion-tab-button tab="inbox" (click)="openInbox()">
       <ion-icon src="..\assets\icon\inbox.svg"></ion-icon>
       <ion-label>Inbox</ion-label>
     </ion-tab-button>
@@ -55,7 +55,7 @@
       <ion-icon name="notifications"></ion-icon>
       <ion-label>Notifications</ion-label>
     </ion-tab-button> 
-    <ion-tab-button tab="profile">
+    <ion-tab-button tab="profile" (click)="navigateProfile()">
       <ion-icon name="person-circle"></ion-icon>
       <ion-label>Profile</ion-label>
     </ion-tab-button> 

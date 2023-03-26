@@ -112,13 +112,21 @@
   </ion-modal>
 <!-- end modal -->
 
-<ion-card class="product_card" [routerLink]="['/view-individual-listing']">
-  <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" />
+<ion-card class="product_card" [routerLink]="['/view-individual-listing']"  *ngFor="let property of propertyData">
+ 
+  <ion-slides pager="true" class="list_image_slides">
+    <ion-slide *ngFor="let img of property.images">
+      <img alt="Silhouette of mountains" [src]="IMAGES_URL+property.propertyID+'/'+img" class="cover"/>
+  
+    </ion-slide>
+
+  </ion-slides>
+
   <ion-card-header>
     <ion-card-title>
       <ion-row>
         <ion-col class="product_title">
-      Kabasalan, Zamboanga Sibugay
+          {{property.address}}
     </ion-col>
     <ion-col class="product_bookmark" size="auto">
       <ion-text color="medium" id="" [routerLink]="['/signup']"><ion-icon name="bookmark-outline"></ion-icon></ion-text>
@@ -133,11 +141,11 @@
           <ion-text><ion-icon name="star"></ion-icon> 4.85</ion-text>
         </ion-col>
         <ion-col>
-          <ion-text><ion-icon src="..\assets\icon\land_size.svg"></ion-icon> 4.85</ion-text>
+          <ion-text><ion-icon src="..\assets\icon\land_size.svg"></ion-icon> {{property.size}} {{property.unit_type}}</ion-text>
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col><ion-text><span><strong>Php 100,000</strong></span><span>/ monthly</span></ion-text></ion-col>
+        <ion-col><ion-text><span><strong>Php {{property.price}}</strong></span><span>/ monthly</span></ion-text></ion-col>
       </ion-row>
    
     </ion-card-subtitle>
@@ -158,7 +166,7 @@
     <ion-tab-button tab="browse" [routerLink] = "['/dashboard']">
       <ion-icon name="search"></ion-icon>
       <ion-label>Browse</ion-label>
-      <ion-badge>6</ion-badge>
+      <!-- <ion-badge>6</ion-badge> -->
     </ion-tab-button>
 
     <ion-tab-button tab="transactions">

@@ -1,0 +1,31 @@
+<ion-content>
+  <ion-row>
+    <ion-col style="width:100%;">
+      <div style="position:relative">
+        <ion-searchbar style="z-index:998; width:100%;" debounce="500" (ionChange)="search($event)"
+          [value]="selectedAddress"></ion-searchbar>
+         
+        <div style="position:absolute; width:100%; z-index:999;margin:auto;margin-top:60px; " align="center">
+          <ion-list lines="none" *ngIf="addresses.length > 0">
+            <ion-item button *ngFor="let address of addresses" (click)="onSelect(address)">
+              <ion-icon name="pin"></ion-icon>
+              <p> {{address}}</p>
+            </ion-item>
+          </ion-list>
+        </div>
+      </div>
+    </ion-col>
+  </ion-row>
+
+  <ion-row class="mapActions">
+    <ion-col>
+      <ion-button class="cancelButton" (click)="cancelPin()">Cancel</ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button color="success" [disabled]="isSubmitDisabled" (click)="submitPin()">Submit</ion-button>
+    </ion-col>
+  </ion-row>
+  <div id="mapId">
+
+  </div>
+</ion-content>

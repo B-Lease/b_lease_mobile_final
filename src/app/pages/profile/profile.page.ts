@@ -4,6 +4,8 @@ import { Router,ActivatedRoute, Route } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { SessionService } from 'src/app/shared/session.service';
 import { ActionSheetController } from '@ionic/angular';
+import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
+import { isPlatform } from '@ionic/angular';
 
 @Component({
   selector: 'app-profile',
@@ -11,6 +13,9 @@ import { ActionSheetController } from '@ionic/angular';
   styleUrls: ['./profile.page.scss'],
 })
 export class ProfilePage implements OnInit {
+
+  public dataLoaded = false;
+
   private sessionID;
   private userID;
   userData:any;
@@ -22,6 +27,7 @@ export class ProfilePage implements OnInit {
   lastname:any
   email:any
   address:any
+  user_img: any;
 
   constructor(
     public navCtrl: NavController,
@@ -31,31 +37,27 @@ export class ProfilePage implements OnInit {
     private session:SessionService,
     private actionSheetCtrl:ActionSheetController
     ) { 
-    this.getProfileInfo();
+
     this.session.init();
   
     this.navCtrl.navigateForward('/profile', { animated: false });
+
+    if (!isPlatform('capacitor')){
+      GoogleAuth.initialize();
+    }
 
   }
   
   apiURL = 'http://192.168.1.2:5000';
   async ngOnInit() {
-    // this.sessionID = this.activatedroute.snapshot.paramMap.get('sessionID')
-    // this.userID = this.activatedroute.snapshot.paramMap.get('userID')
-    // console.log('SESSION: '+this.sessionID);
-    // console.log('USERID: '+this.userID);
-    await this.session.init();
 
-    await this.getSessionData();
-   
-    await this.getProfileInfo();
-   
+
 
 
   }
 
   async ngAfterInit(){
-    await this.getSessionData();
+
   }
 
   async getSessionData(){
@@ -84,13 +86,22 @@ export class ProfilePage implements OnInit {
       this.lastname = this.userData.user_lname;
       this.email = this.userData.user_email;
       this.address = this.userData.address;
+      this.user_img = this.userData.user_img;
+
+      this.user_img = this.user_img === null?"assets/icon/user.svg":this.user_img;
+      this.address = this.userData.address === null?"No address yet":this.userData.address;
+      this.dataLoaded = true;
     } catch (error) {
       console.error(error);
     }
   }
-  ionViewDidEnter() {
+  async ionViewDidEnter() {
     // Call the method here to make sure the page has fully loaded
-    this.getProfileInfo();
+    await this.session.init();
+
+    await this.getSessionData();
+    await this.getProfileInfo();
+
    
   }
 
@@ -126,10 +137,19 @@ export class ProfilePage implements OnInit {
 
     const result = await actionSheet.onDidDismiss();
     if( result.data?.action == 'logout'){
+      await GoogleAuth.signOut();
       await this.session.logOutSession();
+         
+        
+        
+    
     }
   }
 
+
+  navigateMyContracts(){
+    this.navCtrl.navigateForward(['/list-contracts']);
+  }
 
 
 

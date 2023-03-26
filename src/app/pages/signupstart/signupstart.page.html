@@ -1,0 +1,49 @@
+<ion-content>
+  <div class="main-container">
+    <ion-grid [fixed]="true" class="container">
+      <ion-row class="center"><img id="logo" src="assets\logo\b-lease_main.svg"></ion-row>
+      <br>
+      <ion-row>
+        <ion-col>
+          <h1 class="center">Welcome</h1>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-text class="center">
+            <p>You can sign up by using any of the following</p>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+      <br> <br>
+      <ion-button expand="block" color="success" (click)="googleSignIn()"><ion-icon name="logo-google" slot="start"></ion-icon> Sign up using
+        Google</ion-button>
+
+<!-- 
+      <ion-button expand="block" (click)="signOut()" *ngIf="user">Sign out</ion-button>
+      <ion-button expand="block" (click)="refresh()" *ngIf="!user">Refresh</ion-button> --> 
+
+     
+
+      <ion-row>
+        <ion-col>
+          <ion-text class="center">
+            <p>or</p>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+
+      <ion-button expand="block" fill="outline" color="success" [routerLink]="['/signup-number']"><ion-icon name="mail-outline"
+          slot="start"></ion-icon> Sign up using Email</ion-button>
+      <br><br> <br> <br> <br>
+      <ion-row (click)="loginStart()">
+        <ion-col>
+          <ion-text class="center">
+            <p>I already have an account</p>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>

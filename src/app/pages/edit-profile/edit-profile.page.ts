@@ -24,6 +24,7 @@ export class EditProfilePage implements OnInit {
   phone_number: any;
   userID: any;
   sessionID: any;
+  imageUrl:any;
   constructor(
     private session: SessionService,
     private http: HttpClient,
@@ -72,9 +73,9 @@ export class EditProfilePage implements OnInit {
       this.firstname = this.userData.user_fname;
       this.middlename = this.userData.user_mname;
       this.lastname = this.userData.user_lname;
-      this.address = this.userData.address;
       this.birthdate = this.userData.user_birthdate;
-
+      this.imageUrl = this.userData.user_img;
+      this.imageUrl = this.imageUrl === null?"assets/icon/user.svg":this.imageUrl;
 
 
     } catch (error) {
@@ -89,7 +90,7 @@ export class EditProfilePage implements OnInit {
       this.firstname &&
       this.lastname &&
       this.birthdate &&
-      this.address &&
+   
       this.phone_number
     ) {
       const httpOptions = {
@@ -105,7 +106,6 @@ export class EditProfilePage implements OnInit {
         'user_mname': this.middlename,
         'user_lname': this.lastname,
         'user_birthdate': this.birthdate,
-        'address': this.address,
         'phone_number': this.phone_number
 
       }
@@ -140,6 +140,10 @@ export class EditProfilePage implements OnInit {
     });
 
     await toast.present();
+  }
+
+  changeImage(){
+    console.log('clicked');
   }
 
 }

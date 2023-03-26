@@ -1,12 +1,13 @@
 <ion-content>
-  <div class="user_info">
+  <div class="user_info" *ngIf="dataLoaded">
     <div class="title"><ion-text><h3>Profile</h3></ion-text></div>
     <ion-row>
   <ion-avatar>
-    <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+    <img alt="Silhouette of a person's head" [src]="user_img" />
   </ion-avatar>
 </ion-row>
 <ion-row>
+
   <ion-text><h3><span>{{firstname}} {{middlename | slice:0:1 }}. {{lastname}}</span></h3></ion-text>
 </ion-row>
 <div class="info">
@@ -31,13 +32,44 @@
 </div>
 </div>
 </div>
+
+<div class="user_info" *ngIf="!dataLoaded">
+  <div class="title"><ion-text><h3>Profile</h3></ion-text></div>
+  <ion-row>
+<ion-avatar>
+  <img alt="Silhouette of a person's head" [src]="user_img" />
+</ion-avatar>
+</ion-row>
+<ion-row>
+<ion-skeleton-text [animated]="true" style="width: 50%; height:36px;"></ion-skeleton-text>
+
+</ion-row>
+<div class="info">
+<div class="contact_info">
+<div class="colspan"></div>
+<ion-skeleton-text [animated]="true" style="width: 80%"></ion-skeleton-text>
+
+</div>
+<div class="contact_info">
+<div class="colspan"></div>
+<ion-skeleton-text [animated]="true" style="width: 80%"></ion-skeleton-text>
+
+</div>
+<div class="contact_info">
+<div class="colspan"></div>
+<div class="contact_info_details">
+  <ion-skeleton-text [animated]="true" style="width: 90%"></ion-skeleton-text>
+</div>
+</div>
+</div>
+</div>
  
 <div class="profile_actions">
   <ion-row (click)="navigateMyListing()">
     <ion-col size="auto"><ion-icon name="list"></ion-icon></ion-col>
     <ion-col><ion-text>My Listings</ion-text></ion-col>
   </ion-row>
-  <ion-row>
+  <ion-row (click)="navigateMyContracts()">
     <ion-col size="auto"><ion-icon src="..\assets\icon\my_contract.svg"></ion-icon></ion-col>
     <ion-col><ion-text>My Contract</ion-text></ion-col>
   </ion-row>

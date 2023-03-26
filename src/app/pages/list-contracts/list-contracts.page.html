@@ -1,6 +1,18 @@
+<ion-header>
+  <ion-toolbar>
+   
+    <ion-row class="header">
+      <ion-col>
+        <ion-text color="dark" id="header_favorites" [routerLink]="['/profile']"><ion-icon name="arrow-back-outline"></ion-icon></ion-text>
+      </ion-col>
+      <ion-col>  <ion-title color="success">My Contracts</ion-title> </ion-col>
+      <ion-col></ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-header>
 <ion-content>
     <ion-grid [fixed]="true" class="container">
-      <br><br>
+      <br>
       <ion-segment value="all" class="ion-no-padding">
         <ion-segment-button value="all">
           <ion-label class="button-labels">All</ion-label>
@@ -15,7 +27,7 @@
           <ion-label class="button-labels">Finished</ion-label>
         </ion-segment-button>
       </ion-segment>
-
+      <br><br>
       <ion-item>
         <ion-avatar style="margin-right:9px">
           <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />

@@ -4,6 +4,7 @@ import { Router,ActivatedRoute } from '@angular/router';
 import { OverlayEventDetail } from '@ionic/core';
 import { NavController } from '@ionic/angular';
 import { SessionService } from 'src/app/shared/session.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 
 
@@ -17,9 +18,9 @@ export class DashboardPage implements OnInit {
   modal!: IonModal;
   message = 'This modal example uses triggers to automatically open a modal when the button is clicked.';
   name!: string;
-
+  propertyData: any[] = [];
   private sessionID;
-  userID = this.activatedroute.snapshot.paramMap.get('userID');
+  private userID;
   // private  sessionData = [];
 
   cancel() {
@@ -41,13 +42,16 @@ export class DashboardPage implements OnInit {
     public navCtrl: NavController,
     private activatedroute:ActivatedRoute,
     private router:Router,
-    private session:SessionService
+    private session:SessionService,
+    private http:HttpClient
     
     ) { 
       // this.loadSession();
     this.navCtrl.navigateForward('/dashboard', { animated: false });
-
+    
   }
+  IMAGES_URL = 'http://192.168.1.2:5000/propertyimages/'
+  apiURL = 'http://192.168.1.2:5000/properties';
 
   // async loadSession(){
   //   // this.sessionData = await this.session.getData();
@@ -70,6 +74,11 @@ export class DashboardPage implements OnInit {
   
   }
   
+  async ionViewWillEnter(){
+    await this.getPropertyListings();
+  }
+
+
 
   
   async ngOnInit() {
@@ -77,14 +86,25 @@ export class DashboardPage implements OnInit {
     await this.getSessionData();
   }
 
-  openInbox(){
-    const data = {
-      userID : this.userID
+  getPropertyListings(){
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept':'application/json'
+        
+      }),
     };
+
+    this.http.get(this.apiURL+"?sessionID="+this.sessionID, httpOptions).subscribe((data: any[]) => {
+      this.propertyData = data;
+      console.log(this.propertyData);
+    });
+   }
+  openInbox(){
+
     
-    this.navCtrl.navigateForward('list-of-messages', { queryParams: { data } });
-    // var userID = this.activatedroute.snapshot.paramMap.get('userID');
-    // this.router.navigate(['/list-of-messages/'+userID]);
+    this.navCtrl.navigateForward('list-of-messages');
+
   }
 
   navigateProfile(){

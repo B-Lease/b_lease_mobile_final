@@ -87,7 +87,6 @@ export class ChatroomPage implements OnInit {
       const response = await this.http.get(`http://localhost:5000/messages?leasingID=${leasingID}`).subscribe((data) => {
         if (typeof data === 'string') {
           this.response = JSON.parse(data);
-          console.log('okay')
 
         } else {
           this.response = Object.values(data);
