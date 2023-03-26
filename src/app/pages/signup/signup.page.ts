@@ -3,13 +3,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl } from "@angular/forms";
 import { Router,ActivatedRoute } from '@angular/router';
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { finalize, map, Observable } from 'rxjs';
 import { LoadingService } from 'src/app/shared/loading.service';
 
-import { AlertController, LoadingController, ToastController } from '@ionic/angular';
-
-
-
+import { AlertController, LoadingController, ToastController, NavController } from '@ionic/angular';
+import { MapboxServiceService } from 'src/app/shared/mapbox-service.service';
+import { SessionService } from 'src/app/shared/session.service';
+import { environment } from 'src/environments/environment.prod';
 
 
 @Component({
@@ -26,31 +26,45 @@ export class SignupPage implements OnInit {
   confirm_showPwd = false;
   isChecked: boolean = false;
   ageIsValid: boolean = true;
-
+  ipAddress:string;
   isPassSame: boolean = true;
 
   isPassStrong: boolean = false;
 
   isPassCheck = '';
 
+  userID:any;
+  auth_type:any;
+  imageUrl:any = null;
   public email_var;
+  idToken:any;
+  accessToken:any;
+  isGoogleAuth=false;
 
-  constructor(private formBuilder: FormBuilder,  private activatedroute:ActivatedRoute, private alertController:AlertController,
-    public router:Router, private toastController: ToastController, private http:HttpClient,
-    public loading: LoadingService
+  private first_name:string;
+  private middle_name:string;
+  private last_name:string;
+  private birthdate;
+  private phone_number;
+  private password;
+
+  lat:number;
+  lng:number;
+  constructor(
+    private formBuilder: FormBuilder,  
+    private activatedroute:ActivatedRoute, 
+    private alertController:AlertController,
+    public router:Router, 
+    private toastController: ToastController, 
+    private http:HttpClient,
+    public loading: LoadingService, 
+    public navCtrl:NavController,
+    public mapbox:MapboxServiceService,
+    private session:SessionService
     ) {
   
-  
-    //   this.signupForm = this.formBuilder.group({
-    //   first_name: ["", Validators.required],
-    //   middle_name: ["", Validators.required],
-    //   last_name: ["", Validators.required],
-    //   birthdate: ["", Validators.required],
-    //   address: ["", Validators.required],
-    //   password: ["", Validators.required],
-    //   confirm_password: ["", Validators.required],
-    //   agree_terms: ["", Validators.required],
-    // });
+    this.getIPAddress();
+
 
     
   }
@@ -66,14 +80,49 @@ export class SignupPage implements OnInit {
   }
 
   ngOnInit() {
-    this.email_var = this.activatedroute.snapshot.paramMap.get('email')
+
+
+
+    // this.getAddressValue();
+
+    this.auth_type = this.activatedroute.snapshot.paramMap.get('auth_type');
+
+    if(this.auth_type === 'google'){
+      this.accessToken = this.activatedroute.snapshot.paramMap.get('accessToken');
+      this.idToken = this.activatedroute.snapshot.paramMap.get('idToken');
+      this.userID = this.activatedroute.snapshot.paramMap.get('userID')
+      this.email_var = this.activatedroute.snapshot.paramMap.get('email')
+      this.first_name = this.activatedroute.snapshot.paramMap.get('givenName');
+      this.last_name = this.activatedroute.snapshot.paramMap.get('familyName');
+      this.imageUrl = this.activatedroute.snapshot.paramMap.get('imageUrl');
+      this.isGoogleAuth = true;
+
+    }
+    else{
+      this.auth_type = "email"
+      this.email_var = this.activatedroute.snapshot.paramMap.get('email');
+      this.first_name = this.activatedroute.snapshot.paramMap.get('first_name');
+      this.middle_name = this.activatedroute.snapshot.paramMap.get('middle_name');
+      this.last_name = this.activatedroute.snapshot.paramMap.get('last_name');
+      this.birthdate = this.activatedroute.snapshot.paramMap.get('birthdate');
+      this.phone_number = this.activatedroute.snapshot.paramMap.get('phone_number');
+      
+    }
+
+
+    this.first_name = this.first_name === null?'':this.first_name;
+    this.middle_name = this.middle_name === null?'':this.middle_name;
+    this.last_name = this.last_name === null?'':this.last_name;
+    this.birthdate = this.birthdate === null?null:this.birthdate;
+    this.phone_number = this.phone_number === null?'':this.phone_number;
+    this.imageUrl = this.imageUrl === null?"assets/icon/user.svg":this.imageUrl;
+
     this.signupForm = this.formBuilder.group({
-      first_name : new FormControl(null, [Validators.required, Validators.minLength(1)]),
-      middle_name : new FormControl(null),
-      last_name : new FormControl(null, Validators.required),
-      birthdate : new FormControl(null, Validators.required),
-      address : new FormControl(null, Validators.required),
-      phone_number : new FormControl(null, Validators.required),
+      first_name : new FormControl(this.first_name, [Validators.required, Validators.minLength(1)]),
+      middle_name : new FormControl(this.middle_name),
+      last_name : new FormControl(this.last_name, Validators.required),
+      birthdate : new FormControl(this.birthdate, Validators.required),
+      phone_number : new FormControl(this.phone_number, Validators.required),
       password : new FormControl(null, Validators.required),
       confirm_password : new FormControl(null, Validators.required),
       check_agree: [false]
@@ -83,6 +132,9 @@ export class SignupPage implements OnInit {
   }
 
   
+  async ionViewDidEnter(){
+
+  }
   public validateAreEqual(fieldControl: FormControl) {
     return fieldControl.value === this.signupForm.get("password").value ? null : {
         NotEqual: true
@@ -169,13 +221,14 @@ async accountExistsAlert(message:string) {
       var middle_name = this.signupForm.get('middle_name').value;
       var last_name = this.signupForm.get('last_name').value;
       var birthdate = this.signupForm.get('birthdate').value;
-      var address = this.signupForm.get('address').value;
       var phone_number = this.signupForm.get('phone_number').value;
       var password = this.signupForm.get('password').value;
       var confirm_password = this.signupForm.get('confirm_password').value;
+  
+      this.password = password;
       
       console.log(birthdate);
-      if(first_name && last_name && birthdate && address && phone_number && password && confirm_password)
+      if(first_name && last_name && birthdate && phone_number && password && confirm_password)
       {
         if(password === confirm_password){
           if(this.isPassStrong){
@@ -189,6 +242,7 @@ async accountExistsAlert(message:string) {
               };
 
               let postData = {
+              
                 "phone_number": phone_number,
                 "user_password": password, 
                 "user_fname": first_name,
@@ -196,22 +250,39 @@ async accountExistsAlert(message:string) {
                 "user_lname": last_name,
                 "user_birthdate": birthdate,
                 "user_email": this.email_var,
-                "address": address,
-                "latitude": '0',
-                "longitude": '0',
+                "auth_type":this.auth_type
               }
+
+              if (this.auth_type === 'google'){
+                postData['userID'] = this.userID;
+                postData['imageUrl'] = this.imageUrl;
+              }
+
               var errorcode = null;
               // return await this.http.post('http://192.168.1.2:5000'+"/register", postData).toPromise();
                 try{
                 this.loading.present('Registering Account');
-                const response: HttpResponse<any> = await this.http.post('http://192.168.1.2:5000/user', postData, httpOptions).toPromise();
-                errorcode = response.status
-                console.log(response.statusText)
-                if(response.status == 200){
-                  console.log(response.body.message)
-                  this.loading.dismiss();
-                  this.router.navigate(['/dashboard']);
-                }
+          
+               
+               
+              
+
+                  const headers = new HttpHeaders();
+                  headers.append('Content-Type', 'application/json');
+                  headers.append('Accept', 'application/json');
+                  this.http.post('http://192.168.1.2:5000/user', postData, { headers: headers }).pipe(
+                    finalize(() => {
+                      this.loading.dismiss();
+                 
+                    })
+                  ).subscribe(async res => {
+                    
+                    if(res['message'] == 'Success user creation')
+                    {
+                      await this.getIPAddress();
+                      await this.successAlert(); 
+                    }
+                  });
      
                
               
@@ -311,9 +382,26 @@ async accountExistsAlert(message:string) {
       await toast.present();
     }
 
-  getAddress(){
-    this.router.navigate(['google-map-get-address']);
-  }
+  // getAddress(){
+  //   var first_name = this.signupForm.get('first_name').value;
+  //   var middle_name = this.signupForm.get('middle_name').value;
+  //   var last_name = this.signupForm.get('last_name').value;
+  //   var birthdate = this.signupForm.get('birthdate').value;
+  //   var address = this.signupForm.get('address').value;
+  //   var phone_number = this.signupForm.get('phone_number').value;
+ 
+  //   this.navCtrl.navigateForward(['/getaddress', { 
+  //     email: this.email_var,
+  //     first_name: first_name,
+  //     middle_name: middle_name,
+  //     last_name : last_name,
+  //     birthdate:birthdate,
+  //     phone_number:phone_number
+  //   }]);
+
+ 
+  
+  // }
 
  
   checkPasswordSame(){
@@ -329,5 +417,94 @@ async accountExistsAlert(message:string) {
     }
   }
 
+  // getAddressValue() {
+
+  //   if(this.lat != null && this.lng != null){
+  //   const accessToken = environment.mapbox.accessToken;
+  //   const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${this.lng},${this.lat}.json?access_token=${accessToken}`;
+  //   this.http.get(url).subscribe((res: any) => {
+  //     if (res.features && res.features.length > 0) {
+      
+  //       console.log(res.features[0].place_name);
+  //       this.signupForm.patchValue({
+  //         address: res.features[0].place_name
+  //       });
+  //     } else {
+  //       console.log('No address found.');
+  //     }
+  //   });
+  // }
+  
+  // }
+
+  async successAlert() {
+    const alert = await this.alertController.create({
+      header: 'Account Registration',
+      subHeader: 'Success',
+      message: 'Account registered successfully!',
+      buttons: [{
+        text:'OK',
+        handler: async () =>{
+          
+          const httpOptions = {
+            headers: new HttpHeaders({
+              'Content-Type': 'application/json'
+            }),
+            observe: 'response' as const
+          };
+
+          let postData = {
+            "auth_type": this.auth_type,
+            "user_email": this.email_var,
+            "user_password": this.password, 
+            "user_ip": this.ipAddress,
+         
+          }
+
+          if(this.auth_type === 'google'){
+            postData['userID'] = this.userID
+            postData['accessToken'] = this.accessToken
+            postData['idToken'] = this.idToken
+          }
+          var errorcode = null;
+
+           
+            this.loading.present('Logging in'); 
+            const response: HttpResponse<any> = await this.http.post('http://192.168.1.2:5000/login', postData, httpOptions).toPromise();
+            errorcode = response.status
+            console.log(response.statusText)
+            this.loading.dismiss();
+            if(response.status == 200){
+              
+              console.log(response.body.message)
+              console.log('SESSIONID : '+response.body.sessionID)
+              
+
+              this.session.set('sessionID', response.body.sessionID)
+              this.session.set('userID', response.body.userID)
+              if(this.auth_type === 'google'){
+                this.session.set('accessToken', response.body.accessToken);
+                this.session.set('idToken', response.body.idToken);
+              }
+              
+              this.router.navigate(['/dashboard']);
+            }
+        }
+
+    }],
+    });
+
+    await alert.present();
+  }
+
+  async getIPAddress() {
+
+    // Use a public IP address API for web browsers
+    const response = await fetch('https://api.ipify.org?format=json');
+    const data = await response.json();
+    this.ipAddress = data.ip;
+
+  console.log('IP address:', this.ipAddress);
+}
 
 }

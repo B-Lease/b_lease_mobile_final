@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { timer } from 'rxjs';
-import { AlertController, LoadingController, ToastController } from '@ionic/angular';
+import { AlertController, LoadingController, ToastController, NavController } from '@ionic/angular';
 import { OtpApiService } from 'src/app/shared/otp-api.service';
 import { Router,ActivatedRoute } from '@angular/router';
 import { LoadingService } from 'src/app/shared/loading.service';
@@ -27,11 +27,15 @@ export class SignupSendOtpPage implements OnInit {
   isTimeOut = false
  
   public interval
-  constructor(private alertController: AlertController,
-              public otp:OtpApiService, private activatedroute:ActivatedRoute, 
-              public router:Router,private loadingCtrl: LoadingController,
-              private toastController:ToastController,
-              public loading: LoadingService
+  constructor(
+    private alertController: AlertController,
+    public otp:OtpApiService, 
+    private activatedroute:ActivatedRoute, 
+    public router:Router,
+    private loadingCtrl: LoadingController,
+    private toastController:ToastController,
+    public loading: LoadingService,
+    private navCtrl:NavController
               ) {
 
    }
@@ -94,7 +98,8 @@ export class SignupSendOtpPage implements OnInit {
           handler: () => {
             
           clearInterval(this.interval);
-          this.router.navigate(['/signup/'+this.email]);
+        
+          this.navCtrl.navigateForward(['/signup', {email:this.email}]);
           },
         },
       ],

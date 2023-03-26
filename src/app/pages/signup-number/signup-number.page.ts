@@ -4,7 +4,7 @@ import { Router,ActivatedRoute} from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { OtpApiService } from 'src/app/shared/otp-api.service';
 import { LoadingService } from 'src/app/shared/loading.service';
-
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-signup-number',
@@ -41,7 +41,14 @@ export class SignupNumberPage implements OnInit {
   //   '0895','0896','0897','0898',
   //   '0991','0992','0993','0994'
   // ]
-  constructor(private toastController: ToastController, private router:Router, public otp:OtpApiService, public loadingService:LoadingService,private activatedroute:ActivatedRoute){
+  constructor(
+    private toastController: ToastController, 
+    private router:Router, 
+    public otp:OtpApiService, 
+    public loadingService:LoadingService,
+    private activatedroute:ActivatedRoute,
+    private navCtrl:NavController
+    ){
     this.email = this.activatedroute.snapshot.paramMap.get('email')
   }
   ngOnInit() {
@@ -59,6 +66,9 @@ export class SignupNumberPage implements OnInit {
     }
     if(state =='error'){
       message = "Error submitting your email. Try again";
+    }
+    if(state =='used'){
+      message = "This email is already used. Use another email.";
     }
     const toast = await this.toastController.create({
     
@@ -91,7 +101,12 @@ export class SignupNumberPage implements OnInit {
     console.log(sent['message']);
 
     if(sent['message'] == 'success'){
-      this.router.navigate(['/signup-send-otp/'+email]);
+      
+
+      this.navCtrl.navigateForward(['/signup-send-otp',{email:this.email}]);
+    }
+    if(sent['message'] == 'email already used'){
+      this.emailValidateToast('used');
     }
     if(sent['message'] == 'error'){
       this.emailValidateToast('error');

@@ -8,7 +8,7 @@
   <div class="main-container">
     <div class="form">
 
-      <div><img src="./assets/icon/Zen.jpg" alt="Avatar" class="avatar"></div>
+      <div><img [src]="imageUrl" alt="Avatar" class="avatar" (click)="changeImage()" style="width:100px; height:100px;"></div>
       <br>
       <br>
 
@@ -17,12 +17,7 @@
         <ion-input class="signup-fields" placeholder="Middle Name" type="text"  [(ngModel)]="middlename"></ion-input>
         <ion-input class="signup-fields" placeholder="Last Name" type="text"  [(ngModel)]="lastname"></ion-input>
         <ion-input class="signup-fields" placeholder="Birthdate" type="date"  displayFormat="YYYY/MM/DD" [(ngModel)]="birthdate"></ion-input>
-        <ion-row style="padding-bottom:10px">
-          <ion-row class="signup-with-icons">
-            <ion-col><ion-input placeholder="Address" class="signup-placeholder signup-placeholder-with-icons"   [(ngModel)]="address"></ion-input></ion-col>
-            <ion-col size="auto"><ion-icon src="../assets/icon/location.svg" class="make-green"></ion-icon></ion-col>
-          </ion-row>
-        </ion-row>
+ 
 
         <ion-row style="padding-bottom:10px">
           <ion-row class="signup-with-icons">

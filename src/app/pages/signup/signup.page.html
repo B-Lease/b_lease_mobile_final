@@ -4,14 +4,29 @@
   <div class="main-container">
     
     <ion-grid [fixed]="true" class="container">
-      <ion-row class="center"><img src="assets\logo\b-lease_main.svg"></ion-row>
+
       
       <br> <br> 
-      <h1>Signup</h1>
+      <ion-row>
+      <ion-text class="signup_title">
+      <h1>Welcome to <span class="b-lease">B-Lease</span></h1>
+      <h6>Hello, I guess you are new around here. <br> You can start using the B-Lease after you sign up.</h6>
+    </ion-text>
+    </ion-row>
+    <br>
 
       <!--form-->
+ 
 
       <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+
+  
+        <ion-row>
+          <ion-avatar class="center">
+            <img alt="" [src]="imageUrl" />
+          </ion-avatar>
+        </ion-row>  
+        <br> <br>
         <ion-row style="padding-bottom:10px">
           <ion-col class="signup-fields"><ion-input class="signup-placeholder" placeholder="First Name" formControlName="first_name"></ion-input></ion-col>
         </ion-row >
@@ -24,7 +39,7 @@
         </ion-row>
         
         <ion-row style="padding-bottom:10px">
-          <ion-col class="signup-fields"><ion-input class="signup-placeholder" placeholder="Middle Name" formControlName="middle_name"></ion-input></ion-col>
+          <ion-col class="signup-fields"><ion-input class="signup-placeholder" placeholder="Middle Name (Optional)" formControlName="middle_name"></ion-input></ion-col>
         </ion-row>
     
         
@@ -49,18 +64,7 @@
         </ion-row>
         
 
-        <ion-row style="padding-bottom:10px">
-          <ion-row class="signup-with-icons">
-            <ion-col><ion-input placeholder="Address" class="signup-placeholder signup-placeholder-with-icons" formControlName="address"></ion-input></ion-col>
-            <ion-col size="auto"><ion-icon src="../assets/icon/location.svg" class="make-green"></ion-icon></ion-col>
-          </ion-row>
-        </ion-row>
-        <ion-row style="margin-top:-15px;" *ngIf="!signupForm.get('address').valid && signupForm.get('address').touched">
-          <ion-text color="danger" class="warning_text">
-            
-           <ion-icon name="alert-circle-outline"></ion-icon> Address is required
-          </ion-text>
-        </ion-row>
+   
 
         <ion-row style="padding-bottom:10px">
           <ion-row class="signup-with-icons">
@@ -121,7 +125,7 @@
         
         <br>
       
-          <ion-button class="success-button" shape="round" color="success" expand="block" size="default" type="submit">Signup</ion-button>
+          <ion-button class="success-button"  color="success" expand="block" size="default" type="submit">Signup</ion-button>
        
       </form>
       <!---->
@@ -130,7 +134,7 @@
         <ion-item lines="none">
           <ion-text color="primary"><p style="margin-right:4px">Already signed up?</p></ion-text>
           <ion-text color="success" class="links" [routerLink]="['/login']">Log In</ion-text>
-          <!-- <ion-text color="success" class="links" (click)="getAddress()">Google Maps</ion-text> -->
+         
         </ion-item>
       </ion-row>
     </ion-grid>

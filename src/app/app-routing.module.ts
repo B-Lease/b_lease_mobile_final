@@ -7,7 +7,7 @@ import { DashboardPage } from './pages/dashboard/dashboard.page';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'loginstart',
     pathMatch: 'full'
   },
   {
@@ -15,7 +15,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
   },
   {
-    path: 'signup/:email',
+    path: 'signup',
     loadChildren: () => import('./pages/signup/signup.module').then( m => m.SignupPageModule)
   },
   {
@@ -113,22 +113,12 @@ const routes: Routes = [
     loadChildren: () => import('./pages/my-listing/my-listing.module').then( m => m.MyListingPageModule)
   },
 
-  {
-    path: 'signup-number/:email',
-    loadChildren: () => import('./pages/signup-number/signup-number.module').then( m => m.SignupNumberPageModule)
-  },
-  {
-    path: 'signup-number',
-    loadChildren: () => import('./pages/signup-number/signup-number.module').then( m => m.SignupNumberPageModule)
-  },
+ 
   {
     path: 'approve-contract',
     loadChildren: () => import('./pages/approve-contract/approve-contract.module').then( m => m.ApproveContractPageModule)
   },
-  {
-    path: 'signup-send-otp/:email',
-    loadChildren: () => import('./pages/signup-send-otp/signup-send-otp.module').then( m => m.SignupSendOtpPageModule)
-  },
+
   {
     path: 'addlisting',
     loadChildren: () => import('./pages/addlisting/addlisting.module').then( m => m.AddlistingPageModule)
@@ -154,6 +144,24 @@ const routes: Routes = [
     path: 'viewmylistingproperty/:propertyID',
     loadChildren: () => import('./pages/viewmylistingproperty/viewmylistingproperty.module').then( m => m.ViewmylistingpropertyPageModule)
   },
+  {
+    path: 'getaddress',
+    loadChildren: () => import('./pages/getaddress/getaddress.module').then( m => m.GetaddressPageModule)
+  },
+  {
+    path: 'getpropertyaddress',
+    loadChildren: () => import('./pages/getpropertyaddress/getpropertyaddress.module').then( m => m.GetpropertyaddressPageModule)
+  },
+  {
+    path: 'loginstart',
+    loadChildren: () => import('./pages/loginstart/loginstart.module').then( m => m.LoginstartPageModule)
+  },  {
+    path: 'signupstart',
+    loadChildren: () => import('./pages/signupstart/signupstart.module').then( m => m.SignupstartPageModule)
+  },
+
+
+
 
 
 ];

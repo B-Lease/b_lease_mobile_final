@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 
 import {  HttpClient, HttpHeaders,HttpResponse } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
+import { NavController } from '@ionic/angular';
 
 const SESSION_KEY = 'sessionID'
 @Injectable({
@@ -18,6 +19,7 @@ export class SessionService {
     private storage:Storage,
     private router:Router,
     private http:HttpClient,
+    private navCtrl:NavController
     ) {
     this.init();
    }
@@ -49,8 +51,8 @@ export class SessionService {
     let userID_data = await this.getUserID();
 
 
-    console.log(sessionID_data)
-    console.log(userID_data)
+    // console.log(sessionID_data)
+    // console.log(userID_data)
     if(sessionID_data === null || userID_data == null){
         console.log('NO SESSION PRESENT.')
     }
@@ -111,14 +113,14 @@ export class SessionService {
       {
         console.log('SESSION INVALID.LOGGING OUT...')
         await this._storage?.clear();
-        this.router.navigate(['login']);
+        this.navCtrl.navigateRoot('/loginstart');
       } 
     }catch(error){
       console.log(error);
     }
 
     await this._storage?.clear();
-    this.router.navigate(['login']);
+    this.navCtrl.navigateRoot('/loginstart');
 
   }
   async checkSession(){
@@ -154,7 +156,7 @@ export class SessionService {
         else{
           console.log('SESSION INVALID.LOGGING OUT...')
           await this._storage?.clear();
-          this.router.navigate(['login']);
+          this.navCtrl.navigateRoot('/loginstart');
         }
           
   

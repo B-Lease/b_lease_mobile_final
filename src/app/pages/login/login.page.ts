@@ -6,9 +6,10 @@ import { NetworkInterface } from '@ionic-native/network-interface/ngx';
 import { Platform } from '@ionic/angular';
 import {  HttpClient, HttpHeaders,HttpResponse } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
-import { AlertController, LoadingController, ToastController } from '@ionic/angular';
+import { AlertController, LoadingController, ToastController,NavController } from '@ionic/angular';
 import { LoadingService } from 'src/app/shared/loading.service';
 import { SessionService } from 'src/app/shared/session.service';
+
 
 
 @Component({
@@ -33,7 +34,9 @@ export class LoginPage implements OnInit{
     private http:HttpClient,
     private loading:LoadingService,
     private router:Router,
-    private session:SessionService
+    private session:SessionService,
+    private navCtrl:NavController,
+    private alertController:AlertController
  
 
     
@@ -73,6 +76,7 @@ export class LoginPage implements OnInit{
     
     await this.session.init();
     await this.session.checkLoginSession();
+
     
   }
 
@@ -111,7 +115,8 @@ export class LoginPage implements OnInit{
           let postData = {
             "user_email": email,
             "user_password": password, 
-            "user_ip": this.ipAddress
+            "user_ip": this.ipAddress,
+            "auth_type":'email'
         
           }
           var errorcode = null;
@@ -122,19 +127,30 @@ export class LoginPage implements OnInit{
             errorcode = response.status
             console.log(response.statusText)
             this.loading.dismiss();
-            if(response.status == 200){
+            if(response.body.message == 'Login'){
               console.log(response.body.message)
               console.log('SESSIONID : '+response.body.sessionID)
-              // var sessionID = response.body.sessionID
-              // var userID = response.body.userID
-              // this.addSession(response.body.sessionID)
+              
+
+              await this.session.set('sessionID', response.body.sessionID)
+              await this.session.set('userID', response.body.userID)
+              await this.router.navigate(['/dashboard']);
+            }
+
+            if (response.body.message == 'User Deactivated. Login')
+            {
+              console.log(response.body.message)
+              console.log('SESSIONID : '+response.body.sessionID)
+              
 
               this.session.set('sessionID', response.body.sessionID)
               this.session.set('userID', response.body.userID)
-              // this.router.navigate(['/dashboard/'+sessionID+'/'+userID]);
-              this.router.navigate(['/dashboard']);
+              await this.deactivateLogin();
+              await this.router.navigate(['/dashboard']);
+
+              // await this.navCtrl.navigateForward(['/dashboard'])
             }
-            else{
+            if(response.body.message != 'Login' && response.body.message != 'User Deactivated. Login' ){
                 
                 await this.invalidLogin();
             }
@@ -205,6 +221,19 @@ export class LoginPage implements OnInit{
   
       await toast.present();
     }
+
+    async deactivateLogin() {
+      const alert = await this.alertController.create({
+        header: 'Welcome Back',
+        subHeader: '',
+        message: 'You have recently deactivated. Welcome back!',
+        buttons: ['OK'],
+      });
+  
+      await alert.present();
+    }
+
+    
 
   
 }

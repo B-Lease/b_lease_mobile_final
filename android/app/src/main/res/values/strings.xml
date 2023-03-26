@@ -4,4 +4,7 @@
     <string name="title_activity_main">b-lease</string>
     <string name="package_name">com.hnc.blease</string>
     <string name="custom_url_scheme">com.hnc.blease</string>
+    <string name="server_client_id">919668649599-oa7s71u22b59ig8a9iontgjhv3aj45aq.apps.googleusercontent.com</string>
+
+
 </resources>

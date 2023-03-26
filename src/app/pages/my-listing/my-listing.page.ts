@@ -21,18 +21,25 @@ export class MyListingPage implements OnInit {
     private session:SessionService,
     private http:HttpClient,
     private loading:LoadingService
-    ) { }
+    ) {
+      
+     }
 
     apiURL = 'http://192.168.1.2:5000/property';
     async ngOnInit() {
 
       await this.session.init();
       await this.getSessionData();
-      await this.getPropertyListings();
+ 
     
-
     }
     
+  
+    async ionViewWillEnter(){
+      await this.getPropertyListings();
+    }
+  
+ 
 
     async getSessionData(){
       let sessionID_data = await this.session.getSessionID();
