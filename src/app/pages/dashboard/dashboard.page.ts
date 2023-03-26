@@ -19,7 +19,7 @@ export class DashboardPage implements OnInit {
   name!: string;
 
   private sessionID;
-  private userID;
+  userID = this.activatedroute.snapshot.paramMap.get('userID');
   // private  sessionData = [];
 
   cancel() {
@@ -78,10 +78,13 @@ export class DashboardPage implements OnInit {
   }
 
   openInbox(){
-
+    const data = {
+      userID : this.userID
+    };
     
-    this.navCtrl.navigateForward('list-of-messages');
-
+    this.navCtrl.navigateForward('list-of-messages', { queryParams: { data } });
+    // var userID = this.activatedroute.snapshot.paramMap.get('userID');
+    // this.router.navigate(['/list-of-messages/'+userID]);
   }
 
   navigateProfile(){
