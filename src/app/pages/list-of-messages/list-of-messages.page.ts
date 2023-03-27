@@ -24,16 +24,23 @@ export class ListOfMessagesPage implements OnInit {
     ) {
 
 
+ 
 
-    this.http.get(`http://192.168.1.2:5000/leasing?userID=${this.userID}`).subscribe((data) => {
+    //get user ID from dashboard or chatroom
+    const data = this.activatedroute.snapshot.queryParams['data'];
+    this.userID = data['userID'];
+
+    this.http.get(`http://192.168.1.2:5000/leasing?check_existing=no&userID=${this.userID}`).subscribe((data) => {
       if (typeof data === 'string') {
         this.response = JSON.parse(data);
-
+        console.log(this.response)
       } else {
         this.response = Object.values(data);
-
+        console.log(this.response)
       }
     });
+
+
 
     
   }
@@ -45,18 +52,32 @@ export class ListOfMessagesPage implements OnInit {
 
 
   
-  saveFields(itemLeasingId: string, firstname:string, userID:string): void {
+  saveFields(itemLeasingId: string, firstname:string, userID:string, lesseeID: string): void {
     
     this.leasingId = itemLeasingId; // update leasingId with the value of item.LEASINGID
+    var msg_senderID = '';
+    var msg_receiverID = '';
+
+    //if the current user is the lessor, the sender is the lessor
+    //if the current user is the lessee, the sender is the lessee
+    if (this.userID == userID){
+      msg_senderID = this.userID;
+      msg_receiverID = lesseeID;
+    } else {
+      msg_senderID = lesseeID;
+      msg_receiverID = userID;
+    }
 
     const data = {
       leasingID : itemLeasingId,
       userID: this.userID,
-      msg_senderID: this.userID,
-      msg_receiverID : userID,
-      user_fname : firstname
+      msg_senderID: msg_senderID,
+      msg_receiverID : msg_receiverID,
+      user_fname : firstname,
+      lessorID: userID
     };
     
+
     this.navCtrl.navigateForward('chatroom', { queryParams: { data } });
     // console.log(leasingID);
     // this.router.navigate(['/chatroom/'+userID+'/'+leasingID+'/'+user_fname]);
@@ -75,10 +96,12 @@ export class ListOfMessagesPage implements OnInit {
 
  }
  
+ //for navbar
  openInbox(){
-
-    
-  this.navCtrl.navigateForward('list-of-messages');
+  const data = {
+    userID : this.userID
+  };
+  this.navCtrl.navigateForward('list-of-messages', { queryParams: { data } });
 
 }
 

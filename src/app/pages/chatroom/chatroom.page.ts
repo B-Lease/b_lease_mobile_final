@@ -17,12 +17,15 @@ export class ChatroomPage implements OnInit {
   leasingID = '';
   userID = '';
   msg_senderID = '';
-  msg_receiverID : '';
-  user_fname : '';
+  msg_receiverID = '';
+  user_fname = '';
+  lessorID = '';
 
   message = '';
   messages = [];
   response: any[];
+
+  hidden = false;
 
   @ViewChild('myContent', { static: true }) content: IonContent;
 
@@ -34,21 +37,28 @@ export class ChatroomPage implements OnInit {
     public toastCtrl: ToastController, 
     private socket:Socket,
     private navCtrl: NavController
-    ) {}
+    ) {
+
+    }
 
 
   ngOnInit() {
-    
-
     const data = this.activatedroute.snapshot.queryParams['data'];
     this.leasingID = data['leasingID'];
+    console.log('leasing ID: '+this.leasingID)
+    
     this.userID = data['userID'];
-
     this.msg_senderID = data['msg_senderID'];     //user 
+    
     this.msg_receiverID = data['msg_receiverID']
+    
     this.user_fname = data['user_fname'];
 
-    console.log(this.msg_senderID)
+    this.lessorID = data['lessorID']
+
+    if (this.lessorID == this.msg_senderID){
+      this.hidden = true;
+    }
 
     this.getCurrentMessages(this.leasingID);
 
@@ -56,16 +66,6 @@ export class ChatroomPage implements OnInit {
       this.messages.push(message);
       console.log(this.messages)
     });
-
-    // this.getUsers().subscribe( data => {
-    //   let user = data['user']
-    //   if(data['event'] === 'left'){
-    //     this.showToast('User left'+ user);
-    //   } else{
-    //     this.showToast('User joined'+ user);
-    //   }
-    // });
-  
   }
   
   ionViewDidEnter(){
@@ -73,7 +73,7 @@ export class ChatroomPage implements OnInit {
   }
   
 
-  goBack(){
+  openInbox(){
     const data = {
       userID : this.userID
     };
@@ -83,7 +83,7 @@ export class ChatroomPage implements OnInit {
 
   async getCurrentMessages(leasingID:string){
       //make a request and assign the value of the response to the messages array
-
+      console.log('request')
       const response = await this.http.get(`http://localhost:5000/messages?leasingID=${leasingID}`).subscribe((data) => {
         if (typeof data === 'string') {
           this.response = JSON.parse(data);
@@ -97,11 +97,12 @@ export class ChatroomPage implements OnInit {
 
   }
 
-  sendMessage(leasingID: string, msg_senderID: string, msg_receiverID: string){
+  sendMessage(){
     const currentDateTime: string = this.getCurrentDateTime();
-    this.socket.emit('add-message', { leasingID: leasingID, msg_senderID: msg_senderID, msg_receiverID: msg_receiverID, msg_content: this.message, sent_at: currentDateTime});
-    //calls function that sends POST request
-    this.saveMessage(leasingID, this.message, msg_senderID, msg_receiverID, currentDateTime);
+
+    this.socket.emit('add-message', { leasingID: this.leasingID, msg_senderID: this.msg_senderID, msg_receiverID: this.msg_receiverID, msg_content: this.message, sent_at: currentDateTime});
+    //calls function that sends POST request)
+    this.saveMessage(this.leasingID, this.message, this.msg_senderID, this.msg_receiverID, currentDateTime);
     this.message = '' //clears input after sending
 
   }
@@ -148,7 +149,6 @@ export class ChatroomPage implements OnInit {
       if(response.status === 201){
         console.log(response)
       } else {
-
       }
     } catch (error) {
       console.log(error);

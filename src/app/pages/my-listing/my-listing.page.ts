@@ -28,14 +28,14 @@ export class MyListingPage implements OnInit {
     apiURL = 'http://192.168.1.2:5000/property';
     async ngOnInit() {
 
-      await this.session.init();
-      await this.getSessionData();
- 
+
     
     }
     
   
     async ionViewWillEnter(){
+      await this.session.init();
+      await this.getSessionData();
       await this.getPropertyListings();
     }
   

@@ -75,6 +75,8 @@ export class DashboardPage implements OnInit {
   }
   
   async ionViewWillEnter(){
+    await this.session.init();
+    await this.getSessionData();
     await this.getPropertyListings();
   }
 
@@ -82,8 +84,6 @@ export class DashboardPage implements OnInit {
 
   
   async ngOnInit() {
-    await this.session.init();
-    await this.getSessionData();
   }
 
   getPropertyListings(){
@@ -100,10 +100,12 @@ export class DashboardPage implements OnInit {
       console.log(this.propertyData);
     });
    }
-  openInbox(){
 
-    
-    this.navCtrl.navigateForward('list-of-messages');
+  async openInbox(){ 
+    const data = {
+      userID :  await this.session.getUserID()
+    };
+    this.navCtrl.navigateForward('list-of-messages', { queryParams: { data } });
 
   }
 
