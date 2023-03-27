@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpResponse  } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { environment } from 'src/environments/environment.prod';
 @Component({
   selector: 'app-preview-lease-request',
   templateUrl: './preview-lease-request.page.html',
@@ -9,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 
 export class PreviewLeaseRequestPage implements OnInit {
-
+  API_URL = environment.API_URL;
   constructor(private http: HttpClient, private router:Router, private activatedroute: ActivatedRoute) {
 
   }
@@ -19,7 +19,7 @@ export class PreviewLeaseRequestPage implements OnInit {
 
   async loadPdfFromApi(): Promise<void> {
     const leasingID = [this.activatedroute.snapshot.queryParams['data']['leasingID']]
-    const response = await this.http.get(`http://192.168.1.2:5000/leasingdocs?leasingID=${leasingID}`, { responseType: 'arraybuffer' }).toPromise();
+    const response = await this.http.get(this.API_URL+`leasingdocs?leasingID=${leasingID}`, { responseType: 'arraybuffer' }).toPromise();
     const pdfArrayBuffer = response as ArrayBuffer;
     const pdfUrl = this.createBlobUrlFromArrayBuffer(pdfArrayBuffer);
     const pdfViewer = document.getElementById('pdf-viewer') as HTMLObjectElement;

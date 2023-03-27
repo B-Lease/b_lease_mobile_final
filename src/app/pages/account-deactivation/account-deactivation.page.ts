@@ -4,7 +4,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angul
 import { SessionService } from 'src/app/shared/session.service';
 import { Router } from '@angular/router';
 import { ToastController,AlertController } from '@ionic/angular';
-
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-account-deactivation',
@@ -24,7 +24,8 @@ export class AccountDeactivationPage implements OnInit {
     private alertController:AlertController
   ) { }
 
-  apiURL = 'http://192.168.1.2:5000';
+  // apiURL = 'http://192.168.1.2:5000';
+  apiURL = environment.API_URL;
   async ngOnInit() {
     await this.session.init();
     await this.getSessionData();
@@ -59,7 +60,7 @@ export class AccountDeactivationPage implements OnInit {
 
     try {
       this.loading.present('Deactivating Account');
-      const response: HttpResponse<any> = await this.http.patch('http://192.168.1.2:5000/user', patchData, httpOptions).toPromise();
+      const response: HttpResponse<any> = await this.http.patch(this.apiURL+'user', patchData, httpOptions).toPromise();
       
     
       this.loading.dismiss();

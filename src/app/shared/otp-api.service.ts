@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError } from 'rxjs';
-
+import { environment } from 'src/environments/environment.prod';
 @Injectable({
   providedIn: 'root'
 })
@@ -9,7 +9,8 @@ export class OtpApiService {
   // Define API
   // apiURL = 'http://10.0.2.2:5000';
   // apiURL = 'http://localhost:5000';
-  apiURL = 'http://192.168.1.2:5000';
+  // apiURL = 'http://192.168.1.2:5000';
+  apiURL = environment.API_URL;
 
   verifiedOTP = null;
   httpOptions = {

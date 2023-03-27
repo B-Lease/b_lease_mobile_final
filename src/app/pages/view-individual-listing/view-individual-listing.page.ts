@@ -5,7 +5,7 @@ import { Router,ActivatedRoute } from '@angular/router';
 import { SessionService } from 'src/app/shared/session.service';
 import * as L from 'leaflet';
 import { NavController } from '@ionic/angular';
-
+import { environment } from 'src/environments/environment.prod';
 @Component({
   selector: 'app-view-individual-listing',
   templateUrl: './view-individual-listing.page.html',
@@ -14,8 +14,8 @@ import { NavController } from '@ionic/angular';
 export class ViewIndividualListingPage implements OnInit {
   private sessionID;
   private userID;
-  API_URL = 'http://192.168.1.2:5000/property'
-  IMAGES_URL = 'http://192.168.1.2:5000/propertyimages/'
+  API_URL = environment.API_URL+'property'
+  IMAGES_URL = this.API_URL+'propertyimages/'
   propertyID:any;
   propertyData: any[] = [];
   userData: any;
@@ -119,7 +119,7 @@ export class ViewIndividualListingPage implements OnInit {
  public async getProfileInfo() {
   try {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    const data = await this.http.get('http://192.168.1.2:5000' + '/user?userID=' + this.userID, { headers }).toPromise();
+    const data = await this.http.get(this.API_URL + 'user?userID=' + this.userID, { headers }).toPromise();
 
 
     

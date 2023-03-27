@@ -7,12 +7,14 @@ import { Router } from '@angular/router';
 import {  HttpClient, HttpHeaders,HttpResponse } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { NavController } from '@ionic/angular';
+import { environment } from 'src/environments/environment.prod';
 
 const SESSION_KEY = 'sessionID'
 @Injectable({
   providedIn: 'root'
 })
 export class SessionService {
+  API_URL = environment.API_URL;
   private _storage: Storage | null = null;
   private storageReady = new BehaviorSubject(false);
   constructor(
@@ -70,7 +72,7 @@ export class SessionService {
 
       try{
         
-        const response: HttpResponse<any> = await this.http.get('http://192.168.1.2:5000/session?sessionID='+sessionID_data, httpOptions).toPromise();
+        const response: HttpResponse<any> = await this.http.get(this.API_URL+'session?sessionID='+sessionID_data, httpOptions).toPromise();
         if(response.body.message === 'Session valid')
         {
           console.log('SESSION PRESENT. REDIRECTING...')
@@ -108,7 +110,7 @@ export class SessionService {
     try{
         
 
-      const response: HttpResponse<any> = await this.http.put('http://192.168.1.2:5000/session', putData, httpOptions).toPromise();
+      const response: HttpResponse<any> = await this.http.put(this.API_URL+'session', putData, httpOptions).toPromise();
       if(response.body.message === 'Session expires')
       {
         console.log('SESSION INVALID.LOGGING OUT...')
@@ -148,7 +150,7 @@ export class SessionService {
 
       try{
         
-        const response: HttpResponse<any> = await this.http.get('http://192.168.1.2:5000/session?sessionID='+sessionID_data, httpOptions).toPromise();
+        const response: HttpResponse<any> = await this.http.get(this.API_URL+'session?sessionID='+sessionID_data, httpOptions).toPromise();
         if(response.body.message === 'Session valid')
         {
           console.log('SESSION VALID')

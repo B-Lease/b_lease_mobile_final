@@ -3,14 +3,14 @@ import { NavController } from '@ionic/angular';
 import { SessionService } from 'src/app/shared/session.service';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { LoadingService } from 'src/app/shared/loading.service';
-
+import { environment } from 'src/environments/environment.prod';
 @Component({
   selector: 'app-list-contracts',
   templateUrl: './list-contracts.page.html',
   styleUrls: ['./list-contracts.page.scss'],
 })
 export class ListContractsPage implements OnInit {
-  API_URL = 'http://192.168.1.2:5000/leasingcontracts'
+  API_URL = environment.API_URL+'leasingcontracts'
   sessionID:any;
   userID:any;
   data:any[] = [];

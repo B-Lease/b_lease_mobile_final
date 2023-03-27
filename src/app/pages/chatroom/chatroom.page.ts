@@ -6,6 +6,7 @@ import { ToastController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { NavController } from '@ionic/angular';
 import { IonContent } from '@ionic/angular';
+import { environment } from 'src/environments/environment.prod';
 @Component({
   selector: 'app-chatroom',
   templateUrl: './chatroom.page.html',
@@ -13,6 +14,7 @@ import { IonContent } from '@ionic/angular';
 })
 
 export class ChatroomPage implements OnInit { 
+   apiURL = environment.API_URL;
   nickname = '';
   leasingID = '';
   userID = '';
@@ -84,7 +86,7 @@ export class ChatroomPage implements OnInit {
   async getCurrentMessages(leasingID:string){
       //make a request and assign the value of the response to the messages array
       console.log('request')
-      const response = await this.http.get(`http://localhost:5000/messages?leasingID=${leasingID}`).subscribe((data) => {
+      const response = await this.http.get(this.apiURL+`messages?leasingID=${leasingID}`).subscribe((data) => {
         if (typeof data === 'string') {
           this.response = JSON.parse(data);
 
@@ -145,7 +147,7 @@ export class ChatroomPage implements OnInit {
     };
 
     try {
-      const response: HttpResponse<any> = await this.http.post('http://192.168.1.2:5000/messages', body, { observe: 'response' }).toPromise();
+      const response: HttpResponse<any> = await this.http.post(this.apiURL+'messages', body, { observe: 'response' }).toPromise();
       if(response.status === 201){
         console.log(response)
       } else {

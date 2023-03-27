@@ -6,6 +6,7 @@ import { SessionService } from 'src/app/shared/session.service';
 import { ActionSheetController } from '@ionic/angular';
 import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
 import { isPlatform } from '@ionic/angular';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-profile',
@@ -48,7 +49,7 @@ export class ProfilePage implements OnInit {
 
   }
   
-  apiURL = 'http://192.168.1.2:5000';
+  apiURL = environment.API_URL;
   async ngOnInit() {
 
 

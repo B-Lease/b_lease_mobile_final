@@ -7,7 +7,7 @@ import { LoadingService } from 'src/app/shared/loading.service';
 import { NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { SessionService } from 'src/app/shared/session.service';
-
+import { environment } from 'src/environments/environment.prod';
 @Component({
   selector: 'app-signupstart',
   templateUrl: './signupstart.page.html',
@@ -17,7 +17,7 @@ export class SignupstartPage implements OnInit {
   user = null;
   token: any;
   ipAddress:any;
- 
+  API_URL = environment.API_URL;
   constructor(
     private http:HttpClient,
     private loading:LoadingService,
@@ -61,7 +61,7 @@ export class SignupstartPage implements OnInit {
   async checkExistingAccount(){
     try {
       const headers = new HttpHeaders().set('Content-Type', 'application/json');
-      const data = await this.http.get('http://192.168.1.2:5000/login' + '?userID='+this.user.id, { headers }).toPromise();
+      const data = await this.http.get(this.API_URL+'login' + '?userID='+this.user.id, { headers }).toPromise();
   
       // this.userData = JSON.parse(data.toString());
       
@@ -105,7 +105,7 @@ export class SignupstartPage implements OnInit {
 
          
           this.loading.present('Logging in'); 
-          const response: HttpResponse<any> = await this.http.post('http://192.168.1.2:5000/login', postData, httpOptions).toPromise();
+          const response: HttpResponse<any> = await this.http.post(this.API_URL+'login', postData, httpOptions).toPromise();
           errorcode = response.status
           console.log(response.statusText)
           this.loading.dismiss();

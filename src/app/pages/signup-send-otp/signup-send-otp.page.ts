@@ -4,7 +4,7 @@ import { AlertController, LoadingController, ToastController, NavController } fr
 import { OtpApiService } from 'src/app/shared/otp-api.service';
 import { Router,ActivatedRoute } from '@angular/router';
 import { LoadingService } from 'src/app/shared/loading.service';
-
+import { environment } from 'src/environments/environment.prod';
 
 
 @Component({
@@ -13,7 +13,7 @@ import { LoadingService } from 'src/app/shared/loading.service';
   styleUrls: ['./signup-send-otp.page.scss'],
 })
 export class SignupSendOtpPage implements OnInit {
-  apiURL = 'http://192.168.1.2:5000';
+  API_URL = environment.API_URL;
   public fixedSeconds = 120
   public minutes
   public seconds
@@ -172,7 +172,7 @@ export class SignupSendOtpPage implements OnInit {
       let otp = this.otp_input_1+this.otp_input_2+this.otp_input_3+this.otp_input_4+this.otp_input_5+this.otp_input_6
     var verified = null
   
-    fetch(this.apiURL+"/register?email="+this.email+"&otp="+otp)
+    fetch(this.API_URL+"/register?email="+this.email+"&otp="+otp)
     
     .then(response => response.json())
     .then(data => {

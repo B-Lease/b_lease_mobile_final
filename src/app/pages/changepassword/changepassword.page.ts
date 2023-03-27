@@ -9,7 +9,7 @@ import { LoadingService } from 'src/app/shared/loading.service';
 import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 
 import { SessionService } from 'src/app/shared/session.service';
-
+import { environment } from 'src/environments/environment.prod';
 @Component({
   selector: 'app-changepassword',
   templateUrl: './changepassword.page.html',
@@ -19,7 +19,7 @@ export class ChangepasswordPage implements OnInit {
   passwordForm: FormGroup;
   pwdIcon = "eye-outline";
   showPwd = false;
-
+   apiURL = environment.API_URL;
   confirm_pwdIcon = "eye-outline";
   confirm_showPwd = false;
   isChecked: boolean = false;
@@ -159,7 +159,7 @@ async onSubmit(){
             // return await this.http.post('http://192.168.1.2:5000'+"/register", postData).toPromise();
             try {
               await this.loading.present('Changing Password');
-              const response: HttpResponse<any> = await this.http.post('http://192.168.1.2:5000/changepassword', postData, httpOptions).toPromise();
+              const response: HttpResponse<any> = await this.http.post(this.apiURL+'changepassword', postData, httpOptions).toPromise();
       
               if(response.body.message === 'passwordchanged')
               {

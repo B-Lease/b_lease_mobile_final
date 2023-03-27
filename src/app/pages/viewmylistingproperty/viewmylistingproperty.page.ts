@@ -4,6 +4,7 @@ import { LoadingService } from 'src/app/shared/loading.service';
 import { Router,ActivatedRoute } from '@angular/router';
 import { SessionService } from 'src/app/shared/session.service';
 import * as L from 'leaflet';
+import { environment } from 'src/environments/environment.prod';
 @Component({
   selector: 'app-viewmylistingproperty',
   templateUrl: './viewmylistingproperty.page.html',
@@ -12,8 +13,8 @@ import * as L from 'leaflet';
 export class ViewmylistingpropertyPage implements OnInit {
   private sessionID;
   private userID;
-  API_URL = 'http://192.168.1.2:5000/property'
-  IMAGES_URL = 'http://192.168.1.2:5000/propertyimages/'
+  API_URL = environment.API_URL+'property'
+  IMAGES_URL = this.API_URL+'propertyimages/'
   propertyID:any;
   propertyData: any[] = [];
   userData: any;
@@ -115,7 +116,7 @@ export class ViewmylistingpropertyPage implements OnInit {
  public async getProfileInfo() {
   try {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    const data = await this.http.get('http://192.168.1.2:5000' + '/user?userID=' + this.userID, { headers }).toPromise();
+    const data = await this.http.get(environment.API_URL+ 'user?userID=' + this.userID, { headers }).toPromise();
 
 
     
