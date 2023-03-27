@@ -78,7 +78,7 @@ export class ChatroomPage implements OnInit {
       userID : this.userID
     };
     
-    this.navCtrl.navigateForward('list-of-messages', { queryParams: { data } });
+    this.navCtrl.navigateBack('/home/inbox', { queryParams: { data } });
   }
 
   async getCurrentMessages(leasingID:string){

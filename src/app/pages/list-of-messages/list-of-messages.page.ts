@@ -26,9 +26,9 @@ export class ListOfMessagesPage implements OnInit {
 
  
 
-    //get user ID from dashboard or chatroom
-    const data = this.activatedroute.snapshot.queryParams['data'];
-    this.userID = data['userID'];
+    // //get user ID from dashboard or chatroom
+    // const data = this.activatedroute.snapshot.queryParams['data'];
+    // this.userID = data['userID'];
 
     this.http.get(`http://192.168.1.2:5000/leasing?check_existing=no&userID=${this.userID}`).subscribe((data) => {
       if (typeof data === 'string') {
