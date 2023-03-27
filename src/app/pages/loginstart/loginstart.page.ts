@@ -25,13 +25,16 @@ export class LoginstartPage implements OnInit {
     private session:SessionService
 
   ) {
+
     this.getIPAddress();
     if (!isPlatform('capacitor')){
       GoogleAuth.initialize();
     }
    }
 
-  ngOnInit() {
+ async ngOnInit() {
+  await this.session.init();
+  await this.session.checkLoginSession();
   }
 
   async googleSignIn() {
@@ -120,7 +123,7 @@ export class LoginstartPage implements OnInit {
             this.session.set('idToken', response.body.idToken);
            
             
-            this.router.navigate(['/dashboard']);
+            this.router.navigate(['/home']);
           }
       }
 

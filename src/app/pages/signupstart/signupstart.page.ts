@@ -121,7 +121,7 @@ export class SignupstartPage implements OnInit {
             this.session.set('idToken', response.body.idToken);
            
             
-            this.router.navigate(['/dashboard']);
+            this.router.navigate(['/home']);
           }
       }
 

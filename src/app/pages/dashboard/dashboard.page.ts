@@ -21,6 +21,7 @@ export class DashboardPage implements OnInit {
   propertyData: any[] = [];
   private sessionID;
   private userID;
+  public dataLoaded = false;
   // private  sessionData = [];
 
   cancel() {
@@ -75,6 +76,8 @@ export class DashboardPage implements OnInit {
   }
   
   async ionViewWillEnter(){
+    await this.session.init();
+    await this.getSessionData();
     await this.getPropertyListings();
   }
 
@@ -82,8 +85,7 @@ export class DashboardPage implements OnInit {
 
   
   async ngOnInit() {
-    await this.session.init();
-    await this.getSessionData();
+
   }
 
   getPropertyListings(){
@@ -98,18 +100,10 @@ export class DashboardPage implements OnInit {
     this.http.get(this.apiURL+"?sessionID="+this.sessionID, httpOptions).subscribe((data: any[]) => {
       this.propertyData = data;
       console.log(this.propertyData);
+      this.dataLoaded = true;
     });
    }
-  openInbox(){
-
-    
-    this.navCtrl.navigateForward('list-of-messages');
-
-  }
-
-  navigateProfile(){
-    this.router.navigate(['/profile']);
-  }
+ 
   async getSessionData(){
     let sessionID_data = await this.session.getSessionID();
     let userID_data = await this.session.getUserID();

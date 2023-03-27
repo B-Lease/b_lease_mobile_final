@@ -37,6 +37,10 @@ export class ViewmylistingpropertyPage implements OnInit {
   ) { }
 
   async ngOnInit() {
+
+  }
+
+  async ionViewWillEnter(){
     await this.session.init();
     await this.getSessionData();
     await this.route.params.subscribe(params => {
@@ -47,11 +51,7 @@ export class ViewmylistingpropertyPage implements OnInit {
     await this.getProfileInfo();
     await this.setupMap();
    
-  
-
-
   }
-
   async setupMap(){
     this.addpropertyMap = await L.map('mapId').setView([this.propertyData['latitude'], this.propertyData['longitude']], 18);
 

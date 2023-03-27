@@ -3,7 +3,7 @@
    
     <ion-row class="header">
       <ion-col size="auto">
-        <ion-text color="dark" id="header_favorites" [routerLink]="['/dashboard']"><ion-icon name="arrow-back-outline"></ion-icon></ion-text>
+        <ion-text color="dark" id="header_favorites" (click)="navigateDashboard()"><ion-icon name="arrow-back-outline"></ion-icon></ion-text>
       </ion-col>
       <ion-col>  <ion-img id="header_logo" src="assets\logo\b-lease_main.svg"></ion-img>  </ion-col>
 
@@ -13,67 +13,65 @@
 
 
 <ion-content>
-  <ion-slides pager="true" class="list_image_slides">
-    <ion-slide>
-      <img src="https://images.pexels.com/photos/1483880/pexels-photo-1483880.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="">
-  
-    </ion-slide>
-    <ion-slide>
-      <img src="https://images.pexels.com/photos/1743165/pexels-photo-1743165.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="">
-  
-    </ion-slide>
-    <ion-slide>
-      <img src="https://images.pexels.com/photos/1483880/pexels-photo-1483880.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="">
+ 
+    <ion-slides pager="true" class="list_image_slides">
+      <ion-slide *ngFor="let img of propertyData['images']">
+        <img alt="Silhouette of mountains" [src]="IMAGES_URL+propertyData['propertyID']+'/'+img" class="cover"/>
     
-    </ion-slide>
-  </ion-slides>
+      </ion-slide>
+
+    </ion-slides>
+
 
  <div class="ion-padding">
   <ion-row class="listing_actions_row">
     <ion-col class="listing_actions_colspan"></ion-col>
-   
+<!--    
     <ion-col class="listing_actions">
       <ion-text> <ion-icon name="bookmark-outline"></ion-icon></ion-text>
       <ion-text> <ion-icon name="arrow-redo-outline"></ion-icon></ion-text>
-    </ion-col>
+    </ion-col> -->
   </ion-row>
   <ion-row class="listing_price">
     <ion-col>
-      <ion-text > <h3> <strong> PHP <span>100,000 </span></strong> / monthly </h3></ion-text>
+      <ion-text > <h3> <strong> PHP <span>{{propertyData['price']}} </span></strong> / monthly </h3></ion-text>
    
     </ion-col>
   </ion-row>
   <ion-row class="listing_address">
     <ion-col>
-      <ion-text color="success" > <h6> Langon, Zamboanga Sibugay</h6></ion-text>
+      <ion-text color="success" > <h6> {{propertyData['address']}}</h6></ion-text>
     </ion-col>
   </ion-row>
   <hr>
   <ion-row>
     <ion-text color="success"> <h6>About this property</h6></ion-text>
-    <br>
+ 
+  </ion-row>
+  <ion-row>
     <ion-text>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing  elit, sed do eiusmod tempor incididunt ut labore et  dolore magna.</p>
+  
+      <p>{{propertyData['property_description']}}</p>
     </ion-text>
   </ion-row>
   <ion-row>
     <ion-col>
       <ion-icon src="..\assets\icon\land_size.svg"></ion-icon>
-      <ion-text><span> 2  </span> <span> hectares</span></ion-text>
+      <ion-text><span> {{propertyData['size']}}</span> <span> {{propertyData['unit_type']}}</span></ion-text>
     </ion-col>
     <ion-col>
       <ion-icon src="..\assets\icon\farmland.svg"></ion-icon>
-      <ion-text><span> Farmland</span></ion-text>
+      <ion-text><span> {{propertyData['property_type']}}</span></ion-text>
     </ion-col>
  
    
   </ion-row>
-  <ion-row>
+  <!-- <ion-row>
     <ion-col>
       <ion-icon src="..\assets\icon\horticulture.svg"></ion-icon>
-      <ion-text><span> Horticulture</span></ion-text>
+      <ion-text><span> </span></ion-text>
     </ion-col>
-  </ion-row>
+  </ion-row> -->
   <hr>
   <ion-row class="list_owner_row">
     <ion-col class="list_owner">
@@ -84,18 +82,95 @@
               </ion-avatar>
             </ion-col>
             <ion-col>
-              <ion-text color="success">Slater Young</ion-text> <br>
+              <ion-text color="success">{{user_fname}} {{user_lname}} </ion-text> <br>
               <ion-text>B-Lessor</ion-text>
             </ion-col>
         </ion-row>
     </ion-col>
-    <ion-col class="list_owner_actions">
+    <!-- <ion-col class="list_owner_actions">
       <ion-button color="danger"><ion-icon name="flag-outline"></ion-icon></ion-button> <br>
       <ion-text style="font-size:14px;">Report</ion-text>
-    </ion-col>
+    </ion-col> -->
     
   </ion-row>
   <hr>
+  <!-- <ion-row>
+    <ion-col>
+      <ion-icon name="star"></ion-icon> <span> 4.3</span>
+    </ion-col>
+    <ion-col>
+      <span>12</span> <span> reviews</span>
+    </ion-col>
+  </ion-row> -->
+
+  <!-- <div class="list_reviews">
+    <ion-row>
+      <ion-col size="auto">     
+        <ion-avatar>
+        <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+      </ion-avatar>
+    </ion-col>
+      <ion-col>
+        <ion-text color="success">Nathaniel Tiempo</ion-text> <br>
+        <ion-text>February 02, 2023</ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-text>
+        Very good farmland for your business! The owner of the property is accommodating and a pleasure to work with. 
+      </ion-text>
+    </ion-row>
+  </div>
+  <div class="list_reviews">
+    <ion-row>
+      <ion-col size="auto">     
+        <ion-avatar>
+        <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+      </ion-avatar>
+    </ion-col>
+      <ion-col>
+        <ion-text color="success">Nathaniel Tiempo</ion-text> <br>
+        <ion-text>February 02, 2023</ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-text>
+        Very good farmland for your business! The owner of the property is accommodating and a pleasure to work with. 
+      </ion-text>
+    </ion-row>
+  </div>
+  <div class="list_reviews">
+    <ion-row>
+      <ion-col size="auto">     
+        <ion-avatar>
+        <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+      </ion-avatar>
+    </ion-col>
+      <ion-col>
+        <ion-text color="success">Nathaniel Tiempo</ion-text> <br>
+        <ion-text>February 02, 2023</ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-text>
+        Very good farmland for your business! The owner of the property is accommodating and a pleasure to work with. 
+      </ion-text>
+    </ion-row>
+  </div> -->
+
+  <!-- <ion-text color="success">See more</ion-text>
+
+  <hr> -->
+
+  <ion-row>
+    <ion-text color="success"> <h6>Location</h6></ion-text>
+  </ion-row>
+<br>
+  <div id="mapId" >
+
+  </div>
+</div>
+<hr>
   <ion-row>
     <ion-col>
       <ion-icon name="star"></ion-icon> <span> 4.3</span>
@@ -123,51 +198,9 @@
       </ion-text>
     </ion-row>
   </div>
-  <div class="list_reviews">
-    <ion-row>
-      <ion-col size="auto">     
-        <ion-avatar>
-        <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-      </ion-avatar>
-    </ion-col>
-      <ion-col>
-        <ion-text color="success">Nathaniel Tiempo</ion-text> <br>
-        <ion-text>February 02, 2023</ion-text>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-text>
-        Very good farmland for your business! The owner of the property is accommodating and a pleasure to work with. 
-      </ion-text>
-    </ion-row>
-  </div>
-  <div class="list_reviews">
-    <ion-row>
-      <ion-col size="auto">     
-        <ion-avatar>
-        <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-      </ion-avatar>
-    </ion-col>
-      <ion-col>
-        <ion-text color="success">Nathaniel Tiempo</ion-text> <br>
-        <ion-text>February 02, 2023</ion-text>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-text>
-        Very good farmland for your business! The owner of the property is accommodating and a pleasure to work with. 
-      </ion-text>
-    </ion-row>
-  </div>
 
-  <ion-text color="success">See more</ion-text>
-
-  <hr>
-
-  <ion-row>
-    <ion-text color="success"> <h6>Location</h6></ion-text>
-  </ion-row>
-</div>
 
 </ion-content>
 
+
+  

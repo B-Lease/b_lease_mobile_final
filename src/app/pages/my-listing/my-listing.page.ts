@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { SessionService } from 'src/app/shared/session.service';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { LoadingService } from 'src/app/shared/loading.service';
+import { NavController } from '@ionic/angular';
 
 
 @Component({
@@ -20,7 +21,8 @@ export class MyListingPage implements OnInit {
     private router:Router,
     private session:SessionService,
     private http:HttpClient,
-    private loading:LoadingService
+    private loading:LoadingService,
+    private navCtrl:NavController
     ) {
       
      }
@@ -28,14 +30,14 @@ export class MyListingPage implements OnInit {
     apiURL = 'http://192.168.1.2:5000/property';
     async ngOnInit() {
 
-      await this.session.init();
-      await this.getSessionData();
- 
+
     
     }
     
   
     async ionViewWillEnter(){
+      await this.session.init();
+      await this.getSessionData();
       await this.getPropertyListings();
     }
   
@@ -69,6 +71,10 @@ export class MyListingPage implements OnInit {
   
   addListing(){
     this.router.navigate(['/addlisting']);
+  }
+
+  navigateProfile(){
+    this.navCtrl.navigateBack(['/home/profile']);
   }
 
 

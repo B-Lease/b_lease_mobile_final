@@ -1,0 +1,36 @@
+
+
+ 
+    
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="dashboard">
+      <ion-icon name="search"></ion-icon>
+      <ion-label >Browse</ion-label>
+      <!-- <ion-badge>6</ion-badge> -->
+    </ion-tab-button>
+
+    <ion-tab-button >
+      <ion-icon src="..\assets\icon\transaction.svg"></ion-icon>
+      <ion-label>Transactions</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="inbox">
+      <ion-icon src="..\assets\icon\inbox.svg"></ion-icon>
+      <ion-label>Inbox</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button >
+      <ion-icon name="notifications"></ion-icon>
+      <ion-label>Notifications</ion-label>
+    </ion-tab-button> 
+    <ion-tab-button tab="profile">
+      <ion-avatar style="width:22px; height:22px; object-fit: contain;">
+        <img alt="User" [src]="user_img"  />
+      </ion-avatar>
+      <ion-label>Profile</ion-label>
+    </ion-tab-button> 
+  </ion-tab-bar>
+</ion-tabs>
+
+

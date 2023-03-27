@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-settings',
@@ -7,8 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SettingsPage implements OnInit {
 
-  constructor() { }
+  constructor(
+    private navCtrl:NavController
+  ) { }
   ngOnInit() {
+  }
+
+  navigateProfile(){
+    this.navCtrl.navigateBack(['/home/profile']);
   }
 
 }
