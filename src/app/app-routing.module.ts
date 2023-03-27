@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 import { LoginPage } from './pages/login/login.page';
-// import { DashboardPage } from './pages/dashboard/dashboard.page';
+// import { DashboardPage } from './pages/  /dashboard.page';
 
 const routes: Routes = [
   {
@@ -63,7 +63,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/guide/guide.module').then( m => m.GuidePageModule)
   },
   {
-    path: 'preview-contract',
+    path: 'preview-contract/:propertyID',
     loadChildren: () => import('./pages/preview-contract/preview-contract.module').then( m => m.PreviewContractPageModule)
   },
   {

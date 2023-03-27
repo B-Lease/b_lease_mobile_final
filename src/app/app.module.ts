@@ -27,6 +27,8 @@ import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 import { File } from '@ionic-native/file/ngx';
 import { FileTransfer } from '@ionic-native/file-transfer/ngx';
 
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
+
 const config: SocketIoConfig = { url: 'http://127.0.0.1:5000', options: {}};
 
 @NgModule({
@@ -43,12 +45,14 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:5000', options: {}};
     FormsModule,
     ReactiveFormsModule,  
     SocketIoModule.forRoot({ url: 'http://127.0.0.1:5000/' }),
-   
+    
     IonicStorageModule.forRoot({
       name:"sessionstorage",
       driverOrder:[CordovaSQLiteDriver._driver,Drivers.IndexedDB, Drivers.LocalStorage]
-    })
+    }),
+    NgxExtendedPdfViewerModule
   ],
+  schemas:[CUSTOM_ELEMENTS_SCHEMA],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     Network,NetworkInterface, File,
     FileTransfer,
