@@ -1,20 +1,12 @@
 <ion-header>
   <ion-toolbar>
-    <ion-button slot="start" (click)="goBack()">Go</ion-button>
+    <ion-button slot="start" (click)="openInbox()">Go</ion-button>
     <ion-title>
       Messages
     </ion-title>
   </ion-toolbar>
 </ion-header>
-<!-- <div>
-  <div *ngFor="let item of response">
-    {{item.msg_content}}
-  </div>
-  <form (ngSubmit)="sendMessage()">
-    <input type="text" #message>
-    <button type="submit">Send</button>
-  </form>
-</div> -->
+
 <ion-content #myContent>
   <ion-grid>
     <ion-row *ngFor="let message of messages" class="ion-align-items-end ion-padding">
@@ -33,7 +25,7 @@
 </ion-content>
 
 <ion-footer>
-  <ion-row class="center">
+  <ion-row class="center" [hidden]="hidden">
     <ion-item lines="none">
       <ion-text color="primary"><p style="margin-right:4px">Interested in leasing?</p></ion-text>
       <ion-text color="success" class="links" (click)="setContract()">Set a contract now.</ion-text>
@@ -47,7 +39,7 @@
         </ion-item>
       </ion-col>
       <ion-col col-3>
-        <ion-button clear color="primary" (click)="sendMessage(leasingID, msg_senderID, msg_receiverID)" [disabled]="message === ''">
+        <ion-button clear color="primary" (click)="sendMessage()" [disabled]="message === ''">
           Send
         </ion-button>
       </ion-col>
