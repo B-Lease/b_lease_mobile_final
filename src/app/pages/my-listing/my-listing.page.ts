@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { SessionService } from 'src/app/shared/session.service';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { LoadingService } from 'src/app/shared/loading.service';
+import { NavController } from '@ionic/angular';
 
 
 @Component({
@@ -20,7 +21,8 @@ export class MyListingPage implements OnInit {
     private router:Router,
     private session:SessionService,
     private http:HttpClient,
-    private loading:LoadingService
+    private loading:LoadingService,
+    private navCtrl:NavController
     ) {
       
      }
@@ -69,6 +71,10 @@ export class MyListingPage implements OnInit {
   
   addListing(){
     this.router.navigate(['/addlisting']);
+  }
+
+  navigateProfile(){
+    this.navCtrl.navigateBack(['/home/profile']);
   }
 
 

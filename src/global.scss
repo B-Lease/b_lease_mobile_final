@@ -124,21 +124,22 @@ p {
 
 
 // FOOTER STYLES
-ion-footer ion-toolbar{
+ ion-tabs{
   height:70px;
 }
-ion-footer ion-toolbar ion-tabs ion-tab-bar{
+ion-tabs ion-tab-bar{
   display:flex;
 
 }
 
-ion-footer ion-toolbar ion-tabs ion-tab-bar ion-tab-button{
+ion-tabs ion-tab-bar ion-tab-button{
   --color-selected: #40A047;
 }
-ion-footer ion-toolbar ion-tabs ion-tab-bar .selected{
+ion-tabs ion-tab-bar .selected{
   --color: #40A047;
+
 }
-ion-footer ion-toolbar ion-tabs ion-tab-bar ion-tab-button ion-label{
+ion-tabs ion-tab-bar ion-tab-button ion-label{
   font-size:xx-small;
   margin-top:3px;
 }

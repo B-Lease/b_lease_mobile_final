@@ -3,7 +3,7 @@
    
     <ion-row class="header">
       <ion-col size="auto">
-        <ion-text color="dark" id="header_favorites" [routerLink]="['/dashboard']"><ion-icon name="arrow-back-outline"></ion-icon></ion-text>
+        <ion-text color="dark" id="header_favorites" (click)="navigateDashboard()"><ion-icon name="arrow-back-outline"></ion-icon></ion-text>
       </ion-col>
       <ion-col>  <ion-img id="header_logo" src="assets\logo\b-lease_main.svg"></ion-img>  </ion-col>
 
@@ -203,8 +203,4 @@
 </ion-content>
 
 
-<ion-footer>
-  <ion-row class="center ion-padding">
-    <ion-button class="success-button" shape="round" color="success" (click)="createChat()" [disabled]="isOwner">{{hasOngoing}}</ion-button>
-  </ion-row>
-</ion-footer>
+  

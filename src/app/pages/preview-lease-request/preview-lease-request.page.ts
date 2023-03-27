@@ -11,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class PreviewLeaseRequestPage implements OnInit {
 
   constructor(private http: HttpClient, private router:Router, private activatedroute: ActivatedRoute) {
+
   }
 
   ngOnInit() {
@@ -32,7 +33,7 @@ export class PreviewLeaseRequestPage implements OnInit {
     return url;
   }
   
-  ionViewDidEnter() {
+  ionViewWillEnter() {
     this.loadPdfFromApi();
   }
 

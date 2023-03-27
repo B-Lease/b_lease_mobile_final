@@ -134,7 +134,7 @@ export class LoginPage implements OnInit{
 
               await this.session.set('sessionID', response.body.sessionID)
               await this.session.set('userID', response.body.userID)
-              await this.router.navigate(['/dashboard']);
+              await this.router.navigate(['/home']);
             }
 
             if (response.body.message == 'User Deactivated. Login')
@@ -146,7 +146,7 @@ export class LoginPage implements OnInit{
               this.session.set('sessionID', response.body.sessionID)
               this.session.set('userID', response.body.userID)
               await this.deactivateLogin();
-              await this.router.navigate(['/dashboard']);
+              await this.router.navigate(['/home']);
 
               // await this.navCtrl.navigateForward(['/dashboard'])
             }

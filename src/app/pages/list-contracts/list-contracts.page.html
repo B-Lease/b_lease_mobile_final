@@ -1,9 +1,10 @@
+
 <ion-header>
   <ion-toolbar>
    
     <ion-row class="header">
       <ion-col>
-        <ion-text color="dark" id="header_favorites" [routerLink]="['/profile']"><ion-icon name="arrow-back-outline"></ion-icon></ion-text>
+        <ion-text color="dark" id="header_favorites" (click)="navigateProfile()"><ion-icon name="arrow-back-outline"></ion-icon></ion-text>
       </ion-col>
       <ion-col>  <ion-title color="success">My Contracts</ion-title> </ion-col>
       <ion-col></ion-col>
@@ -11,9 +12,12 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
     <ion-grid [fixed]="true" class="container">
       <br>
-      <ion-segment value="all" class="ion-no-padding">
+      <ion-segment class="ion-no-padding" (ionChange)="getFilter($event)" [value]="filter">
         <ion-segment-button value="all">
           <ion-label class="button-labels">All</ion-label>
         </ion-segment-button>
@@ -28,13 +32,14 @@
         </ion-segment-button>
       </ion-segment>
       <br><br>
-      <ion-item>
+
+      <ion-item *ngFor="let leasing of leasingData" (click)="viewContract(leasing.leasingID)">
         <ion-avatar style="margin-right:9px">
           <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
         </ion-avatar>
         <ion-label>
-          <ion-text class="links">Allain Sabandal</ion-text>
-          <p>Location</p>
+          <ion-text class="links">{{leasing.name}}</ion-text>
+          <p>{{leasing.address}}</p>
         </ion-label>
       </ion-item>
     </ion-grid>

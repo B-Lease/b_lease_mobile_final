@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 import { LoginPage } from './pages/login/login.page';
-import { DashboardPage } from './pages/dashboard/dashboard.page';
+
 
 const routes: Routes = [
   {
@@ -63,7 +63,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/guide/guide.module').then( m => m.GuidePageModule)
   },
   {
-    path: 'preview-contract',
+    path: 'preview-contract/:propertyID',
     loadChildren: () => import('./pages/preview-contract/preview-contract.module').then( m => m.PreviewContractPageModule)
   },
   {
@@ -91,18 +91,22 @@ const routes: Routes = [
     path: 'list-contracts',
     loadChildren: () => import('./pages/list-contracts/list-contracts.module').then( m => m.ListContractsPageModule)
   },
-  {
-    path: 'dashboard',
-    loadChildren: () => import('./pages/dashboard/dashboard.module').then( m => m.DashboardPageModule)
-  },
+
+  // {
+  //   path: 'dashboard',
+  //   loadChildren: () => import('./pages/dashboard/dashboard.module').then( m => m.DashboardPageModule)
+  // },
+
   {
     path: 'view-individual-listing/:propertyID',
     loadChildren: () => import('./pages/view-individual-listing/view-individual-listing.module').then( m => m.ViewIndividualListingPageModule)
   },
-  {
-    path: 'profile',
-    loadChildren: () => import('./pages/profile/profile.module').then( m => m.ProfilePageModule)
-  },
+
+  // {
+  //   path: 'profile',
+  //   loadChildren: () => import('./pages/profile/profile.module').then( m => m.ProfilePageModule)
+  // },
+
   {
     path: 'property-favorites',
     loadChildren: () => import('./pages/property-favorites/property-favorites.module').then( m => m.PropertyFavoritesPageModule)
@@ -132,10 +136,12 @@ const routes: Routes = [
     path: 'chatroom',
     loadChildren: () => import('./pages/chatroom/chatroom.module').then( m => m.ChatroomPageModule)
   },
-  {
-    path: 'list-of-messages',
-    loadChildren: () => import('./pages/list-of-messages/list-of-messages.module').then( m => m.ListOfMessagesPageModule)
-  },
+
+  // {
+  //   path: 'list-of-messages',
+  //   loadChildren: () => import('./pages/list-of-messages/list-of-messages.module').then( m => m.ListOfMessagesPageModule)
+  // },
+
   {
     path: 'changepassword',
     loadChildren: () => import('./pages/changepassword/changepassword.module').then( m => m.ChangepasswordPageModule)
@@ -160,12 +166,14 @@ const routes: Routes = [
     path: 'signupstart',
     loadChildren: () => import('./pages/signupstart/signupstart.module').then( m => m.SignupstartPageModule)
   },
-
-
-
+  {
+    path: 'home',
+    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+  },
 
 
 ];
+
 
 @NgModule({
   imports: [

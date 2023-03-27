@@ -3,9 +3,8 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { LoadingService } from 'src/app/shared/loading.service';
 import { Router,ActivatedRoute } from '@angular/router';
 import { SessionService } from 'src/app/shared/session.service';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NavController } from '@ionic/angular';
 import * as L from 'leaflet';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-view-individual-listing',
@@ -23,31 +22,23 @@ export class ViewIndividualListingPage implements OnInit {
   private addpropertyMap: L.Map;
   private marker: L.Marker;
 
+
   user_fname:any;
   user_mname:any;
   user_lname:any;
   lat:number;
   lng:number;
-
-  hasOngoing = 'Contact';
-  createLeaseRecord = false;
-  response: any[];
-  leasingID = ''
-
-  isOwner = false;
-
   constructor(
     private router:Router,
     private session:SessionService,
     private http:HttpClient,
     private loading:LoadingService,
     private route: ActivatedRoute,
-    private navCtrl: NavController
-  ) {
+    private navCtrl:NavController
 
-  }
+    
+  ) { }
 
-  
   async ngOnInit() {
 
     await this.session.init();
@@ -59,40 +50,12 @@ export class ViewIndividualListingPage implements OnInit {
     await this.getPropertyListings();
     await this.getProfileInfo();
     await this.setupMap();
-
-    this.checkExisting();
+   
   }
 
   async ionViewWillEnter(){
-  }
-
-  async checkExisting() {
-    var lesseeID = await this.session.getUserID()
-    var lessorID = this.propertyData['userID']
-    var propertyID = this.propertyID
-
-    if (lesseeID == lessorID){
-      this.isOwner = true
-    }
-
-    else {
-      this.http.get(`http://192.168.1.2:5000/leasing?check_existing=yes&lesseeID=${lesseeID}&lessorID=${lessorID}&propertyID=${propertyID}`).subscribe((data) => {
-        if (typeof data === 'string') {
-          this.response = JSON.parse(data);
-          console.log(this.response)
-          this.leasingID = this.response[0].leasingID
-          this.hasOngoing = 'Chat'
-        } else {
-          this.response = Object.values(data);
-          console.log(this.response)
-          this.hasOngoing = 'Contact'
-        }
-      });
-    }
-
 
   }
-  
   async setupMap(){
     this.addpropertyMap = await L.map('mapId').setView([this.propertyData['latitude'], this.propertyData['longitude']], 18);
 
@@ -154,71 +117,27 @@ export class ViewIndividualListingPage implements OnInit {
  }
 
  public async getProfileInfo() {
-    try {
-      const headers = new HttpHeaders().set('Content-Type', 'application/json');
-      const data = await this.http.get('http://192.168.1.2:5000' + '/user?userID=' + this.userID, { headers }).toPromise();
+  try {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    const data = await this.http.get('http://192.168.1.2:5000' + '/user?userID=' + this.userID, { headers }).toPromise();
 
-
-      
-      this.userData = JSON.parse(data.toString());
-      console.log(this.userData);
-
-      this.user_fname = this.userData.user_fname;
-      this.user_mname = this.userData.user_mname;
-      this.user_lname = this.userData.user_lname;
-
-
-      this.userData.user_img = this.userData.user_img === null?"assets/icon/user.svg":this.userData.user_img;
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  async createChat(){
-  
-    const params = {
-      lesseeID: await this.session.getUserID(),
-      lessorID: this.propertyData['userID'],
-      propertyID: this.propertyID,
-      leasing_status: 'inquiring'
-    };
-
-    if(this.hasOngoing == 'Contact'){
-
-      try {
-        const response: HttpResponse<any> = await this.http.post('http://127.0.0.1:5000/leasing', params, { observe: 'response' }).toPromise();
-        if(response.status === 201){
-          const data = {
-            leasingID : response.body.leasingID,
-            userID: params.lesseeID,
-            msg_senderID: params.lesseeID,
-            msg_receiverID : params.lessorID,
-            user_fname : this.propertyData['user_fname'],
-          }
-
-          this.navCtrl.navigateForward('chatroom', { queryParams: { data } });
-        } else {
-
-        }
-      } catch (error) {
-        console.log(error);
-        // Handle the error
-      }
-
-    } else {
-      const data = {
-        leasingID : this.leasingID,
-        userID: params.lesseeID,
-        msg_senderID: params.lesseeID,
-        msg_receiverID : params.lessorID,
-        user_fname : this.propertyData['user_fname']
-      }
-
-      this.navCtrl.navigateForward('chatroom', { queryParams: { data } });
-    }
 
     
+    this.userData = JSON.parse(data.toString());
+    console.log(this.userData);
+
+    this.user_fname = this.userData.user_fname;
+    this.user_mname = this.userData.user_mname;
+    this.user_lname = this.userData.user_lname;
+
+
+    this.userData.user_img = this.userData.user_img === null?"assets/icon/user.svg":this.userData.user_img;
+  } catch (error) {
+    console.error(error);
   }
+}
 
-
+navigateDashboard(){
+  this.navCtrl.navigateBack(['/home/dashboard']);
+}
 }

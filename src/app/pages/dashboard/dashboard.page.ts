@@ -21,6 +21,7 @@ export class DashboardPage implements OnInit {
   propertyData: any[] = [];
   private sessionID;
   private userID;
+  public dataLoaded = false;
   // private  sessionData = [];
 
   cancel() {
@@ -84,6 +85,7 @@ export class DashboardPage implements OnInit {
 
   
   async ngOnInit() {
+
   }
 
   getPropertyListings(){
@@ -98,20 +100,10 @@ export class DashboardPage implements OnInit {
     this.http.get(this.apiURL+"?sessionID="+this.sessionID, httpOptions).subscribe((data: any[]) => {
       this.propertyData = data;
       console.log(this.propertyData);
+      this.dataLoaded = true;
     });
    }
-
-  async openInbox(){ 
-    const data = {
-      userID :  await this.session.getUserID()
-    };
-    this.navCtrl.navigateForward('list-of-messages', { queryParams: { data } });
-
-  }
-
-  navigateProfile(){
-    this.router.navigate(['/profile']);
-  }
+ 
   async getSessionData(){
     let sessionID_data = await this.session.getSessionID();
     let userID_data = await this.session.getUserID();
