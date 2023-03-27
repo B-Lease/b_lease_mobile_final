@@ -96,7 +96,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/dashboard/dashboard.module').then( m => m.DashboardPageModule)
   },
   {
-    path: 'view-individual-listing',
+    path: 'view-individual-listing/:propertyID',
     loadChildren: () => import('./pages/view-individual-listing/view-individual-listing.module').then( m => m.ViewIndividualListingPageModule)
   },
   {
@@ -155,7 +155,8 @@ const routes: Routes = [
   {
     path: 'loginstart',
     loadChildren: () => import('./pages/loginstart/loginstart.module').then( m => m.LoginstartPageModule)
-  },  {
+  },
+  {
     path: 'signupstart',
     loadChildren: () => import('./pages/signupstart/signupstart.module').then( m => m.SignupstartPageModule)
   },
