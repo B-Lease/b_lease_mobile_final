@@ -202,5 +202,9 @@
 
 </ion-content>
 
-
+<ion-footer>
+  <ion-row class="center ion-padding">
+    <ion-button class="success-button" shape="round" color="success" (click)="createChat()" [disabled]="isOwner">{{hasOngoing}}</ion-button>
+  </ion-row>
+</ion-footer>
   
