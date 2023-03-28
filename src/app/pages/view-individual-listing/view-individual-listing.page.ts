@@ -28,6 +28,14 @@ export class ViewIndividualListingPage implements OnInit {
   user_lname:any;
   lat:number;
   lng:number;
+  
+  hasOngoing = 'Contact';
+  createLeaseRecord = false;
+  response: any[];
+  leasingID = ''
+
+  isOwner = false;
+  
   constructor(
     private router:Router,
     private session:SessionService,
@@ -50,12 +58,41 @@ export class ViewIndividualListingPage implements OnInit {
     await this.getPropertyListings();
     await this.getProfileInfo();
     await this.setupMap();
-   
+    
+    this.checkExisting();
   }
 
   async ionViewWillEnter(){
 
   }
+
+  async checkExisting() {
+    var lesseeID = await this.session.getUserID()
+    var lessorID = this.propertyData['userID']
+    var propertyID = this.propertyID
+
+    if (lesseeID == lessorID){
+      this.isOwner = true
+    }
+
+    else {
+      this.http.get(`http://192.168.1.2:5000/leasing?check_existing=yes&lesseeID=${lesseeID}&lessorID=${lessorID}&propertyID=${propertyID}`).subscribe((data) => {
+        if (typeof data === 'string') {
+          this.response = JSON.parse(data);
+          console.log(this.response)
+          this.leasingID = this.response[0].leasingID
+          this.hasOngoing = 'Chat'
+        } else {
+          this.response = Object.values(data);
+          console.log(this.response)
+          this.hasOngoing = 'Contact'
+        }
+      });
+    }
+
+
+  }
+  
   async setupMap(){
     this.addpropertyMap = await L.map('mapId').setView([this.propertyData['latitude'], this.propertyData['longitude']], 18);
 
@@ -140,4 +177,52 @@ export class ViewIndividualListingPage implements OnInit {
 navigateDashboard(){
   this.navCtrl.navigateBack(['/home/dashboard']);
 }
+
+async createChat(){
+  
+    const params = {
+      lesseeID: await this.session.getUserID(),
+      lessorID: this.propertyData['userID'],
+      propertyID: this.propertyID,
+      leasing_status: 'inquiring'
+    };
+
+    if(this.hasOngoing == 'Contact'){
+
+      try {
+        const response: HttpResponse<any> = await this.http.post('http://127.0.0.1:5000/leasing', params, { observe: 'response' }).toPromise();
+        if(response.status === 201){
+          const data = {
+            leasingID : response.body.leasingID,
+            userID: params.lesseeID,
+            msg_senderID: params.lesseeID,
+            msg_receiverID : params.lessorID,
+            user_fname : this.propertyData['user_fname'],
+          }
+
+          this.navCtrl.navigateForward('chatroom', { queryParams: { data } });
+        } else {
+
+        }
+      } catch (error) {
+        console.log(error);
+        // Handle the error
+      }
+
+    } else {
+      const data = {
+        leasingID : this.leasingID,
+        userID: params.lesseeID,
+        msg_senderID: params.lesseeID,
+        msg_receiverID : params.lessorID,
+        user_fname : this.propertyData['user_fname']
+      }
+
+      this.navCtrl.navigateForward('chatroom', { queryParams: { data } });
+    }
+
+    
+  }
+  
+  
 }
