@@ -5,7 +5,7 @@ import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { pdfDefaultOptions } from 'ngx-extended-pdf-viewer';
 import { HttpClient } from '@angular/common/http';
 import { NavController } from '@ionic/angular';
-
+import { environment } from 'src/environments/environment.prod';
 @Component({
   selector: 'app-preview-contract',
   templateUrl: './preview-contract.page.html',
@@ -14,6 +14,7 @@ import { NavController } from '@ionic/angular';
 export class PreviewContractPage implements OnInit {
   
   pdfSrc: string = '';
+  API_URL = environment.API_URL;
   leasingID:any;
   address:any;
   constructor(
@@ -34,7 +35,7 @@ export class PreviewContractPage implements OnInit {
   }
 
   getPDF() {
-    this.http.get('https://192.168.1.2:5000/leasingdocs/48a089ac5b003f70bfb38e5590c14035/2d1026c114023569a611afbd8ed1ebde_contract.pdf', { responseType: 'blob' })
+    this.http.get(this.API_URL+'leasingdocs/48a089ac5b003f70bfb38e5590c14035/2d1026c114023569a611afbd8ed1ebde_contract.pdf', { responseType: 'blob' })
       .subscribe((response: any) => {
         const blob = new Blob([response], { type: 'application/pdf' });
         this.pdfSrc = URL.createObjectURL(blob);

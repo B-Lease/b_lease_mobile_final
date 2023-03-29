@@ -18,6 +18,7 @@ import { environment } from 'src/environments/environment.prod';
   styleUrls: ['./signup.page.scss'],
 })
 export class SignupPage implements OnInit {
+  API_URL = environment.API_URL;
   signupForm: FormGroup;
   pwdIcon = "eye-outline";
   showPwd = false;
@@ -270,7 +271,7 @@ async accountExistsAlert(message:string) {
                   const headers = new HttpHeaders();
                   headers.append('Content-Type', 'application/json');
                   headers.append('Accept', 'application/json');
-                  this.http.post('http://192.168.1.2:5000/user', postData, { headers: headers }).pipe(
+                  this.http.post(this.API_URL+'user', postData, { headers: headers }).pipe(
                     finalize(() => {
                       this.loading.dismiss();
                  
@@ -470,7 +471,7 @@ async accountExistsAlert(message:string) {
 
            
             this.loading.present('Logging in'); 
-            const response: HttpResponse<any> = await this.http.post('http://192.168.1.2:5000/login', postData, httpOptions).toPromise();
+            const response: HttpResponse<any> = await this.http.post(this.API_URL+'login', postData, httpOptions).toPromise();
             errorcode = response.status
             console.log(response.statusText)
             this.loading.dismiss();

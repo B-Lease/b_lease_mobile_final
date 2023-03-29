@@ -9,7 +9,7 @@ import { map, Observable } from 'rxjs';
 import { AlertController, LoadingController, ToastController,NavController } from '@ionic/angular';
 import { LoadingService } from 'src/app/shared/loading.service';
 import { SessionService } from 'src/app/shared/session.service';
-
+import { environment } from 'src/environments/environment.prod';
 
 
 @Component({
@@ -123,7 +123,7 @@ export class LoginPage implements OnInit{
 
             try{
             this.loading.present('Logging in');
-            const response: HttpResponse<any> = await this.http.post('http://192.168.1.2:5000/login', postData, httpOptions).toPromise();
+            const response: HttpResponse<any> = await this.http.post(environment.API_URL+'login', postData, httpOptions).toPromise();
             errorcode = response.status
             console.log(response.statusText)
             this.loading.dismiss();

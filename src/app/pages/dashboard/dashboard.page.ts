@@ -5,7 +5,7 @@ import { OverlayEventDetail } from '@ionic/core';
 import { NavController } from '@ionic/angular';
 import { SessionService } from 'src/app/shared/session.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-
+import { environment } from 'src/environments/environment.prod';
 
 
 @Component({
@@ -23,6 +23,7 @@ export class DashboardPage implements OnInit {
   private userID;
   public dataLoaded = false;
   // private  sessionData = [];
+  
 
   cancel() {
     this.modal.dismiss(null, 'cancel');
@@ -51,8 +52,8 @@ export class DashboardPage implements OnInit {
     this.navCtrl.navigateForward('/dashboard', { animated: false });
     
   }
-  IMAGES_URL = 'http://192.168.1.2:5000/propertyimages/'
-  apiURL = 'http://192.168.1.2:5000/properties';
+  IMAGES_URL = environment.API_URL+'propertyimages/'
+  apiURL = environment.API_URL+'properties';
 
   // async loadSession(){
   //   // this.sessionData = await this.session.getData();

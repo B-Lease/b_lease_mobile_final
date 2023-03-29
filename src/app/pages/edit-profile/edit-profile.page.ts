@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { SessionService } from 'src/app/shared/session.service';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-edit-profile',
@@ -14,7 +14,7 @@ import { ToastController } from '@ionic/angular';
 export class EditProfilePage implements OnInit {
    // Get an instance of the HomePage component
 
-
+    apiURL = environment.API_URL;
   userData: any;
   firstname: any;
   middlename: any;
@@ -40,7 +40,7 @@ export class EditProfilePage implements OnInit {
   
   }
 
-  apiURL = 'http://192.168.1.2:5000';
+  
 
 
 
@@ -62,7 +62,7 @@ export class EditProfilePage implements OnInit {
       const headers = new HttpHeaders().set('Content-Type', 'application/json');
       this.loading.present('');
 
-      const data = await this.http.get(this.apiURL + '/user?userID=' + this.userID, { headers }).toPromise();
+      const data = await this.http.get(this.apiURL + 'user?userID=' + this.userID, { headers }).toPromise();
       this.loading.dismiss();
       this.userData = JSON.parse(data.toString());
 
@@ -113,7 +113,7 @@ export class EditProfilePage implements OnInit {
 
       try {
         this.loading.present('Updating Info');
-        const response: HttpResponse<any> = await this.http.put('http://192.168.1.2:5000/user', putData, httpOptions).toPromise();
+        const response: HttpResponse<any> = await this.http.put(this.apiURL+'user', putData, httpOptions).toPromise();
         errorcode = response.status
         console.log(response.statusText)
         this.loading.dismiss();

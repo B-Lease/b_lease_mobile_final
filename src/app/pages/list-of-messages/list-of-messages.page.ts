@@ -4,6 +4,7 @@ import { Router,ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NavController } from '@ionic/angular';
 import { SessionService } from 'src/app/shared/session.service';
+import { environment } from 'src/environments/environment.prod';
 @Component({
   selector: 'app-list-of-messages',
   templateUrl: './list-of-messages.page.html',
@@ -14,6 +15,7 @@ export class ListOfMessagesPage implements OnInit {
   userID: any;
   sessionID:any;
   leasingId: string = ''
+  apiURL = environment.API_URL;
   
   constructor(
     private http: HttpClient, 
@@ -30,7 +32,7 @@ export class ListOfMessagesPage implements OnInit {
     // const data = this.activatedroute.snapshot.queryParams['data'];
     // this.userID = data['userID'];
 
-    this.http.get(`http://192.168.1.2:5000/leasing?check_existing=no&userID=${this.userID}`).subscribe((data) => {
+    this.http.get(this.apiURL+`leasing?check_existing=no&userID=${this.userID}`).subscribe((data) => {
       if (typeof data === 'string') {
         this.response = JSON.parse(data);
         console.log(this.response)

@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
 import { isPlatform, NavController } from '@ionic/angular';
 import { SessionService } from 'src/app/shared/session.service';
+import { environment } from 'src/environments/environment.prod';
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
@@ -34,7 +35,8 @@ export class HomePage implements OnInit {
     }
    }
 
-   apiURL = 'http://192.168.1.2:5000';
+  //  apiURL = 'http://192.168.1.2:5000';
+   apiURL = environment.API_URL;
   async ngOnInit() {
 
     await this.session.init();

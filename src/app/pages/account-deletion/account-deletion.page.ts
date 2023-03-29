@@ -6,6 +6,7 @@ import { SessionService } from 'src/app/shared/session.service';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
+import { environment } from 'src/environments/environment.prod';
 @Component({
   selector: 'app-account-deletion',
   templateUrl: './account-deletion.page.html',
@@ -25,7 +26,8 @@ export class AccountDeletionPage {
     ) {}
 
   
-    apiURL = 'http://192.168.1.2:5000';
+    // apiURL = 'http://192.168.1.2:5000';
+     apiURL = environment.API_URL;
 
   async ngOnInit(){
     await this.session.init();
@@ -48,7 +50,7 @@ export class AccountDeletionPage {
 
     try {
       this.loading.present('Deleting Account');
-      const response: HttpResponse<any> = await this.http.patch('http://192.168.1.2:5000/delete_user', deleteData, httpOptions).toPromise();
+      const response: HttpResponse<any> = await this.http.patch(this.apiURL+'delete_user', deleteData, httpOptions).toPromise();
       
     
       this.loading.dismiss();

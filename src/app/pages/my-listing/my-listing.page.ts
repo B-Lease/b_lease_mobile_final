@@ -4,7 +4,7 @@ import { SessionService } from 'src/app/shared/session.service';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { LoadingService } from 'src/app/shared/loading.service';
 import { NavController } from '@ionic/angular';
-
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-my-listing',
@@ -14,8 +14,8 @@ import { NavController } from '@ionic/angular';
 export class MyListingPage implements OnInit {
   private sessionID;
   private userID;
-  API_URL = 'http://192.168.1.2:5000/property'
-  IMAGES_URL = 'http://192.168.1.2:5000/propertyimages/'
+  API_URL = environment.API_URL+'property'
+  IMAGES_URL = environment.API_URL+'propertyimages/'
   propertyData: any[] = [];
   constructor(
     private router:Router,
@@ -27,7 +27,6 @@ export class MyListingPage implements OnInit {
       
      }
 
-    apiURL = 'http://192.168.1.2:5000/property';
     async ngOnInit() {
 
 
