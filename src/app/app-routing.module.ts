@@ -92,10 +92,11 @@ const routes: Routes = [
     loadChildren: () => import('./pages/list-contracts/list-contracts.module').then( m => m.ListContractsPageModule)
   },
 
-  // {
-  //   path: 'dashboard',
-  //   loadChildren: () => import('./pages/dashboard/dashboard.module').then( m => m.DashboardPageModule)
-  // },
+  {
+    path: 'dashboard',
+    // loadChildren: () => import('./pages/dashboard/dashboard.module').then( m => m.DashboardPageModule)\
+    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+  },
 
   {
     path: 'view-individual-listing/:propertyID',
@@ -105,6 +106,7 @@ const routes: Routes = [
   // {
   //   path: 'profile',
   //   loadChildren: () => import('./pages/profile/profile.module').then( m => m.ProfilePageModule)
+  
   // },
 
   {
@@ -170,6 +172,11 @@ const routes: Routes = [
     path: 'home',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
   },
+  {
+    path: 'transactions',
+    loadChildren: () => import('./pages/transactions/transactions.module').then( m => m.TransactionsPageModule)
+  },
+
 
 
 ];

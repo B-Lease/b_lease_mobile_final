@@ -45,6 +45,8 @@ export class HomePage implements OnInit {
     await this.getProfileInfo();
 
   }
+
+  async ionViewDidEnter(){}
   async getSessionData(){
     let sessionID_data = await this.session.getSessionID();
     let userID_data = await this.session.getUserID();

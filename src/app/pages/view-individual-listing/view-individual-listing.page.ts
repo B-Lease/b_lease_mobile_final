@@ -14,7 +14,7 @@ import { environment } from 'src/environments/environment.prod';
 export class ViewIndividualListingPage implements OnInit {
   private sessionID;
   private userID;
-  API_URL = environment.API_URL+'property'
+  API_URL = environment.API_URL
   IMAGES_URL = this.API_URL+'propertyimages/'
   propertyID:any;
   propertyData: any[] = [];
@@ -45,7 +45,8 @@ export class ViewIndividualListingPage implements OnInit {
     private navCtrl:NavController
 
     
-  ) { }
+  ) { 
+  }
 
   async ngOnInit() {
 
@@ -57,13 +58,11 @@ export class ViewIndividualListingPage implements OnInit {
 
     await this.getPropertyListings();
     await this.getProfileInfo();
-    await this.setupMap();
-    
     this.checkExisting();
+    await this.setupMap();
   }
 
   async ionViewWillEnter(){
-
   }
 
   async checkExisting() {
@@ -76,14 +75,16 @@ export class ViewIndividualListingPage implements OnInit {
     }
 
     else {
-      this.http.get(`http://192.168.1.2:5000/leasing?check_existing=yes&lesseeID=${lesseeID}&lessorID=${lessorID}&propertyID=${propertyID}`).subscribe((data) => {
+      this.http.get(`${this.API_URL}leasing?check_existing=yes&lesseeID=${lesseeID}&lessorID=${lessorID}&propertyID=${propertyID}`).subscribe((data) => {
         if (typeof data === 'string') {
           this.response = JSON.parse(data);
+          console.log('hello')
           console.log(this.response)
           this.leasingID = this.response[0].leasingID
           this.hasOngoing = 'Chat'
         } else {
           this.response = Object.values(data);
+          console.log('hellofsdf')
           console.log(this.response)
           this.hasOngoing = 'Contact'
         }
@@ -147,7 +148,7 @@ export class ViewIndividualListingPage implements OnInit {
     }),
   };
 
-  this.http.get(this.API_URL+"?userID="+this.userID+"&sessionID="+this.sessionID+"&propertyID="+this.propertyID, httpOptions).subscribe((data: any[]) => {
+  this.http.get(this.API_URL+"property?userID="+this.userID+"&sessionID="+this.sessionID+"&propertyID="+this.propertyID, httpOptions).subscribe((data: any[]) => {
     this.propertyData = data;
     console.log(this.propertyData);
   });

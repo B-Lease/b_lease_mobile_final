@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title color="success" align = "center" style="margin-top: 50px; font-weight: 600;">Transactions</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <br>
+  <br>
+  <ion-button class="all-button" shape="round" color="success" style="margin-left: 70px; zoom:0.8">All</ion-button>
+  <ion-button class="pending-button" shape="round" color="light" style="margin-left: 40px; zoom:0.8">Pending</ion-button>
+  <ion-button class="paid-button" shape="round" color="light" style="margin-left: 5px; zoom:0.8">Paid</ion-button>
+
+  <div class="container">
+    <ion-list> 
+      <ion-item button detail="false" (click)="payment()">
+        <ion-row style="padding-bottom:7px">
+          <ion-col size="9" class="ion-no-padding"><ion-text style="font-size:9px;">Monthly Payment</ion-text></ion-col><ion-icon name="remove-circle" color="warning" style="zoom:0.8"></ion-icon><ion-label style="font-size: 9px;" color="success">Pending</ion-label>
+          <ion-col size="10" class="ion-no-padding"><ion-text style="font-size:11px; font-weight: bold;">Lorem Ipsum Barn &nbsp;&nbsp;</ion-text><ion-text color="success" style="font-weight: bold; font-size: 10px;">Php 3,200.00</ion-text></ion-col> 
+          <ion-col size="10" class="ion-no-padding"><ion-text style="font-size:9px;">Jan 23, 2023</ion-text></ion-col> 
+        </ion-row>
+    </ion-item>   
+    </ion-list>
+    <ion-list> 
+      <ion-item button detail="false">
+        <ion-row style="padding-bottom:7px">
+          <ion-col size="9" class="ion-no-padding"><ion-text style="font-size:9px;">Monthly Payment</ion-text></ion-col><ion-icon name="checkmark-circle" color="success" style="zoom:0.8"></ion-icon><ion-label style="font-size: 9px;" color="success">Paid</ion-label>
+          <ion-col size="10" class="ion-no-padding"><ion-text style="font-size:11px; font-weight: bold;">Lorem Ipsum Barn &nbsp;&nbsp;</ion-text><ion-text color="success" style="font-weight: bold; font-size: 10px;">Php 3,200.00</ion-text></ion-col> 
+          <ion-col size="10" class="ion-no-padding"><ion-text style="font-size:9px;">Jan 23, 2023</ion-text></ion-col> 
+        </ion-row>
+    </ion-item>   
+    </ion-list>
+    <ion-list> 
+      <ion-item button detail="false">
+        <ion-row style="padding-bottom:7px">
+          <ion-col size="9" class="ion-no-padding"><ion-text style="font-size:9px;">Monthly Payment</ion-text></ion-col><ion-icon name="checkmark-circle" color="success" style="zoom:0.8"></ion-icon><ion-label style="font-size: 9px;" color="success">Paid</ion-label>
+          <ion-col size="10" class="ion-no-padding"><ion-text style="font-size:11px; font-weight: bold;">Lorem Ipsum Barn &nbsp;&nbsp;</ion-text><ion-text color="success" style="font-weight: bold; font-size: 10px;">Php 3,200.00</ion-text></ion-col> 
+          <ion-col size="10" class="ion-no-padding"><ion-text style="font-size:9px;">Jan 23, 2023</ion-text></ion-col> 
+        </ion-row>
+    </ion-item>   
+    </ion-list>
+    <ion-list> 
+      <ion-item button detail="false">
+        <ion-row style="padding-bottom:7px">
+          <ion-col size="9" class="ion-no-padding"><ion-text style="font-size:9px;">Monthly Payment</ion-text></ion-col><ion-icon name="checkmark-circle" color="success" style="zoom:0.8"></ion-icon><ion-label style="font-size: 9px;" color="success">Paid</ion-label>
+          <ion-col size="10" class="ion-no-padding"><ion-text style="font-size:11px; font-weight: bold;">Lorem Ipsum Barn &nbsp;&nbsp;</ion-text><ion-text color="success" style="font-weight: bold; font-size: 10px;">Php 3,200.00</ion-text></ion-col> 
+          <ion-col size="10" class="ion-no-padding"><ion-text style="font-size:9px;">Jan 23, 2023</ion-text></ion-col> 
+        </ion-row>
+    </ion-item>   
+    </ion-list>
+   
+  </div>  
+</ion-content>
