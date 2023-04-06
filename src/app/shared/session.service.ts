@@ -76,7 +76,7 @@ export class SessionService {
         if(response.body.message === 'Session valid')
         {
           console.log('SESSION PRESENT. REDIRECTING...')
-          this.router.navigate(['/home/dashboard']);
+          this.router.navigate(['/home']);
         }
         else{
           console.log('NO SESSION PRESENT.')

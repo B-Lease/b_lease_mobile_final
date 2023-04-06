@@ -1,0 +1,33 @@
+.title{
+    margin-top:30px;
+    text-align: center;
+    width:100%;
+    justify-content: center;
+    align-items: center;
+    color:white;
+}
+.colspan{
+    flex-basis:5%;
+
+}
+.all-button{
+    text-align: center;
+    width: 18px;
+    height: 30px;
+    text-transform: capitalize;
+    text-align: left;
+}
+.pending-button{
+    text-align: center;
+    height: 30px;
+    width: 80px;
+    text-transform: capitalize;
+    text-align: center;
+}
+.paid-button {
+    text-align: center;
+    width: 20px;
+    height: 30px;
+    text-transform: capitalize;
+    text-align: right;
+}

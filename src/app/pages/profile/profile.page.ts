@@ -41,7 +41,7 @@ export class ProfilePage implements OnInit {
 
     this.session.init();
   
-    this.navCtrl.navigateForward('/profile', { animated: false });
+  
 
     if (!isPlatform('capacitor')){
       GoogleAuth.initialize();

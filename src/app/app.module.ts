@@ -29,7 +29,7 @@ import { FileTransfer } from '@ionic-native/file-transfer/ngx';
 
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 
-const config: SocketIoConfig = { url: 'http://127.0.0.1:5000', options: {}};
+const config: SocketIoConfig = { url: 'http://192.168.1.4:5001', options: {}};
 
 @NgModule({
   declarations: [
@@ -44,7 +44,7 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:5000', options: {}};
     NgxDropzoneModule,
     FormsModule,
     ReactiveFormsModule,  
-    SocketIoModule.forRoot({ url: 'http://127.0.0.1:5000/' }),
+    SocketIoModule.forRoot({ url: 'http://192.168.1.4:5001/' }),
     
     IonicStorageModule.forRoot({
       name:"sessionstorage",

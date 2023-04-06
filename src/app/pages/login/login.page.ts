@@ -97,6 +97,7 @@ export class LoginPage implements OnInit{
 
   async login(){
     console.log(this.loginForm)
+    console.log(environment.API_URL)
     var email = this.loginForm.get('email').value;
     var password = this.loginForm.get('password').value;
 
@@ -134,7 +135,7 @@ export class LoginPage implements OnInit{
 
               await this.session.set('sessionID', response.body.sessionID)
               await this.session.set('userID', response.body.userID)
-              await this.router.navigate(['/home']);
+              this.router.navigate(['home']);
             }
 
             if (response.body.message == 'User Deactivated. Login')
@@ -146,9 +147,9 @@ export class LoginPage implements OnInit{
               this.session.set('sessionID', response.body.sessionID)
               this.session.set('userID', response.body.userID)
               await this.deactivateLogin();
-              await this.router.navigate(['/home']);
+              
 
-              // await this.navCtrl.navigateForward(['/dashboard'])
+              await this.navCtrl.navigateForward(['home']);
             }
             if(response.body.message != 'Login' && response.body.message != 'User Deactivated. Login' ){
                 
