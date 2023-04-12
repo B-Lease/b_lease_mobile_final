@@ -309,9 +309,7 @@ export class AddlistingPage implements OnInit {
         submitPropertyData.append('propertyType', this.propertyForm.get('propertyType').value);
         submitPropertyData.append('moreDetails', this.propertyForm.get('moreDetails').value);
     
-    
-      
-    
+
         for (let i = 0; i < document.length; i++) {
     
           submitPropertyData.append('document', document[i]);

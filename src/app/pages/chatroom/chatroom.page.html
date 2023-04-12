@@ -25,7 +25,12 @@
 </ion-content>
 
 <ion-footer>
-  <ion-row class="center" [hidden]="hidden">
+  <ion-row class="center" [hidden]="hideforlessor">
+    <ion-item lines="none">
+      <ion-text color="primary"><p style="margin-right:4px">Great! You can now start messaging.</p></ion-text>
+    </ion-item>
+  </ion-row>
+  <ion-row class="center" [hidden]="hideforlessee">
     <ion-item lines="none">
       <ion-text color="primary"><p style="margin-right:4px">Interested in leasing?</p></ion-text>
       <ion-text color="success" class="links" (click)="setContract()">Set a contract now.</ion-text>

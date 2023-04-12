@@ -15,15 +15,15 @@
       </ion-segment-button>
     </ion-segment> -->
 
-    <ion-item lines ="none" *ngFor="let item of response" (click)="saveFields(item.LEASINGID,item.USER_FNAME, item.USERID, item.LESSEEID)">
+    <ion-item lines ="none" *ngFor="let item of response" (click)="saveFields(item)">
       <ion-avatar style="margin-right:9px">
         <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-      </ion-avatar>
+      </ion-avatar>    
       <ion-label>
-        <ion-text class="links">{{item.LEASINGID}} | {{item.USER_FNAME}} | </ion-text>
-
-        <ion-text class="links">{{item.ADDRESS}}</ion-text>
-        <p>{{item.MSG_CONTENT}}</p>
+        <ion-text class="links" *ngIf="item.lessorID === userID">{{item.lessee_fname}} | </ion-text>
+        <ion-text class="links" *ngIf="item.lesseeID === userID">{{item.lessor_fname}} | </ion-text>
+        <ion-text class="links">{{item.address}}</ion-text>
+        <p>{{item.msg_content}}</p>
       </ion-label>
     </ion-item>
     

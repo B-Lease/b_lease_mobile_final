@@ -14,7 +14,7 @@ import { environment } from 'src/environments/environment.prod';
 })
 
 export class ChatroomPage implements OnInit { 
-   apiURL = environment.API_URL;
+  apiURL = environment.API_URL;
   nickname = '';
   leasingID = '';
   userID = '';
@@ -22,12 +22,14 @@ export class ChatroomPage implements OnInit {
   msg_receiverID = '';
   user_fname = '';
   lessorID = '';
+  lesseeID = '';
 
   message = '';
   messages = [];
   response: any[];
 
-  hidden = false;
+  hideforlessee = true;
+  hideforlessor = true;
 
   @ViewChild('myContent', { static: true }) content: IonContent;
 
@@ -46,20 +48,23 @@ export class ChatroomPage implements OnInit {
 
   ngOnInit() {
     const data = this.activatedroute.snapshot.queryParams['data'];
-    this.leasingID = data['leasingID'];
-    console.log('leasing ID: '+this.leasingID)
-    
-    this.userID = data['userID'];
-    this.msg_senderID = data['msg_senderID'];     //user 
-    
-    this.msg_receiverID = data['msg_receiverID']
-    
-    this.user_fname = data['user_fname'];
-
+    this.leasingID = data['leasingID'];  
     this.lessorID = data['lessorID']
+    this.lesseeID = data['lesseeID']
+    this.msg_senderID = data['msg_senderID'];     //user 
+    this.msg_receiverID = data['msg_receiverID']
 
-    if (this.lessorID == this.msg_senderID){
-      this.hidden = true;
+    //for going back to the list of messages
+    this.userID = data['userID'];
+
+    //if the sender of the message is the lessee,
+    //he or she can't set contracts (link is hidden) 
+    if (this.msg_senderID == this.lesseeID){
+      //user is a lessee, so the hideforlessor attribute becomes false
+      this.hideforlessor = false;
+    } else {
+      //user is a lessor, so the hideforlessee attribute becomes false
+      this.hideforlessee = false;
     }
 
     this.getCurrentMessages(this.leasingID);
@@ -85,7 +90,6 @@ export class ChatroomPage implements OnInit {
 
   async getCurrentMessages(leasingID:string){
       //make a request and assign the value of the response to the messages array
-      console.log('request')
       const response = await this.http.get(this.apiURL+`messages?leasingID=${leasingID}`).subscribe((data) => {
         if (typeof data === 'string') {
           this.response = JSON.parse(data);
@@ -172,7 +176,17 @@ export class ChatroomPage implements OnInit {
   }
   
   setContract(){
-    console.log("okay")
+    console.log(this.leasingID)
+    const data = this.activatedroute.snapshot.queryParams['data'];
+
+    this.navCtrl.navigateForward('set-contract', { queryParams: { data } });
+    
+    let observable = new Observable(observer => {
+      this.socket.on('disconnected', data => {
+        observer.next(data);
+      })
+    });
+    return observable;
   }
   
 

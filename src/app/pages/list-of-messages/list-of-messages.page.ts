@@ -24,15 +24,15 @@ export class ListOfMessagesPage implements OnInit {
     private navCtrl: NavController,
     private session:SessionService
     ) {
+    
+  }
 
+  async ngOnInit() {
+    await this.session.init();
+    await this.getSessionData();
 
- 
-
-    // //get user ID from dashboard or chatroom
-    // const data = this.activatedroute.snapshot.queryParams['data'];
-    // this.userID = data['userID'];
-
-    this.http.get(this.apiURL+`leasing?check_existing=no&userID=${this.userID}`).subscribe((data) => {
+    // get user ID from dashboard or chatroom
+    this.http.get(this.apiURL+`leasing?check_existing=no&userID=${this.userID}`).subscribe((data: any[]) => {
       if (typeof data === 'string') {
         this.response = JSON.parse(data);
         console.log(this.response)
@@ -41,49 +41,52 @@ export class ListOfMessagesPage implements OnInit {
         console.log(this.response)
       }
     });
-
-
-
-    
-  }
-
-  async ngOnInit() {
-    await this.session.init();
-    await this.getSessionData();
   }
 
 
   
-  saveFields(itemLeasingId: string, firstname:string, userID:string, lesseeID: string): void {
-    
-    this.leasingId = itemLeasingId; // update leasingId with the value of item.LEASINGID
+  saveFields(item): void {
     var msg_senderID = '';
     var msg_receiverID = '';
+    var msg_receivername = '';
 
-    //if the current user is the lessor, the sender is the lessor
-    //if the current user is the lessee, the sender is the lessee
-    if (this.userID == userID){
+    // if the current user is the lessor, the sender is the lessor
+    // if the current user is the lessee, the sender is the lessee
+    if (this.userID == item.lessorID){
       msg_senderID = this.userID;
-      msg_receiverID = lesseeID;
+      msg_receiverID = item.lesseeID;
+      msg_receivername = item.lessee_fname;
     } else {
-      msg_senderID = lesseeID;
-      msg_receiverID = userID;
+      msg_senderID = item.lesseeID;
+      msg_receiverID = this.userID;
+      msg_receivername = item.lessor_fname;
     }
 
     const data = {
-      leasingID : itemLeasingId,
       userID: this.userID,
-      msg_senderID: msg_senderID,
-      msg_receiverID : msg_receiverID,
-      user_fname : firstname,
-      lessorID: userID
+      leasingID : item.leasingID,
+
+      'lessorID': item.lessorID,
+      'lessor_fname' : item.lessor_fname,
+      'lessor_mname' : item.lessor_mname,
+      'lessor_lname' : item.lessor_lname,
+
+      'lesseeID' : item.lesseeID,
+      'lessee_fname' : item.lessee_fname,
+      'lessee_mname' : item.lessee_mname,
+      'lessee_lname' : item.lessee_lname,
+
+      'address' : item.address,
+      'land_description' : item.land_description,
+
+      'msg_senderID': msg_senderID,
+      'msg_receiverID' : msg_receiverID,
+      'msg_receivername': msg_receivername
     };
-    
+
+
 
     this.navCtrl.navigateForward('chatroom', { queryParams: { data } });
-    // console.log(leasingID);
-    // this.router.navigate(['/chatroom/'+userID+'/'+leasingID+'/'+user_fname]);
-
 
   }
 
@@ -98,14 +101,7 @@ export class ListOfMessagesPage implements OnInit {
 
  }
  
- //for navbar
- openInbox(){
-  const data = {
-    userID : this.userID
-  };
-  this.navCtrl.navigateForward('list-of-messages', { queryParams: { data } });
 
-}
 
 navigateProfile(){
   this.router.navigate(['/profile']);
