@@ -105,15 +105,6 @@ export class DashboardPage implements OnInit {
     });
    }
 
-  // async openInbox(){ 
-  //   const data = {
-  //     userID :  await this.session.getUserID()
-  //   };
-  //   this.navCtrl.navigateForward('list-of-messages', { queryParams: { data } });
-
-  // }
-
-
 
   async getSessionData(){
     let sessionID_data = await this.session.getSessionID();

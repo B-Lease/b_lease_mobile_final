@@ -175,7 +175,11 @@ const routes: Routes = [
   {
     path: 'transactions',
     loadChildren: () => import('./pages/transactions/transactions.module').then( m => m.TransactionsPageModule)
+  },  {
+    path: 'payment-successful',
+    loadChildren: () => import('./payment-successful/payment-successful.module').then( m => m.PaymentSuccessfulPageModule)
   },
+
 
 
 

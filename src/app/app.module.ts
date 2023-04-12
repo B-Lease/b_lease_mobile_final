@@ -19,7 +19,6 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
 import { Network } from '@ionic-native/network/ngx';
 import { NetworkInterface } from '@ionic-native/network-interface/ngx';
 import { IonicStorageModule } from '@ionic/storage-angular';
-import { NavParams } from '@ionic/angular';
 
 import { Drivers } from '@ionic/storage';
 import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
@@ -28,8 +27,8 @@ import { File } from '@ionic-native/file/ngx';
 import { FileTransfer } from '@ionic-native/file-transfer/ngx';
 
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
-
-const config: SocketIoConfig = { url: 'http://192.168.1.4:5001', options: {}};
+import { DocumentViewer } from '@ionic-native/document-viewer/ngx';
+const config: SocketIoConfig = { url: 'http://127.0.0.1:5001', options: {}};
 
 @NgModule({
   declarations: [
@@ -44,23 +43,25 @@ const config: SocketIoConfig = { url: 'http://192.168.1.4:5001', options: {}};
     NgxDropzoneModule,
     FormsModule,
     ReactiveFormsModule,  
-    SocketIoModule.forRoot({ url: 'http://192.168.1.4:5001/' }),
+    NgxExtendedPdfViewerModule,
+    SocketIoModule.forRoot({ url: 'http://127.0.0.1:5001/' }),
     
     IonicStorageModule.forRoot({
       name:"sessionstorage",
       driverOrder:[CordovaSQLiteDriver._driver,Drivers.IndexedDB, Drivers.LocalStorage]
     }),
-    NgxExtendedPdfViewerModule
   ],
-  schemas:[CUSTOM_ELEMENTS_SCHEMA],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     Network,NetworkInterface, File,
     FileTransfer,
- 
+    DocumentViewer
   ],
 
 
   bootstrap: [AppComponent],
 })
 export class AppModule {}
+
+
 

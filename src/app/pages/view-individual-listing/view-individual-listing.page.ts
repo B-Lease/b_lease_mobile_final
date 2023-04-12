@@ -57,18 +57,17 @@ export class ViewIndividualListingPage implements OnInit {
     });
 
     await this.getPropertyListings();
-    await this.getProfileInfo();
-    this.checkExisting();
-    await this.setupMap();
+    //await this.getProfileInfo();
   }
 
   async ionViewWillEnter(){
+    
   }
 
   async checkExisting() {
-    var lesseeID = await this.session.getUserID()
-    var lessorID = this.propertyData['userID']
-    var propertyID = this.propertyID
+    const lesseeID = await this.session.getUserID()
+    const lessorID = this.propertyData['userID']
+    const propertyID = this.propertyID
 
     if (lesseeID == lessorID){
       this.isOwner = true
@@ -78,13 +77,11 @@ export class ViewIndividualListingPage implements OnInit {
       this.http.get(`${this.API_URL}leasing?check_existing=yes&lesseeID=${lesseeID}&lessorID=${lessorID}&propertyID=${propertyID}`).subscribe((data) => {
         if (typeof data === 'string') {
           this.response = JSON.parse(data);
-          console.log('hello')
           console.log(this.response)
           this.leasingID = this.response[0].leasingID
           this.hasOngoing = 'Chat'
         } else {
           this.response = Object.values(data);
-          console.log('hellofsdf')
           console.log(this.response)
           this.hasOngoing = 'Contact'
         }
@@ -139,7 +136,7 @@ export class ViewIndividualListingPage implements OnInit {
     
  }
 
- getPropertyListings(){
+ async getPropertyListings(){
   const httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -148,9 +145,23 @@ export class ViewIndividualListingPage implements OnInit {
     }),
   };
 
+  // this.http.get(this.API_URL+"property?userID="+this.userID+"&sessionID="+this.sessionID+"&propertyID="+this.propertyID, httpOptions).subscribe((data: any[]) => {
+  //   this.propertyData = data;
+  //   console.log(this.propertyData);
+  //   console.log('hi, this is lessorID: '+this.propertyData['userID'])
+  // });
+
   this.http.get(this.API_URL+"property?userID="+this.userID+"&sessionID="+this.sessionID+"&propertyID="+this.propertyID, httpOptions).subscribe((data: any[]) => {
-    this.propertyData = data;
-    console.log(this.propertyData);
+    if(data != null){
+      this.propertyData = data;
+      console.log(this.propertyData);
+      this.checkExisting()
+      this.setupMap()
+    } else {
+      console.log('Error: No property data found');
+    }
+  }, error => {
+      console.log('Error fetching property data: ', error);
   });
  }
 
@@ -180,7 +191,6 @@ navigateDashboard(){
 }
 
 async createChat(){
-  
     const params = {
       lesseeID: await this.session.getUserID(),
       lessorID: this.propertyData['userID'],
@@ -196,9 +206,10 @@ async createChat(){
           const data = {
             leasingID : response.body.leasingID,
             userID: params.lesseeID,
+            lesseeID: params.lesseeID,
+            lessorID: params.lessorID,
             msg_senderID: params.lesseeID,
-            msg_receiverID : params.lessorID,
-            user_fname : this.propertyData['user_fname'],
+            msg_receiverID : params.lessorID
           }
 
           this.navCtrl.navigateForward('chatroom', { queryParams: { data } });
@@ -214,12 +225,14 @@ async createChat(){
       const data = {
         leasingID : this.leasingID,
         userID: params.lesseeID,
+        lesseeID: params.lesseeID,
+        lessorID: params.lessorID,
         msg_senderID: params.lesseeID,
         msg_receiverID : params.lessorID,
-        user_fname : this.propertyData['user_fname']
       }
 
       this.navCtrl.navigateForward('chatroom', { queryParams: { data } });
+
     }
 
     

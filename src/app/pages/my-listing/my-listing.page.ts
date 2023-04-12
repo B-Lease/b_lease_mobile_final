@@ -73,7 +73,7 @@ export class MyListingPage implements OnInit {
   }
 
   navigateProfile(){
-    this.navCtrl.navigateBack(['/home/profile']);
+    this.navCtrl.navigateBack(['/home/userprofile']);
   }
 
 

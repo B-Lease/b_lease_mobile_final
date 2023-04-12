@@ -6,14 +6,20 @@ import { IonicModule } from '@ionic/angular';
 
 import { PreviewLeaseRequestPageRoutingModule } from './preview-lease-request-routing.module';
 import { PreviewLeaseRequestPage } from './preview-lease-request.page';
+import { DocumentViewer } from '@ionic-native/document-viewer/ngx';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    PreviewLeaseRequestPageRoutingModule
+    PreviewLeaseRequestPageRoutingModule,
   ],
-  declarations: [PreviewLeaseRequestPage]
+  declarations: [PreviewLeaseRequestPage],
+  providers: [
+    DocumentViewer
+  ]
 })
 export class PreviewLeaseRequestPageModule {}
+
+

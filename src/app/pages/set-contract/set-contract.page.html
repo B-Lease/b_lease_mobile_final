@@ -7,35 +7,37 @@
           <ion-text color="success" class="links">Upload here.</ion-text></ion-col>
       </ion-row>
     
-      <form [formGroup]="form_lease" (ngSubmit) = "onSubmit()">
+      <!-- <form [formGroup]="form_lease" (ngSubmit) = "onSubmit()"> -->
+        <form (ngSubmit) = "onSubmit()">
         <ion-row class="ion-no-padding"> 
           <ion-col>
             <ion-label color="primary"  class="lease-labels">Purpose of Contract</ion-label>
-            <ion-input class="lease-fields" formControlName="purpose" type="text" required></ion-input>
+            <ion-input class="lease-fields" type="text" required [(ngModel)]="purpose"></ion-input>
+            <!-- <ion-input class="lease-fields" formControlName="purpose" type="text" required [(ngModel)]="mypurpose"></ion-input> -->
 
             <ion-label color="primary"  class="lease-labels">Total Fee</ion-label>
-            <ion-input class="lease-fields" formControlName="leasing_total_fee"></ion-input>
+            <ion-input class="lease-fields" [(ngModel)]="leasing_total_fee" type="number"></ion-input>
 
 
             <ion-row class="ion-no-padding">
               <ion-col size="6" >
                 <ion-label color="primary"  class="lease-labels">Start date</ion-label>
-                <ion-input type="date" class="lease-fields date-placeholder" formControlName="leasing_start"></ion-input>
+                <ion-input type="date" class="lease-fields date-placeholder" [(ngModel)]="leasing_start"></ion-input>
               </ion-col>
               <ion-col size="6">
                 <ion-label color="primary"  class="lease-labels">End date</ion-label>
-                <ion-input type="date" class="lease-fields date-placeholder" formControlName="leasing_end"></ion-input>
+                <ion-input type="date" class="lease-fields date-placeholder" [(ngModel)]="leasing_end"></ion-input>
               </ion-col>
             </ion-row>
 
             <ion-label color="primary"  class="lease-labels">Payment Frequency</ion-label>
             <ion-list>
               <ion-item class="lease-fields" lines="none">
-                <ion-select placeholder="Choose" formControlName="leasing_payment_frequency">
-                  <ion-select-option value="one-time">One-time</ion-select-option>
-                  <ion-select-option value="monthly">Monthly</ion-select-option>
-                  <ion-select-option value="quarterly">Quarterly</ion-select-option>
-                  <ion-select-option value="yearly">Yearly</ion-select-option>
+                <ion-select placeholder="Choose" [(ngModel)]="leasing_payment_frequency">
+                  <ion-select-option value="1">One-time</ion-select-option>
+                  <ion-select-option value="2">Monthly</ion-select-option>
+                  <ion-select-option value="3">Quarterly</ion-select-option>
+                  <ion-select-option value="4">Yearly</ion-select-option>
                 </ion-select>
               </ion-item>
             </ion-list>
@@ -43,20 +45,41 @@
 
             <ion-row style="padding-bottom:7px">
               <ion-col size="10" class="ion-no-padding"><ion-text style="font-size:12px">Lessee will pay a security deposit</ion-text></ion-col>
-              <ion-col size="auto" class="ion-no-padding"><ion-toggle formControlName="security_deposit" [(ngModel)]="isFirstToggleOn" (ionChange)="toggleChanged()"></ion-toggle></ion-col>
+              <ion-col size="auto" class="ion-no-padding"><ion-toggle [(ngModel)]="isFirstToggleOn" (ionChange)="toggleChanged()"></ion-toggle></ion-col>
             </ion-row>
 
             <ion-row style="padding-bottom:7px">
               <ion-col size="10" class="ion-no-padding"><ion-text style="font-size:12px">Lessee can make improvements to the property</ion-text></ion-col>
-              <ion-col size="auto" class="ion-no-padding"><ion-toggle formControlName="improvements" [(ngModel)]="isSecondToggleOn" (ionChange)="toggleChanged()"></ion-toggle></ion-col>
+              <ion-col size="auto" class="ion-no-padding"><ion-toggle [(ngModel)]="isSecondToggleOn" (ionChange)="toggleChanged()"></ion-toggle></ion-col>
             </ion-row>
 
             <ion-row style="padding-bottom:10px">
               <ion-col size="10" class="ion-no-padding"><ion-text style="font-size:12px">Lessee can erect any sign related to its business</ion-text></ion-col>
-              <ion-col size="auto" class="ion-no-padding"><ion-toggle formControlName="erect_signage" [(ngModel)]="isThirdToggleOn" (ionChange)="toggleChanged()"></ion-toggle></ion-col>
+              <ion-col size="auto" class="ion-no-padding"><ion-toggle [(ngModel)]="isThirdToggleOn" (ionChange)="toggleChanged()"></ion-toggle></ion-col>
             </ion-row>
           </ion-col>
         </ion-row>
+
+        <ion-row>
+          <ion-col><ion-button expand="full" (click)="selectImage()">Add Image</ion-button></ion-col>
+        
+        </ion-row>
+        <ion-list>
+          <ion-item-sliding *ngFor="let file of images">
+      
+            <ion-item>
+              <ion-thumbnail slot="start">
+                <ion-img [src]="file.data"></ion-img>
+             </ion-thumbnail>
+      
+              <ion-label>{{file.name}}</ion-label>
+            </ion-item>
+        
+            <ion-item-options>
+              <ion-item-option color="danger" (click)="deleteImage(file)"> <ion-icon slot="icon-only" name="trash"></ion-icon></ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+          </ion-list>
 
         <ion-row class="center">
           <ion-button class="success-button" shape="round" color="success" type="submit">Next</ion-button>
