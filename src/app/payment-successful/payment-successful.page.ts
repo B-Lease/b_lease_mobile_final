@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { WebView } from '@ionic-native/ionic-webview/ngx';
 @Component({
   selector: 'app-payment-successful',
   templateUrl: './payment-successful.page.html',
@@ -7,9 +7,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PaymentSuccessfulPage implements OnInit {
 
-  constructor() { }
 
-  ngOnInit() {
+  constructor(private webview: WebView) {
+    // const url = 'https://app-sandbox.nextpay.world/#/pl/DAJ9fSuaX';
+    // const webViewUrl = this.webview.convertFileSrc(url);
   }
+
+
+
+  paymentLink: string = 'https://app-sandbox.nextpay.world/#/pl/DAJ9fSuaX';
+  
+  
+
+  ngOnInit(): void {
+    
+  }
+
+  
+
 
 }

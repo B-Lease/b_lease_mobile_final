@@ -17,7 +17,8 @@ export class PreviewLeaseRequestPage implements OnInit {
     private http: HttpClient, 
     private activatedroute: ActivatedRoute, 
     private documentViewer: DocumentViewer,
-    private platform: Platform
+    private platform: Platform,
+    private router: Router,
     ) {
 
   }
@@ -81,6 +82,11 @@ export class PreviewLeaseRequestPage implements OnInit {
     // }
   }np
   
-  
+  isModalOpen = false;
+
+  openModal() {
+    this.isModalOpen = true;
+    this.router.navigate(['home']);
+  }
   
 }
