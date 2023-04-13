@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from 'src/environments/environment.prod';
 import { DocumentViewer, DocumentViewerOptions } from '@ionic-native/document-viewer/ngx';
 import { Platform } from '@ionic/angular';
+import { isPlatform } from '@ionic/angular';
 @Component({
   selector: 'app-preview-lease-request',
   templateUrl: './preview-lease-request.page.html',
@@ -45,20 +46,21 @@ export class PreviewLeaseRequestPage implements OnInit {
   async openPdf() {
     const fileUrl = '../assets/pdf/example.pdf'; // Replace with your PDF URL
     
-    if (this.platform.is('cordova')) {
+    if (isPlatform('capacitor')){
+            // Show error message
+            console.log('Cordova is not available.');
+            const leasingID = 'ebaba354691e34b29fec4276664b8ed8'
+            const response = await this.http.get(this.API_URL+`leasingdocs?leasingID=${leasingID}`, { responseType: 'arraybuffer' }).toPromise();
+            const pdfArrayBuffer = response as ArrayBuffer;
+            const pdfUrl = this.createBlobUrlFromArrayBuffer(pdfArrayBuffer);
+            const pdfViewer = document.getElementById('pdf-viewer') as HTMLObjectElement;
+            pdfViewer.data = pdfUrl;
+    } else {
       const options: DocumentViewerOptions = {
         title: 'My PDF'
       };
       this.documentViewer.viewDocument(fileUrl, 'application/pdf', options);
-    } else {
-      // Show error message
-      console.log('Cordova is not available.');
-      const leasingID = 'ebaba354691e34b29fec4276664b8ed8'
-      const response = await this.http.get(this.API_URL+`leasingdocs?leasingID=${leasingID}`, { responseType: 'arraybuffer' }).toPromise();
-      const pdfArrayBuffer = response as ArrayBuffer;
-      const pdfUrl = this.createBlobUrlFromArrayBuffer(pdfArrayBuffer);
-      const pdfViewer = document.getElementById('pdf-viewer') as HTMLObjectElement;
-      pdfViewer.data = pdfUrl;
+
     }
   }
   
@@ -66,7 +68,7 @@ export class PreviewLeaseRequestPage implements OnInit {
   async deleteRecord(){
     // const formData = null
     // try {
-    //   const response: HttpResponse<any> = await this.http.delete('http://127.0.0.1:5000/leasing', formData, { observe: 'response' }).toPromise();
+    //   const response: HttpResponse<any> = await this.http.delete(environment.API_URL+'leasing', formData, { observe: 'response' }).toPromise();
     //   if(response.status === 201){
     //     console.log(response.status)
     //     this.router.navigate(['/preview-lease-request']);
@@ -77,7 +79,7 @@ export class PreviewLeaseRequestPage implements OnInit {
     //   console.log(error);
     //   // Handle the error
     // }
-  }
+  }np
   
   
   

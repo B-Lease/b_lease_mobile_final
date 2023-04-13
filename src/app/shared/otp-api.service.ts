@@ -6,10 +6,7 @@ import { environment } from 'src/environments/environment.prod';
   providedIn: 'root'
 })
 export class OtpApiService {
-  // Define API
-  // apiURL = 'http://10.0.2.2:5000';
-  // apiURL = 'http://localhost:5000';
-  // apiURL = 'http://192.168.1.2:5000';
+
   apiURL = environment.API_URL;
 
   verifiedOTP = null;
@@ -30,7 +27,7 @@ export class OtpApiService {
       "email":email
     }
 
-    return await this.http.post(this.apiURL+"/register", postData).toPromise();
+    return await this.http.post(this.apiURL+"register", postData).toPromise();
    
 
   }
@@ -38,7 +35,7 @@ export class OtpApiService {
   expireOTP(email)
   {
     var isSuccess = false;
-    return this.http.delete(this.apiURL+"/register?email="+email)  .subscribe(data => {
+    return this.http.delete(this.apiURL+"register?email="+email)  .subscribe(data => {
       isSuccess = true
      }, error => {
       isSuccess
