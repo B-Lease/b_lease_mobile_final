@@ -46,7 +46,7 @@ export class PreviewLeaseRequestPage implements OnInit {
   async openPdf() {
     const fileUrl = '../assets/pdf/example.pdf'; // Replace with your PDF URL
     
-    if (isPlatform('capacitor')){
+    if (!isPlatform('capacitor')){
             // Show error message
             console.log('Cordova is not available.');
             const leasingID = 'ebaba354691e34b29fec4276664b8ed8'
@@ -79,7 +79,7 @@ export class PreviewLeaseRequestPage implements OnInit {
     //   console.log(error);
     //   // Handle the error
     // }
-  }np
+  }
   
   
   
