@@ -201,7 +201,7 @@ async createChat(){
     if(this.hasOngoing == 'Contact'){
 
       try {
-        const response: HttpResponse<any> = await this.http.post('http://127.0.0.1:5000/leasing', params, { observe: 'response' }).toPromise();
+        const response: HttpResponse<any> = await this.http.post( environment.API_URL+ 'leasing', params, { observe: 'response' }).toPromise();
         if(response.status === 201){
           const data = {
             leasingID : response.body.leasingID,
