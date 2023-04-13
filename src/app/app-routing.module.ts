@@ -179,6 +179,10 @@ const routes: Routes = [
     path: 'payment-successful',
     loadChildren: () => import('./payment-successful/payment-successful.module').then( m => m.PaymentSuccessfulPageModule)
   },
+  {
+    path: 'payment-form',
+    loadChildren: () => import('./payment-form/payment-form.module').then( m => m.PaymentFormPageModule)
+  },
 
 
 

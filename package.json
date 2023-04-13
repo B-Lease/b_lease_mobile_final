@@ -42,6 +42,8 @@
     "@ionic-native/file-opener": "^5.36.0",
     "@ionic-native/file-transfer": "^5.36.0",
     "@ionic-native/geolocation": "^5.36.0",
+    "@ionic-native/in-app-browser": "^5.36.0",
+    "@ionic-native/ionic-webview": "^5.36.0",
     "@ionic-native/native-geocoder": "^5.36.0",
     "@ionic-native/native-storage": "^5.36.0",
     "@ionic-native/network": "^5.36.0",
