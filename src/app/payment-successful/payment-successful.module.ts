@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { PaymentSuccessfulPageRoutingModule } from './payment-successful-routing.module';
 
 import { PaymentSuccessfulPage } from './payment-successful.page';
-
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 @NgModule({
   imports: [
     CommonModule,
@@ -15,6 +15,7 @@ import { PaymentSuccessfulPage } from './payment-successful.page';
     IonicModule,
     PaymentSuccessfulPageRoutingModule
   ],
-  declarations: [PaymentSuccessfulPage]
+  declarations: [PaymentSuccessfulPage],
+  providers: [InAppBrowser]
 })
 export class PaymentSuccessfulPageModule {}
