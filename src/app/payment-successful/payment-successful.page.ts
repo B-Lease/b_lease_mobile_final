@@ -2,8 +2,8 @@ import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angula
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
-import { Browser } from '@capacitor/browser';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Browser } from '@capacitor/browser';
 
 
 @Component({
@@ -13,26 +13,29 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class PaymentSuccessfulPage implements OnInit {
   apiURL = environment.API_URL
-  iframesrc = ''
-  iframeUrl: any;
-  capacitorUrl = 'https://app-sandbox.nextpay.world/#/pl/NjWAW10p5'
-  constructor(private http: HttpClient, private sanitizer: DomSanitizer, private iab: InAppBrowser) {
+  url: string;
 
+  constructor(private http: HttpClient) {}
+
+  ngOnInit() {
   }
 
-
-
-  ngOnInit(){
-
-  }
- 
-
-  openLink() {
-    const browser = this.iab.create('https://app-sandbox.nextpay.world/#/pl/NjWAW10p5', '_self', { location: 'no' });
+  sendRequest() {
+    this.http.get(`${this.apiURL}pay`, { observe: 'response' }).subscribe(response => {
+      // Check if the response is a redirect
+      if (response.status === 302) {
+        // Redirect to the URL in the Location header
+        window.location.href = response.headers.get('Location');
+        console.log(response.headers.get('Location'))
+      }
+    }, error => {
+      console.error(error);
+    });
   }
 
 
   
 }
+
 
 
