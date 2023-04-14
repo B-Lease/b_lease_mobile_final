@@ -1,29 +1,38 @@
-import { Component, OnInit } from '@angular/core';
-import { WebView } from '@ionic-native/ionic-webview/ngx';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { Browser } from '@capacitor/browser';
+import { DomSanitizer } from '@angular/platform-browser';
+
+
 @Component({
   selector: 'app-payment-successful',
   templateUrl: './payment-successful.page.html',
   styleUrls: ['./payment-successful.page.scss'],
 })
 export class PaymentSuccessfulPage implements OnInit {
+  apiURL = environment.API_URL
+  iframesrc = ''
+  iframeUrl: any;
+  capacitorUrl = 'https://app-sandbox.nextpay.world/#/pl/NjWAW10p5'
+  constructor(private http: HttpClient, private sanitizer: DomSanitizer, private iab: InAppBrowser) {
 
-
-  constructor(private webview: WebView) {
-    // const url = 'https://app-sandbox.nextpay.world/#/pl/DAJ9fSuaX';
-    // const webViewUrl = this.webview.convertFileSrc(url);
   }
 
 
 
-  paymentLink: string = 'https://app-sandbox.nextpay.world/#/pl/DAJ9fSuaX';
-  
-  
+  ngOnInit(){
 
-  ngOnInit(): void {
-    
+  }
+ 
+
+  openLink() {
+    const browser = this.iab.create('https://app-sandbox.nextpay.world/#/pl/NjWAW10p5', '_self', { location: 'no' });
   }
 
+
   
-
-
 }
+
+
