@@ -43,7 +43,8 @@ export class NotificationPage implements OnInit {
  }
 
 
-  async presentActionSheet() {
+  async presentActionSheet(notification) {
+    var notificationID = notification.notificationID;
     const actionSheet = await this.actionSheetCtrl.create({
       header: 'Notification Action',
       buttons: [
@@ -53,7 +54,10 @@ export class NotificationPage implements OnInit {
           icon: 'trash', // Add icon here
           data: {
             action: 'delete',
-          },
+          },  
+          handler: () =>{
+              console.log(notificationID);
+          }
         },
         {
           text: 'Cancel',

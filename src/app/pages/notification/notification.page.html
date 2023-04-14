@@ -24,7 +24,7 @@
       <p><span class="notification-text">{{notification.notification_desc}}</span></p>
       <p class="notification-time">{{notification.notification_date}}</p>
     </ion-label>
-    <ion-button slot="end" fill="clear" (click)="presentActionSheet()">
+    <ion-button slot="end" fill="clear" (click)="presentActionSheet(notification)">
       <ion-icon name="ellipsis-horizontal"></ion-icon>
     </ion-button>
   </ion-item>
@@ -41,7 +41,7 @@
       <p><span class="notification-text">{{notification.notification_desc}}</span></p>
       <p class="notification-time">{{notification.notification_date}}</p>
     </ion-label>
-    <ion-button slot="end" fill="clear" (click)="presentActionSheet()">
+    <ion-button slot="end" fill="clear" (click)="presentActionSheet(notification)">
       <ion-icon name="ellipsis-horizontal"></ion-icon>
     </ion-button>
   </ion-item>
