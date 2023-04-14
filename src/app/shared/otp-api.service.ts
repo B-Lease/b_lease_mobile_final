@@ -26,10 +26,8 @@ export class OtpApiService {
     let postData = {
       "email":email
     }
-
+    
     return await this.http.post(this.apiURL+"register", postData).toPromise();
-   
-
   }
 
   expireOTP(email)
