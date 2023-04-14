@@ -38,6 +38,7 @@ export class SetContractPage implements OnInit {
   images: LocalFile[] = [];
 
   signbase64 = '';
+  data: any;
   constructor(
     public fb_lease: FormBuilder, 
     private http:HttpClient, 
@@ -51,15 +52,28 @@ export class SetContractPage implements OnInit {
   }
 
   ngOnInit() {
+    this.data = this.activatedroute.snapshot.queryParams['data'];
+    console.log(this.data)
   }
 
 
+
+  async clearImages(){
+    for (let i = 0; i < this.images.length; i++) {
+    
+      const response = await fetch(this.images[i].data);
+      this.deleteImage(this.images[i]);
+      console.log(response);
+      const blob = await response.blob();
+
+    }
+  }
   
   async onSubmit() {
+    this.clearImages()
     await this.loadingCtrl.present('Creating Lease Contract..')
-
-    const data = this.activatedroute.snapshot.queryParams['data'];
-    
+    const data = this.data;
+    console.log(data)
     const formData = {
       'leasingID' : data['leasingID'],
       'leasing_status': 'pending',
@@ -229,6 +243,12 @@ export class SetContractPage implements OnInit {
     });
     this.loadFiles();
 
+  }
+
+  goBack() {
+    this.clearImages();
+    const data = this.activatedroute.snapshot.queryParams['data'];
+    this.navCtrl.navigateBack('chatroom', { queryParams: { data } });
   }
 
 }

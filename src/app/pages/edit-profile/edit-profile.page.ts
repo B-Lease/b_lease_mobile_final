@@ -120,7 +120,7 @@ export class EditProfilePage implements OnInit {
         if (response.status == 200) {
           console.log(response.body.message)
    
-          this.router.navigate(['/profile']);
+          this.router.navigate(['/home/userprofile']);
         }
       } catch (error) {
         console.log(error);
