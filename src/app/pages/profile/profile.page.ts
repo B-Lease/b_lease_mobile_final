@@ -52,15 +52,20 @@ export class ProfilePage implements OnInit {
   apiURL = environment.API_URL;
   async ngOnInit() {
 
+  // Call the method here to make sure the page has fully loaded
+  await this.session.init();
 
+  await this.getSessionData();
+  await this.getProfileInfo();
 
 
   }
 
   async ngAfterInit(){
-
+    await this.getProfileInfo();
   }
 
+  
   async getSessionData(){
     let sessionID_data = await this.session.getSessionID();
     let userID_data = await this.session.getUserID();
@@ -97,13 +102,13 @@ export class ProfilePage implements OnInit {
     }
   }
   async ionViewDidEnter() {
-    // Call the method here to make sure the page has fully loaded
-    await this.session.init();
-
-    await this.getSessionData();
     await this.getProfileInfo();
 
    
+  }
+
+  async ionViewWillEnter(){
+    await this.getProfileInfo();
   }
 
   navigateMyListing(){

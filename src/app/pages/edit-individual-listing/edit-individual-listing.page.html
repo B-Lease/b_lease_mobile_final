@@ -1,0 +1,82 @@
+
+<ion-header>
+  <ion-toolbar>
+   
+    <ion-row class="header">
+      <ion-col>
+        <ion-text color="dark" id="header_favorites" [routerLink]="['/my-listing']"><ion-icon name="arrow-back-outline"></ion-icon></ion-text>
+      </ion-col>
+      <ion-col>  <ion-title color="success">Edit Listing</ion-title> </ion-col>
+      <ion-col></ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <form [formGroup]="propertyForm" >
+    <ion-row >
+      <ion-col >
+        <ion-item class="disabled">
+          <ion-textarea  formControlName="address" placeholder="Address" class="address" readonly></ion-textarea>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+   
+    <ion-row>
+      <ion-col>
+        <ion-item class="disabled">
+          <ion-textarea readonly formControlName="legalLandDescription" placeholder="Legal land description" class="legal_land_description"></ion-textarea>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-textarea formControlName="moreDetails" placeholder="Additional details about your property" class="additional_details"></ion-textarea>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="7">
+        <ion-item class="disabled">
+          <ion-input type="number" readonly formControlName="propertyLandSize" placeholder="Property Land Size"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size="5">
+        <ion-item class="disabled">
+          <ion-select formControlName="propertyLandSizeUnit" readonly>
+            <ion-select-option value="sq.m">sq.m</ion-select-option>
+            <ion-select-option value="sq.f">sq.f</ion-select-option>
+            <ion-select-option value="hectares">hectares</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="7">
+        <ion-item>
+          <ion-input type="number" formControlName="price" placeholder="Price"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size="5">
+        <ion-item>
+          <ion-select formControlName="propertyType" readonly>
+            <ion-select-option value="farmland">Farmland</ion-select-option>
+            <ion-select-option value="barn">Barn</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+  
+
+      <ion-col>
+        <ion-button type="submit" expand="full" (click)="onSubmit()">Submit</ion-button>
+      </ion-col>
+    </ion-row>
+
+
+  </form>
+</ion-content>

@@ -4,6 +4,7 @@ import { SessionService } from 'src/app/shared/session.service';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { LoadingService } from 'src/app/shared/loading.service';
 import { environment } from 'src/environments/environment.prod';
+
 @Component({
   selector: 'app-list-contracts',
   templateUrl: './list-contracts.page.html',
@@ -11,17 +12,20 @@ import { environment } from 'src/environments/environment.prod';
 })
 export class ListContractsPage implements OnInit {
   API_URL = environment.API_URL+'leasingcontracts'
+  IMAGE_API_URL = environment.API_URL+'propertyimages/'
   sessionID:any;
   userID:any;
   data:any[] = [];
   leasingData:any[] = [];
   filter = "all";
   
+  
   constructor(
     private navCtrl:NavController,
     private session:SessionService,
     private http:HttpClient,
-    private loading:LoadingService
+    private loading:LoadingService,
+    
   ) { }
 
   async handleRefresh(event) {
@@ -37,7 +41,7 @@ export class ListContractsPage implements OnInit {
   }
 
   navigateProfile(){
-    this.navCtrl.navigateBack(['/home/profile']);
+    this.navCtrl.navigateBack(['/home/userprofile']);
   }
 
   async getSessionData(){
@@ -61,17 +65,18 @@ export class ListContractsPage implements OnInit {
 
   await this.http.get(this.API_URL+"?userID="+this.userID, httpOptions).subscribe((data: any[]) => {
     this.data = JSON.parse(data.toString());
+    console.log(data);
     this.loading.dismiss();
     
     this.leasingData = [];
 
-    if(this.filter == 'all')
+    if(this.filter === 'all')
     {
       for (let i = 0; i<this.data.length;i++){
         this.leasingData.push(this.data[i]);
       }  
     }
-    if(this.filter == 'ongoing')
+    if(this.filter === 'ongoing')
     {
       for (let i = 0; i<this.data.length;i++){
         if (this.data[i].leasing_status == 'open')
@@ -80,16 +85,16 @@ export class ListContractsPage implements OnInit {
         }
       }
     }
-    if(this.filter == 'pending')
+    if(this.filter === 'pending')
     {
       for (let i = 0; i<this.data.length;i++){
-        if (this.data[i].leasing_status == 'inquiring')
+        if (this.data[i].leasing_status == 'pending')
         {
           this.leasingData.push(this.data[i])
         }
       }
     }
-    if(this.filter == 'finished')
+    if(this.filter === 'finished')
     {
       for (let i = 0; i<this.data.length;i++){
         if (this.data[i].leasing_status == 'finished')
@@ -111,6 +116,7 @@ export class ListContractsPage implements OnInit {
   };
 
   await this.http.get(this.API_URL+"?userID="+this.userID, httpOptions).subscribe((data: any[]) => {
+    console.log(data);
     this.data = JSON.parse(data.toString());
     this.loading.dismiss();
     
@@ -139,7 +145,7 @@ export class ListContractsPage implements OnInit {
     {
      
       for (let i = 0; i<this.data.length;i++){
-        if (this.data[i].leasing_status == 'inquiring')
+        if (this.data[i].leasing_status == 'pending')
         {
           this.leasingData.push(this.data[i])
         }
@@ -166,66 +172,30 @@ export class ListContractsPage implements OnInit {
 
 getFilter(event: Event) {
   this.filter = (event as CustomEvent<any>).detail.value;
-  
-
-  if(this.filter == 'all')
-  {
-    this.leasingData = []
-    for (let i = 0; i<this.data.length;i++){
-      this.leasingData.push(this.data[i]);
-    }
-    
-  }
-  if(this.filter == 'ongoing')
-  {
-    this.leasingData = []
-    for (let i = 0; i<this.data.length;i++){
-      if (this.data[i].leasing_status == 'open')
-      {
-        this.leasingData.push(this.data[i])
-      }
-    }
-
-  }
-  if(this.filter == 'pending')
-  {
-    this.leasingData = []
-    for (let i = 0; i<this.data.length;i++){
-      if (this.data[i].leasing_status == 'inquiring')
-      {
-        this.leasingData.push(this.data[i])
-      }
-    }
-  }
-  if(this.filter == 'finished')
-  {
-    this.leasingData = []
-    for (let i = 0; i<this.data.length;i++){
-      if (this.data[i].leasing_status == 'finished')
-      {
-        this.leasingData.push(this.data[i])
-      }
-    }
-  }
-
-
+  this.getPropertyListings();
   
 }
-viewContract(propertyID:string){
+ viewContract(propertyID:string){
   console.log(propertyID);
   var address = "";
-  for (let i = 0; i<this.data.length;i++){
-    if (this.data[i].propertyID == propertyID)
+  for (let i = 0; i<this.leasingData.length;i++){
+
+    if (this.leasingData[i].leasingID == propertyID)
     {
-      address = this.data[i].address;
+      
+      this.navCtrl.navigateForward(['/preview-contract',
+      {
+        propertyID:propertyID,
+        address: this.leasingData[i].address
+      }
+    ]);
     }
   }
-  this.navCtrl.navigateForward(['/preview-contract',
-  {
-    propertyID:propertyID,
-    address: address
-  }
-]);
+
 }
+
+
+
+
 
 }

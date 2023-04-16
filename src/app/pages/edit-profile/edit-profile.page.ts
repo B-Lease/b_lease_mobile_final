@@ -5,6 +5,7 @@ import { SessionService } from 'src/app/shared/session.service';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { environment } from 'src/environments/environment.prod';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-edit-profile',
@@ -30,7 +31,8 @@ export class EditProfilePage implements OnInit {
     private http: HttpClient,
     private loading: LoadingService,
     private router: Router,
-    private toastController:ToastController
+    private toastController:ToastController,
+    private navCtrl:NavController
   ) { }
 
   async ngOnInit() {
@@ -120,7 +122,7 @@ export class EditProfilePage implements OnInit {
         if (response.status == 200) {
           console.log(response.body.message)
    
-          this.router.navigate(['/profile']);
+          this.router.navigate(['/home/userprofile']);
         }
       } catch (error) {
         console.log(error);

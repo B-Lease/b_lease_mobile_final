@@ -19,7 +19,7 @@ export class ViewIndividualListingPage implements OnInit {
   propertyID:any;
   propertyData: any[] = [];
   userData: any;
-  private addpropertyMap: L.Map;
+  private viewIndividualListingMap: L.Map;
   private marker: L.Marker;
 
 
@@ -92,9 +92,9 @@ export class ViewIndividualListingPage implements OnInit {
   }
   
   async setupMap(){
-    this.addpropertyMap = await L.map('mapId').setView([this.propertyData['latitude'], this.propertyData['longitude']], 18);
+    this.viewIndividualListingMap = await L.map('mapId').setView([this.propertyData['latitude'], this.propertyData['longitude']], 18);
 
-    this.addpropertyMap.zoomControl.remove();
+    this.viewIndividualListingMap.zoomControl.remove();
     if (L.Browser.retina) {
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
@@ -102,12 +102,12 @@ export class ViewIndividualListingPage implements OnInit {
         tileSize: 512,
         zoomOffset: -1,
         detectRetina: true
-      }).addTo(this.addpropertyMap);
+      }).addTo(this.viewIndividualListingMap);
     } else {
       L.tileLayer('https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
         maxZoom: 18
-      }).addTo(this.addpropertyMap);
+      }).addTo(this.viewIndividualListingMap);
     }
 
     const customIcon = L.icon({
@@ -121,7 +121,7 @@ export class ViewIndividualListingPage implements OnInit {
     });
 
     if (this.lat != 0 && this.lng != 0) {
-      this.marker = L.marker([this.propertyData['latitude'], this.propertyData['longitude']], { icon: customIcon }).addTo(this.addpropertyMap);
+      this.marker = L.marker([this.propertyData['latitude'], this.propertyData['longitude']], { icon: customIcon }).addTo(this.viewIndividualListingMap);
     }
   
   }
@@ -236,6 +236,12 @@ async createChat(){
     }
 
     
+  }
+
+  async ngOnDestroy() {
+    if (this.viewIndividualListingMap) {
+      await this.viewIndividualListingMap.remove();
+    }
   }
   
   

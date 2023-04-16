@@ -35,7 +35,7 @@
 
       <ion-item *ngFor="let leasing of leasingData" (click)="viewContract(leasing.leasingID)">
         <ion-avatar style="margin-right:9px">
-          <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+          <img alt="Silhouette of a person's head" [src]="IMAGE_API_URL+leasing.propertyID+'/'+leasing.images[0]" />
         </ion-avatar>
         <ion-label>
           <ion-text class="links">{{leasing.name}}</ion-text>

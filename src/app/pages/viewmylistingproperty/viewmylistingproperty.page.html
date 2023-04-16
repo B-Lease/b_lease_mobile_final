@@ -16,7 +16,7 @@
  
     <ion-slides pager="true" class="list_image_slides">
       <ion-slide *ngFor="let img of propertyData['images']">
-        <img alt="Silhouette of mountains" [src]="IMAGES_URL+propertyData['propertyID']+'/'+img" class="cover"/>
+        <img alt="Property image" [src]="IMAGES_URL+propertyData['propertyID']+'/'+img" class="cover"/>
     
       </ion-slide>
 
@@ -169,6 +169,26 @@
   <div id="mapId" >
 
   </div>
+  <hr>
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Status</ion-label>
+    </ion-list-header>
+    <ion-item>
+      <ion-label>{{propertyData['property_status']}}</ion-label>
+    </ion-item>
+  
+  </ion-list>
+
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Remarks</ion-label>
+    </ion-list-header>
+    <ion-item>
+      <ion-label>{{propertyData['remarks']}}</ion-label>
+    </ion-item>
+  
+  </ion-list>
 </div>
 
 </ion-content>
