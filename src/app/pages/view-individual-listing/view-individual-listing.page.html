@@ -173,14 +173,14 @@
 <hr>
   <ion-row>
     <ion-col>
-      <ion-icon name="star"></ion-icon> <span> 4.3</span>
+      <ion-icon name="star"></ion-icon> <span> {{averageRating}}</span>
     </ion-col>
     <ion-col>
-      <span>12</span> <span> reviews</span>
+      <span>{{totalFeedback}}</span> <span> reviews</span>
     </ion-col>
   </ion-row>
 
-  <div class="list_reviews">
+  <div class="list_reviews" *ngFor="let feedback of propertyFeedbackData">
     <ion-row>
       <ion-col size="auto">     
         <ion-avatar>
@@ -188,16 +188,21 @@
       </ion-avatar>
     </ion-col>
       <ion-col>
-        <ion-text color="success">Nathaniel Tiempo</ion-text> <br>
-        <ion-text>February 02, 2023</ion-text>
+        <ion-text color="success">{{feedback.user_fname}} {{feedback.user_lname}}</ion-text> <br>
+        <ion-text>{{feedback.created_at | slice:0:10}}</ion-text>
+      </ion-col>
+      <ion-col size="auto" style="margin-right:10px;">
+        <ion-icon name="star"></ion-icon> <span> {{feedback.feedback_rating}}</span>
       </ion-col>
     </ion-row>
+    <br>
     <ion-row>
       <ion-text>
-        Very good farmland for your business! The owner of the property is accommodating and a pleasure to work with. 
+        {{feedback.feedback_content}} 
       </ion-text>
     </ion-row>
   </div>
+
 
 
 </ion-content>

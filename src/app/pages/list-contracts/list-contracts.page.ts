@@ -175,18 +175,20 @@ getFilter(event: Event) {
   this.getPropertyListings();
   
 }
- viewContract(propertyID:string){
+ viewContract(leasingID:string,propertyID:string, propertyImage:string){
   console.log(propertyID);
   var address = "";
   for (let i = 0; i<this.leasingData.length;i++){
 
-    if (this.leasingData[i].leasingID == propertyID)
+    if (this.leasingData[i].leasingID == leasingID)
     {
       
       this.navCtrl.navigateForward(['/preview-contract',
       {
+        leasingID:leasingID,
         propertyID:propertyID,
-        address: this.leasingData[i].address
+        address: this.leasingData[i].address,
+        propertyImage:propertyImage
       }
     ]);
     }

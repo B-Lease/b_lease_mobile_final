@@ -14,7 +14,7 @@
     <ion-row>
       <ion-col size="auto">
     <ion-avatar>
-      <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+      <img alt="Silhouette of a person's head" [src]="IMAGE_API_URL+propertyID+'/'+propertyImage" />
     </ion-avatar>
   </ion-col>
   </ion-row>
@@ -31,21 +31,36 @@
     <ion-row>
       <ion-col size="12" class="ion-text-center">
         <div class="star-rating">
-          <ion-icon name="star" size="large" ></ion-icon>
-          <ion-icon name="star" size="large" ></ion-icon>
-          <ion-icon name="star" size="large" ></ion-icon>
-          <ion-icon name="star" size="large" ></ion-icon>
-          <ion-icon name="star" size="large" ></ion-icon>
+          <ion-icon name="star" size="large" *ngIf="!star1" (click)="setRating(1)"></ion-icon>
+          <ion-icon name="star" size="large" *ngIf="star1" [style.color]="'yellow'" (click)="setRating(1)"></ion-icon>
+
+          <ion-icon name="star" size="large" *ngIf="!star2" (click)="setRating(2)"></ion-icon>
+          <ion-icon name="star" size="large" *ngIf="star2" [style.color]="'yellow'" (click)="setRating(2)"></ion-icon>
+
+          <ion-icon name="star" size="large" *ngIf="!star3" (click)="setRating(3)"></ion-icon>
+          <ion-icon name="star" size="large" *ngIf="star3" [style.color]="'yellow'" (click)="setRating(3)"></ion-icon>
+
+          <ion-icon name="star" size="large" *ngIf="!star4" (click)="setRating(4)"></ion-icon>
+          <ion-icon name="star" size="large" *ngIf="star4" [style.color]="'yellow'" (click)="setRating(4)" ></ion-icon>
+
+          <ion-icon name="star" size="large" *ngIf="!star5" (click)="setRating(5)"></ion-icon>
+          <ion-icon name="star" size="large" *ngIf="star5" [style.color]="'yellow'" (click)="setRating(5)"></ion-icon>
+       
         </div>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col size="12">
         <ion-item>
-          <ion-label position="floating">Leave a review</ion-label>
-          <ion-textarea rows="4"></ion-textarea>
+          <ion-label position="floating" >Leave a review</ion-label>
+          <ion-textarea rows="12" [(ngModel)]="review"></ion-textarea>
         </ion-item>
       </ion-col>
     </ion-row>
+    <br><br>
+        
+            <ion-button expand="block" shape="round" style="height:50px;" color="success" (click)="onSubmit()">Submit</ion-button>
+        
+  
   </ion-grid>
 </ion-content>
