@@ -6,9 +6,12 @@ import { environment } from 'src/environments/environment.prod';
 import { LoadingService } from 'src/app/shared/loading.service';
 import { Camera, CameraResultType, CameraSource, Photo } from '@capacitor/camera';
 import { Directory, FileInfo, Filesystem } from '@capacitor/filesystem';
-import { LoadingController, NavController, Platform } from '@ionic/angular';
+import { AlertController, LoadingController, NavController, Platform } from '@ionic/angular';
+import { DocumentViewer, DocumentViewerOptions } from '@ionic-native/document-viewer/ngx';
+import { File } from '@ionic-native/file/ngx';
+import { FileOpener } from '@ionic-native/file-opener/ngx';
 
-const IMAGE_DIR = 'stored-images';
+const IMAGE_DIR = 'stored-images/';
 interface LocalFile {
   name: string;
   path: string;
@@ -36,17 +39,22 @@ export class SetContractPage implements OnInit {
   isThirdToggleOn = false;
 
   images: LocalFile[] = [];
-
   signbase64 = '';
+  API_URL = environment.API_URL;
+
   constructor(
     public fb_lease: FormBuilder, 
     private http:HttpClient, 
-    private router: Router, 
     private activatedroute: ActivatedRoute,
     private loadingCtrl: LoadingService,
     private platform: Platform,
     private ldingCtrl: LoadingController,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private file: File,
+    private fileOpener: FileOpener,
+    private document: DocumentViewer,
+    private alertController: AlertController,
+    private router: Router
     ) {
   }
 
@@ -54,10 +62,43 @@ export class SetContractPage implements OnInit {
   }
 
 
-  
-  async onSubmit() {
-    await this.loadingCtrl.present('Creating Lease Contract..')
+  goBack() {
+    this.clearImages();
+    const data = this.activatedroute.snapshot.queryParams['data'];
+    this.navCtrl.navigateBack('chatroom', { queryParams: { data } });
+  }
 
+  clearImages(){
+    for (let i = 0; i < this.images.length; i++) {
+      this.deleteImage(this.images[i]);
+    }
+  }
+
+
+  async onSubmit(){
+    const alert = await this.alertController.create({
+      header: 'Leasing Confirmation',
+      subHeader: 'Confirm lease request?',
+      message: 'Once you set a contract, you will not be able to edit it.',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => { }
+        },
+        {
+          text: 'OK',
+          role: 'confirm',
+          handler: () => { this.confirmLeaseRequest() }
+        }
+      ],
+    });
+
+    await alert.present();
+
+  }
+  
+  async confirmLeaseRequest() {
     const data = this.activatedroute.snapshot.queryParams['data'];
     
     const formData = {
@@ -89,8 +130,9 @@ export class SetContractPage implements OnInit {
         const data = {
           'leasingID': this.activatedroute.snapshot.queryParams['data']['leasingID']
         }
-        await this.navCtrl.navigateForward('preview-lease-request', { queryParams: { data } });
-        await this.loadingCtrl.dismiss()
+        //await this.navCtrl.navigateForward('preview-lease-request', { queryParams: { data } });
+        this.openWordContract() 
+        this.router.navigate(['/home'])
       } else {
 
       }
@@ -99,8 +141,39 @@ export class SetContractPage implements OnInit {
       // Handle the error
     }
 
+    this.clearImages()
+
   }
 
+  async openWordContract(){
+    const leasingID = 'ebaba354691e34b29fec4276664b8ed8'
+    const url = this.API_URL+`leasingdocs?leasingID=${leasingID}`
+  
+    // Get the ArrayBuffer from the HTTP response
+    const arrayBuffer = await this.http.get(url, { responseType: 'arraybuffer' }).toPromise();
+
+    // Create a temporary file in the data directory
+    const fileName = 'temp.docx';
+    const filePath = this.file.dataDirectory + fileName;
+
+
+    if (this.platform.is('android')) {
+      await this.file.writeFile(this.file.dataDirectory, fileName, arrayBuffer, { replace: true });
+
+      // Open the file with the file opener plugin
+      this.fileOpener.open(filePath, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+        .then(() => console.log('File opened successfully'))
+        .catch(e => console.log('Error opening file', e));
+
+
+    } else {
+      const options: DocumentViewerOptions = {
+        title: 'My Leasing Contract'
+      }
+      this.document.viewDocument(`${filePath}/${fileName}`,'application/vnd.openxmlformats-officedocument.wordprocessingml.document', options)
+    }
+
+  }
 
   toggleChanged() {
     if (this.isFirstToggleOn) {  
@@ -124,6 +197,7 @@ export class SetContractPage implements OnInit {
 
   //FOR IMAGE UPLOAD
   async selectImage() {
+    console.log('upload')
     const image = await Camera.getPhoto({
       quality: 90,
       allowEditing: false,
@@ -138,12 +212,11 @@ export class SetContractPage implements OnInit {
 
   async saveImage(photo: Photo) {
     const base64Data = await this.readAsBase64(photo);
-    console.log(base64Data);
 
     const fileName = new Date().getTime() + '.jpeg';
     const savedFile = await Filesystem.writeFile({
       directory: Directory.Data,
-      path: `${IMAGE_DIR}/${fileName}`,
+      path: `${IMAGE_DIR}${fileName}`,
       data: base64Data
     });
     console.log('saved: ', savedFile);
@@ -205,7 +278,7 @@ export class SetContractPage implements OnInit {
 
   async LoadFileData(fileInfos: FileInfo[]) {
     for (let fileInfo of fileInfos) {
-      const filePath = `${IMAGE_DIR}/${fileInfo.name}`;
+      const filePath = `${IMAGE_DIR}${fileInfo.name}`;
 
       const readFile = await Filesystem.readFile({
         directory: Directory.Data,
@@ -230,5 +303,6 @@ export class SetContractPage implements OnInit {
     this.loadFiles();
 
   }
+
 
 }
