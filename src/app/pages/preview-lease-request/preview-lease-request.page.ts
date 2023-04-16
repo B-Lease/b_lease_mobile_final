@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpResponse  } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from 'src/environments/environment.prod';
@@ -7,6 +7,7 @@ import { Platform } from '@ionic/angular';
 import { isPlatform } from '@ionic/angular';
 import { File } from '@ionic-native/file/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-preview-lease-request',
@@ -24,9 +25,23 @@ export class PreviewLeaseRequestPage implements OnInit {
     private file: File,
     private fileOpener: FileOpener,
     private document: DocumentViewer,
+    private router: Router,
+    private modalCtrl: ModalController
     ) {
 
   }
+
+  // async openModal() {
+  //   const modal = await this.modalCtrl.create({
+  //     component: PreviewLeaseRequestPage,
+  //     cssClass: 'my-custom-class'
+  //   });
+  //   await modal.present();
+  // }
+
+  // closeModal() {
+  //   this.modalCtrl.dismiss();
+  // }
 
   ngOnInit() {
     this.openLocalPdf()
@@ -38,6 +53,29 @@ export class PreviewLeaseRequestPage implements OnInit {
     const url = URL.createObjectURL(blob);
     return url;
   }
+
+  async openPdf() {
+    const fileUrl = '../assets/pdf/example.pdf'; // Replace with your PDF URL
+    
+    if (!isPlatform('capacitor')){
+            // Show error message
+            console.log('Cordova is not available.');
+            const leasingID = 'ebaba354691e34b29fec4276664b8ed8'
+            //const leasingID = this.activatedroute.snapshot.queryParams['data']['leasingID']
+            const response = await this.http.get(this.API_URL+`leasingdocs?leasingID=${leasingID}`, { responseType: 'arraybuffer' }).toPromise();
+            const pdfArrayBuffer = response as ArrayBuffer;
+            const pdfUrl = this.createBlobUrlFromArrayBuffer(pdfArrayBuffer);
+            const pdfViewer = document.getElementById('pdf-viewer') as HTMLObjectElement;
+            pdfViewer.data = pdfUrl;
+    } else {
+      const options: DocumentViewerOptions = {
+        title: 'My PDF'
+      };
+      this.documentViewer.viewDocument(fileUrl, 'application/pdf', options);
+
+    }
+  }
+
   
 
   async deleteRecord(){
@@ -84,5 +122,6 @@ export class PreviewLeaseRequestPage implements OnInit {
 
   }
     
+
 }
 

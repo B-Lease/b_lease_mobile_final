@@ -41,7 +41,8 @@ export class SetContractPage implements OnInit {
   images: LocalFile[] = [];
   signbase64 = '';
   API_URL = environment.API_URL;
-
+  data: any;
+  
   constructor(
     public fb_lease: FormBuilder, 
     private http:HttpClient, 
@@ -59,6 +60,8 @@ export class SetContractPage implements OnInit {
   }
 
   ngOnInit() {
+    this.data = this.activatedroute.snapshot.queryParams['data'];
+    console.log(this.data)
   }
 
 
@@ -100,7 +103,7 @@ export class SetContractPage implements OnInit {
   
   async confirmLeaseRequest() {
     const data = this.activatedroute.snapshot.queryParams['data'];
-    
+
     const formData = {
       'leasingID' : data['leasingID'],
       'leasing_status': 'pending',
@@ -303,6 +306,7 @@ export class SetContractPage implements OnInit {
     this.loadFiles();
 
   }
+
 
 
 }
