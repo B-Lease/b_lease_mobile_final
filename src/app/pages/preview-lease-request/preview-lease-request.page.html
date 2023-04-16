@@ -10,17 +10,30 @@
   <div class="main-container">
     <ion-grid [fixed]="true" class="container">
       
-      <ion-row class="pdf">
+      <!-- <ion-row class="pdf">
         <object id="pdf-viewer" type="application/pdf" width="100%" height="100%"></object>
-      </ion-row>
+      </ion-row> -->
       
 
 
       <ion-row class="center">
-        <ion-col size="6"><ion-button (click)="deleteRecord()"class="success-button cancel" shape="round" color="light" size="medium">Cancel</ion-button></ion-col>
-        <ion-col size="6"><ion-button [routerLink]="['/login']" class="success-button" shape="round" color="success" size="medium">Next</ion-button></ion-col>
+        <ion-col size="6"><ion-button (click)="openLocalPdf()"class="success-button cancel" shape="round" color="light" size="medium">Cancel</ion-button></ion-col>
+        <ion-col size="6"><ion-button class="success-button" shape="round" color="success" size="medium">Next</ion-button></ion-col>
       </ion-row>
 
     </ion-grid>
   </div>
+
+  <!-- <ion-modal cssClass="my-custom-class" (ionModalDidDismiss)="isModalOpen = false">
+    <ion-header>
+      <ion-title>Modal Title</ion-title>
+    </ion-header>
+    <ion-content>
+      Modal Content
+    </ion-content>
+    <ion-footer>
+      <ion-button (click)="closeModal()">Close Modal</ion-button>
+    </ion-footer>
+  </ion-modal> -->
+
 </ion-content>

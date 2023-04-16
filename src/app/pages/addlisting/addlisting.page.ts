@@ -356,7 +356,7 @@ export class AddlistingPage implements OnInit {
           this.deleteImage(this.images[i]);
         }
     
-    }
+      }
     else{
         if(
           this.images.length>0 

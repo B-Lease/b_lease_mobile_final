@@ -71,6 +71,8 @@ export class ChatroomPage implements OnInit {
 
     this.getMessages().subscribe( message => {
       this.messages.push(message);
+      //murag diri ka mag insert sa code, if usa pa ang length sa message
+      //nga array kay mu notify kas lessor
       console.log(this.messages)
     });
   }
@@ -177,11 +179,9 @@ export class ChatroomPage implements OnInit {
   }
   
   setContract(){
-    console.log(this.leasingID)
     const data = this.activatedroute.snapshot.queryParams['data'];
 
     this.navCtrl.navigateForward('set-contract', { queryParams: { data } });
-    
 
   }
   

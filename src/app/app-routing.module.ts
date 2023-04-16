@@ -187,6 +187,10 @@ const routes: Routes = [
     path: 'rate',
     loadChildren: () => import('./pages/rate/rate.module').then( m => m.RatePageModule)
   },
+  {
+    path: 'payment-form',
+    loadChildren: () => import('./payment-form/payment-form.module').then( m => m.PaymentFormPageModule)
+  },
 
 
 
