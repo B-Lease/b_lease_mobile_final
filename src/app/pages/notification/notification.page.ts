@@ -3,6 +3,7 @@ import { ActionSheetController } from '@ionic/angular';
 import axios from 'axios';
 import { environment } from 'src/environments/environment.prod';
 import { SessionService } from 'src/app/shared/session.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-notification',
   templateUrl: './notification.page.html',
@@ -16,7 +17,8 @@ export class NotificationPage implements OnInit {
   notificationData;
   constructor(
     private actionSheetCtrl: ActionSheetController,
-    private session:SessionService
+    private session:SessionService,
+    private router:Router
     ) { }
 
   ngOnInit() {
@@ -92,9 +94,21 @@ export class NotificationPage implements OnInit {
   viewNotification(notification:any){
     console.log(notification.notification_categ);
     var categ = notification.notification_categ;
+    
     if(categ === 'Property Listing Approval')
     {
-      
+      var status = notification.data.split(",")[2];
+      var propertyID = notification.data.split(",")[0];
+      console.log("Reading property listing approval notification");
+
+      if(status ==='approved')
+      {
+        this.router.navigate(['/view-individual-listing/'+propertyID]);
+      }
+      if(status === 'rejected')
+      {
+        this.router.navigate(['/viewmylistingproperty/'+propertyID]);
+      }
     }
   }
 

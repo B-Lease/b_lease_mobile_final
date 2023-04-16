@@ -5,6 +5,7 @@ import { Router,ActivatedRoute } from '@angular/router';
 import { SessionService } from 'src/app/shared/session.service';
 import * as L from 'leaflet';
 import { environment } from 'src/environments/environment.prod';
+
 @Component({
   selector: 'app-viewmylistingproperty',
   templateUrl: './viewmylistingproperty.page.html',
@@ -14,11 +15,11 @@ export class ViewmylistingpropertyPage implements OnInit {
   private sessionID;
   private userID;
   API_URL = environment.API_URL+'property'
-  IMAGES_URL = this.API_URL+'propertyimages/'
+  IMAGES_URL = environment.API_URL+'propertyimages/'
   propertyID:any;
   propertyData: any[] = [];
   userData: any;
-  private addpropertyMap: L.Map;
+  private viewMyListingMap: L.Map;
   private marker: L.Marker;
 
 
@@ -32,7 +33,8 @@ export class ViewmylistingpropertyPage implements OnInit {
     private session:SessionService,
     private http:HttpClient,
     private loading:LoadingService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+   
 
     
   ) { }
@@ -54,9 +56,9 @@ export class ViewmylistingpropertyPage implements OnInit {
    
   }
   async setupMap(){
-    this.addpropertyMap = await L.map('mapId').setView([this.propertyData['latitude'], this.propertyData['longitude']], 18);
+    this.viewMyListingMap = await L.map('mapId').setView([this.propertyData['latitude'], this.propertyData['longitude']], 18);
 
-    this.addpropertyMap.zoomControl.remove();
+    this.viewMyListingMap.zoomControl.remove();
     if (L.Browser.retina) {
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
@@ -64,12 +66,12 @@ export class ViewmylistingpropertyPage implements OnInit {
         tileSize: 512,
         zoomOffset: -1,
         detectRetina: true
-      }).addTo(this.addpropertyMap);
+      }).addTo(this.viewMyListingMap);
     } else {
       L.tileLayer('https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
         maxZoom: 18
-      }).addTo(this.addpropertyMap);
+      }).addTo(this.viewMyListingMap);
     }
 
     const customIcon = L.icon({
@@ -83,7 +85,7 @@ export class ViewmylistingpropertyPage implements OnInit {
     });
 
     if (this.lat != 0 && this.lng != 0) {
-      this.marker = L.marker([this.propertyData['latitude'], this.propertyData['longitude']], { icon: customIcon }).addTo(this.addpropertyMap);
+      this.marker = L.marker([this.propertyData['latitude'], this.propertyData['longitude']], { icon: customIcon }).addTo(this.viewMyListingMap);
     }
   
   }
@@ -133,5 +135,13 @@ export class ViewmylistingpropertyPage implements OnInit {
     console.error(error);
   }
 }
+
+async ngOnDestroy() {
+  if (this.viewMyListingMap) {
+    await this.viewMyListingMap.remove();
+  }
+}
+
+
 
 }

@@ -87,7 +87,8 @@ export class ChatroomPage implements OnInit {
       userID : this.userID
     };
     
-    this.navCtrl.navigateBack('/home/inbox', { queryParams: { data } });
+  
+    this.navCtrl.navigateRoot(['/home/inbox'])
   }
 
   async getCurrentMessages(leasingID:string){
@@ -181,13 +182,7 @@ export class ChatroomPage implements OnInit {
     const data = this.activatedroute.snapshot.queryParams['data'];
 
     this.navCtrl.navigateForward('set-contract', { queryParams: { data } });
-    
-    // let observable = new Observable(observer => {
-    //   this.socket.on('disconnected', data => {
-    //     observer.next(data);
-    //   })
-    // });
-    // return observable;
+
   }
   
 

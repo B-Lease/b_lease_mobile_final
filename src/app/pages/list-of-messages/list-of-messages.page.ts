@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { NavController } from '@ionic/angular';
 import { SessionService } from 'src/app/shared/session.service';
 import { environment } from 'src/environments/environment.prod';
+import { LoadingService } from 'src/app/shared/loading.service';
 @Component({
   selector: 'app-list-of-messages',
   templateUrl: './list-of-messages.page.html',
@@ -22,7 +23,8 @@ export class ListOfMessagesPage implements OnInit {
     private activatedroute: ActivatedRoute, 
     private router: Router, 
     private navCtrl: NavController,
-    private session:SessionService
+    private session:SessionService,
+    private loading:LoadingService
     ) {
     
   }
@@ -30,20 +32,27 @@ export class ListOfMessagesPage implements OnInit {
   async ngOnInit() {
     await this.session.init();
     await this.getSessionData();
+    await this.getListMessages();
 
-    // get user ID from dashboard or chatroom
-    this.http.get(this.apiURL+`leasing?check_existing=no&userID=${this.userID}`).subscribe((data: any[]) => {
-      if (typeof data === 'string') {
-        this.response = JSON.parse(data);
-        console.log(this.response)
-      } else {
-        this.response = Object.values(data);
-        console.log(this.response)
-      }
-    });
   }
 
 
+
+async getListMessages(){
+      this.loading.present('Loading Messages');
+      // get user ID from dashboard or chatroom
+      await this.http.get(this.apiURL+`leasing?check_existing=no&userID=${this.userID}`).subscribe((data: any[]) => {
+        if (typeof data === 'string') {
+          this.response = JSON.parse(data);
+          console.log(this.response)
+          this.loading.dismiss();
+        } else {
+          this.response = Object.values(data);
+          console.log(this.response)
+          this.loading.dismiss();
+        }
+      });
+}
   
   saveFields(item): void {
     var msg_senderID = '';

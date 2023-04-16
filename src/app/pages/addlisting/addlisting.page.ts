@@ -21,7 +21,7 @@ import { LoadingService } from 'src/app/shared/loading.service';
 
 const IMAGE_DIR = 'stored-images';
 // const API_URL = 'http://192.168.1.2:5000/property'
-var API_URL    = environment.API_URL+'property';
+
 interface LocalFile {
   name: string;
   path: string;
@@ -33,7 +33,7 @@ interface LocalFile {
   styleUrls: ['./addlisting.page.scss'],
 })
 export class AddlistingPage implements OnInit {
-
+  API_URL    = environment.API_URL+'property';
   private addpropertyMap: L.Map;
   private marker: L.Marker;
   private self_latitude: number;
@@ -255,7 +255,7 @@ export class AddlistingPage implements OnInit {
 
 
 
-    this.http.post(environment.API_URL, formData).pipe(
+    this.http.post(this.API_URL, formData).pipe(
       finalize(() => {
         loading.dismiss();
       })
@@ -319,12 +319,13 @@ export class AddlistingPage implements OnInit {
         for (let i = 0; i < this.images.length; i++) {
     
           const response = await fetch(this.images[i].data);
-          this.deleteImage(this.images[i]);
+    
           console.log(response);
           const blob = await response.blob();
           submitPropertyData.append('images', blob, this.images[i].name)
     
         }
+  
     
     
     
@@ -338,13 +339,17 @@ export class AddlistingPage implements OnInit {
         const headers = new HttpHeaders();
         headers.append('Content-Type', 'multipart/form-data');
         headers.append('Accept', 'application/json');
-        this.http.post(API_URL, submitPropertyData, { headers: headers }).pipe(
+        this.http.post(this.API_URL, submitPropertyData, { headers: headers }).pipe(
           finalize(() => {
             loading.dismiss();
             this.propertyForm.get('documents').setValue('');
           })
         ).subscribe(res => {
+          for (let i = 0; i < this.images.length; i++) {
+            this.deleteImage(this.images[i]);
+          }
           this.successAlert();
+     
           this.navCtrl.navigateBack(['/dashboard']);
         });
         for (let i = 0; i < this.images.length; i++) {
@@ -457,11 +462,7 @@ export class AddlistingPage implements OnInit {
     await alert.present();
   }
 
-  ngOnDestroy() {
-    if (this.addpropertyMap) {
-      this.addpropertyMap.remove();
-    }
-  }
+
   getAddress() {
 
     this.propertyLandSize = this.propertyForm.get('propertyLandSize').value;
@@ -531,5 +532,12 @@ export class AddlistingPage implements OnInit {
     });
 
     await toast.present();
+  }
+
+
+  async ngOnDestroy() {
+    if (this.addpropertyMap) {
+      await this.addpropertyMap.remove();
+    }
   }
 }

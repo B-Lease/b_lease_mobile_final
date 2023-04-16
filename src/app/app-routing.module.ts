@@ -175,14 +175,23 @@ const routes: Routes = [
   {
     path: 'transactions',
     loadChildren: () => import('./pages/transactions/transactions.module').then( m => m.TransactionsPageModule)
-  },  {
+  },
+  {
     path: 'payment-successful',
     loadChildren: () => import('./payment-successful/payment-successful.module').then( m => m.PaymentSuccessfulPageModule)
+  },  {
+    path: 'edit-individual-listing',
+    loadChildren: () => import('./pages/edit-individual-listing/edit-individual-listing.module').then( m => m.EditIndividualListingPageModule)
+  },
+  {
+    path: 'rate',
+    loadChildren: () => import('./pages/rate/rate.module').then( m => m.RatePageModule)
   },
   {
     path: 'payment-form',
     loadChildren: () => import('./payment-form/payment-form.module').then( m => m.PaymentFormPageModule)
   },
+
 
 
 

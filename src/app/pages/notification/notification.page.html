@@ -15,7 +15,8 @@
   <ng-template #thenBlock>
 
 
-  <ion-item  id="unread"   lines="none" (click)="viewNotification(notification)">
+  <ion-item  id="unread"   lines="none" >
+    <div (click)="viewNotification(notification)" class="flexer">
     <ion-avatar slot="start">
       <img *ngIf="notification.notification_categ == 'Property Listing Approval' "  [src]="environment.API_URL + '/propertyimages/'+notification.data.split(',')[0]+'/'+notification.data.split(',')[1]"/>
     </ion-avatar>
@@ -24,6 +25,7 @@
       <p><span class="notification-text">{{notification.notification_desc}}</span></p>
       <p class="notification-time">{{notification.notification_date}}</p>
     </ion-label>
+  </div>
     <ion-button slot="end" fill="clear" (click)="presentActionSheet(notification)">
       <ion-icon name="ellipsis-horizontal"></ion-icon>
     </ion-button>
@@ -32,7 +34,8 @@
   <ng-template #elseBlock>
 
 
-  <ion-item    lines="none" (click)="viewNotification(notification)">
+  <ion-item    lines="none">
+    <div (click)="viewNotification(notification)" class="flexer">
     <ion-avatar slot="start">
       <img *ngIf="notification.notification_categ == 'Property Listing Approval' "  [src]="environment.API_URL + '/propertyimages/'+notification.data.split(',')[0]+'/'+notification.data.split(',')[1]"/>
     </ion-avatar>
@@ -41,6 +44,7 @@
       <p><span class="notification-text">{{notification.notification_desc}}</span></p>
       <p class="notification-time">{{notification.notification_date}}</p>
     </ion-label>
+  </div>
     <ion-button slot="end" fill="clear" (click)="presentActionSheet(notification)">
       <ion-icon name="ellipsis-horizontal"></ion-icon>
     </ion-button>

@@ -28,11 +28,9 @@ import { FileOpener } from '@ionic-native/file-opener/ngx'
 import { DocumentViewer } from '@ionic-native/document-viewer/ngx';
 
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
-
-import { WebView } from '@ionic-native/ionic-webview/ngx';
-import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
-
-const config: SocketIoConfig = { url: 'http://127.0.0.1:5001', options: {}};
+import { DocumentViewer } from '@ionic-native/document-viewer/ngx';
+import { environment } from 'src/environments/environment.prod';
+const config: SocketIoConfig = { url: environment.SOCKET_API_URL, options: {}};
 
 @NgModule({
   declarations: [
@@ -48,7 +46,7 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:5001', options: {}};
     FormsModule,
     ReactiveFormsModule,  
     NgxExtendedPdfViewerModule,
-    SocketIoModule.forRoot({ url: 'http://127.0.0.1:5001/' }),
+    SocketIoModule.forRoot({ url: `${environment.SOCKET_API_URL}/` }),
     
     IonicStorageModule.forRoot({
       name:"sessionstorage",
