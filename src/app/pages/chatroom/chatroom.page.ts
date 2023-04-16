@@ -182,12 +182,12 @@ export class ChatroomPage implements OnInit {
 
     this.navCtrl.navigateForward('set-contract', { queryParams: { data } });
     
-    let observable = new Observable(observer => {
-      this.socket.on('disconnected', data => {
-        observer.next(data);
-      })
-    });
-    return observable;
+    // let observable = new Observable(observer => {
+    //   this.socket.on('disconnected', data => {
+    //     observer.next(data);
+    //   })
+    // });
+    // return observable;
   }
   
 
