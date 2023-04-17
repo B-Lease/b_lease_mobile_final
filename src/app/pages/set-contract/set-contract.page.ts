@@ -149,7 +149,7 @@ export class SetContractPage implements OnInit {
   }
 
   async openWordContract(){
-    const leasingID = 'ebaba354691e34b29fec4276664b8ed8'
+    const leasingID = this.activatedroute.snapshot.queryParams['data']['leasingID'];
     const url = this.API_URL+`leasingdocs?leasingID=${leasingID}`
   
     // Get the ArrayBuffer from the HTTP response

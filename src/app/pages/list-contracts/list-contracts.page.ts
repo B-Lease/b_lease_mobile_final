@@ -79,7 +79,7 @@ export class ListContractsPage implements OnInit {
     if(this.filter === 'ongoing')
     {
       for (let i = 0; i<this.data.length;i++){
-        if (this.data[i].leasing_status == 'open')
+        if (this.data[i].leasing_status == 'ongoing')
         {
           this.leasingData.push(this.data[i])
         }
@@ -102,6 +102,7 @@ export class ListContractsPage implements OnInit {
           this.leasingData.push(this.data[i])
         }
       }
+
     }
   });
  }
@@ -134,7 +135,7 @@ export class ListContractsPage implements OnInit {
     {
   
       for (let i = 0; i<this.data.length;i++){
-        if (this.data[i].leasing_status == 'open')
+        if (this.data[i].leasing_status == 'ongoing')
         {
           this.leasingData.push(this.data[i])
         }
@@ -188,6 +189,8 @@ getFilter(event: Event) {
         leasingID:leasingID,
         propertyID:propertyID,
         address: this.leasingData[i].address,
+        leasing_status:this.leasingData[i].leasing_status,
+        leasingID:this.leasingData[i].leasingID
         propertyImage:propertyImage
       }
     ]);

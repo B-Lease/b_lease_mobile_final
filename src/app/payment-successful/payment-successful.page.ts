@@ -4,6 +4,8 @@ import { environment } from 'src/environments/environment';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Browser } from '@capacitor/browser';
+import { ActivatedRoute } from '@angular/router';
+import { SessionService } from '../shared/session.service';
 
 
 @Component({
@@ -14,10 +16,40 @@ import { Browser } from '@capacitor/browser';
 export class PaymentSuccessfulPage implements OnInit {
   apiURL = environment.API_URL
   url: string;
-
-  constructor(private http: HttpClient) {}
+  response:any;
+  message: string = "";
+  payments_count;
+  constructor(private http: HttpClient,
+    private activatedroute: ActivatedRoute,
+    private session: SessionService
+    ) {}
 
   ngOnInit() {
+    // this.getLink()
+  }
+
+  async getLink() {
+    //const userID = await this.session.getUserID()
+    const paymentID = await this.activatedroute.snapshot.queryParams['data']['paymentID'];
+    console.log(paymentID)
+    const apiUrl = `${this.apiURL}payLinks?paymentID=${paymentID}`
+    this.http.get(apiUrl).subscribe(data => {
+      if (typeof data === 'string') {
+        this.response = JSON.parse(data);
+        console.log(this.response)
+      } else {
+        this.response = Object.values(data);
+        console.log(this.response)
+        console.log('payments_count')
+        this.payments_count = this.response['9']
+      }
+    });
+
+    if (this.payments_count > 0){
+      this.message = "Paid successfully!";
+    } else {
+      this.message = "Payment failed! Please try again.";
+    }
   }
 
   sendRequest() {
