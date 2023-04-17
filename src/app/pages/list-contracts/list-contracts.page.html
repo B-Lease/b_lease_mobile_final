@@ -33,7 +33,7 @@
       </ion-segment>
       <br><br>
 
-      <ion-item *ngFor="let leasing of leasingData" (click)="viewContract(leasing.leasingID)">
+      <ion-item *ngFor="let leasing of leasingData" (click)="viewContract(leasing.leasingID,leasing.propertyID,leasing.images[0])">
         <ion-avatar style="margin-right:9px">
           <img alt="Silhouette of a person's head" [src]="IMAGE_API_URL+leasing.propertyID+'/'+leasing.images[0]" />
         </ion-avatar>

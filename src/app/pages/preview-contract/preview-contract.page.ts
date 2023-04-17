@@ -17,6 +17,8 @@ export class PreviewContractPage implements OnInit {
   API_URL = environment.API_URL;
   propertyID:any;
   address:any;
+  propertyImage:any;
+  leasingID:any;
   constructor(
     private activatedroute:ActivatedRoute,
     private http:HttpClient,
@@ -31,8 +33,10 @@ export class PreviewContractPage implements OnInit {
 
    async ngOnInit() {
     // this.getPDF();
+    this.leasingID = await this.activatedroute.snapshot.paramMap.get('leasingID');
     this.propertyID = await this.activatedroute.snapshot.paramMap.get('propertyID');
     this.address = await this.activatedroute.snapshot.paramMap.get('address');
+    this.propertyImage = await this.activatedroute.snapshot.paramMap.get('propertyImage');
   }
 
   // getPDF() {
@@ -52,8 +56,10 @@ export class PreviewContractPage implements OnInit {
     this.navCtrl.navigateForward([
       '/rate',
       {
+        leasingID:this.leasingID,
         propertyID:this.propertyID,
         address:this.address,
+        propertyImage:this.propertyImage
       }
     ])
   }

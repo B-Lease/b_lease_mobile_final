@@ -17,7 +17,7 @@
 
     <ion-item lines ="none" *ngFor="let item of response" (click)="saveFields(item)">
       <ion-avatar style="margin-right:9px">
-        <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+        <img alt="Silhouette of a person's head" [src]="IMAGE_API_URL+item.propertyID+'/'+item.images[0]" />
       </ion-avatar>    
       <ion-label>
         <ion-text class="links" *ngIf="item.lessorID === userID">{{item.lessee_fname}} | </ion-text>

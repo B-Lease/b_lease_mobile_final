@@ -17,6 +17,7 @@ export class ListOfMessagesPage implements OnInit {
   sessionID:any;
   leasingId: string = ''
   apiURL = environment.API_URL;
+  IMAGE_API_URL = environment.API_URL+'propertyimages/';
   
   constructor(
     private http: HttpClient, 
@@ -43,6 +44,7 @@ async getListMessages(){
       // get user ID from dashboard or chatroom
       await this.http.get(this.apiURL+`leasing?check_existing=no&userID=${this.userID}`).subscribe((data: any[]) => {
         if (typeof data === 'string') {
+          console.log(data);
           this.response = JSON.parse(data);
           console.log(this.response)
           this.loading.dismiss();
