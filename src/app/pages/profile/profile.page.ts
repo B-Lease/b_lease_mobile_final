@@ -39,9 +39,7 @@ export class ProfilePage implements OnInit {
     private actionSheetCtrl:ActionSheetController
     ) { 
 
-    this.session.init();
-  
-  
+
 
     if (!isPlatform('capacitor')){
       GoogleAuth.initialize();
@@ -54,15 +52,11 @@ export class ProfilePage implements OnInit {
 
   // Call the method here to make sure the page has fully loaded
   await this.session.init();
-
   await this.getSessionData();
   await this.getProfileInfo();
-
-
   }
 
   async ngAfterInit(){
-    await this.getProfileInfo();
   }
 
   
@@ -73,7 +67,6 @@ export class ProfilePage implements OnInit {
     console.log('USER ID : '+userID_data);
     this.sessionID = sessionID_data;
     this.userID = userID_data;
-
 
  }
 

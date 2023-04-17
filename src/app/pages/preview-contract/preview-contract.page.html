@@ -12,10 +12,26 @@
 </ion-header>
 
 <ion-content>
-  <ion-button (click)="navigateRate()">
-    Rate
-  </ion-button>
-  <ion-button shape="round" color="light" >Finish</ion-button>
-  <ion-button shape="round" color="success" >Renew</ion-button>
+  <ion-grid class="center">
+    <br><br>
+    <ion-label (click)="openWordContract()" color="success" style="font-size: 30px;font-weight:bold">View</ion-label>
+    <ion-input readonly #signature></ion-input>
+    <ion-list>
+      <ion-item-sliding *ngFor="let file of images">
+        <ion-item class="lease-fields">
+          <ion-input readonly #signature value = {{file.name}}></ion-input>
+        </ion-item>
+        <ion-item-options>
+          <ion-item-option color="danger" (click)="deleteImage(file)"> <ion-icon slot="icon-only" name="trash"></ion-icon></ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+      <ion-button *ngIf = "display1" (click)="navigateRate()">
+        {{button1}}
+      </ion-button>
+    </ion-list>
 
+    <ion-button shape="round" color="light" *ngIf = "display2" (click)="declineContract()">{{button2}}</ion-button>
+    <ion-button shape="round" color="success" *ngIf = "display3" (click)="checkSignature()">{{button3}}</ion-button>
+  </ion-grid>
+  
 </ion-content>
