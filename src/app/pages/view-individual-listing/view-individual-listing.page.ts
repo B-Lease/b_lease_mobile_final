@@ -6,6 +6,7 @@ import { SessionService } from 'src/app/shared/session.service';
 import * as L from 'leaflet';
 import { NavController } from '@ionic/angular';
 import { environment } from 'src/environments/environment.prod';
+import axios from 'axios';
 @Component({
   selector: 'app-view-individual-listing',
   templateUrl: './view-individual-listing.page.html',
@@ -18,7 +19,10 @@ export class ViewIndividualListingPage implements OnInit {
   IMAGES_URL = this.API_URL+'propertyimages/'
   propertyID:any;
   propertyData: any[] = [];
+  propertyFeedbackData:any;
+  totalFeedback:any;
   userData: any;
+  averageRating:any;
   private viewIndividualListingMap: L.Map;
   private marker: L.Marker;
 
@@ -57,6 +61,10 @@ export class ViewIndividualListingPage implements OnInit {
     });
 
     await this.getPropertyListings();
+    await this.getPropertyFeedbacks();
+
+    await this.getTotalPropertyFeedbacks();
+    await this.getAverageRating();
     //await this.getProfileInfo();
   }
 
@@ -242,6 +250,62 @@ async createChat(){
     if (this.viewIndividualListingMap) {
       await this.viewIndividualListingMap.remove();
     }
+  }
+
+  async getPropertyFeedbacks(){
+    
+      await axios.get(`${environment.API_URL}feedback?propertyID=${this.propertyID}&sessionID=${this.sessionID}`)
+      .then(response => {
+        console.log(response.data);
+        this.propertyFeedbackData = JSON.parse(response.data.toString());
+        console.log(this.propertyFeedbackData);
+        // handle the response data here
+      })
+      .catch(error => {
+        console.error(error);
+        // handle the error here
+      });
+  }
+  async getTotalPropertyFeedbacks(){
+    
+      await axios.get(`${environment.API_URL}countfeedback?propertyID=${this.propertyID}&sessionID=${this.sessionID}`)
+      .then(response => {
+        console.log(response.data['COUNT(*)']);
+        this.totalFeedback = response.data['COUNT(*)'];
+
+        if(this.totalFeedback == null)
+        {
+          this.totalFeedback = 0;
+        }
+
+        // console.log(this.totalFeedback);
+        // handle the response data here
+      })
+      .catch(error => {
+        console.error(error);
+        // handle the error here
+      });
+  }
+  
+  async getAverageRating(){
+    
+      await axios.get(`${environment.API_URL}countrating?propertyID=${this.propertyID}&sessionID=${this.sessionID}`)
+      .then(response => {
+        console.log(response.data['average_rating']);
+        this.averageRating = response.data['average_rating'];
+
+        if(this.totalFeedback == null)
+        {
+          this.averageRating = 0;
+        }
+
+        // console.log(this.totalFeedback);
+        // handle the response data here
+      })
+      .catch(error => {
+        console.error(error);
+        // handle the error here
+      });
   }
   
   

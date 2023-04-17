@@ -45,6 +45,9 @@ export class PreviewContractPage implements OnInit {
 
   @ViewChild('signature') signature: IonInput;
 
+  propertyImage:any;
+  leasingID:any;
+
   constructor(
     private activatedroute:ActivatedRoute,
     private http:HttpClient,
@@ -69,7 +72,8 @@ export class PreviewContractPage implements OnInit {
     this.address = this.activatedroute.snapshot.paramMap.get('address');
     this.leasing_status = this.activatedroute.snapshot.paramMap.get('leasing_status');
     this.leasingID = this.activatedroute.snapshot.paramMap.get('leasingID');
-
+    this.propertyImage = await this.activatedroute.snapshot.paramMap.get('propertyImage');
+    
     if (this.leasing_status === 'ongoing'){
       this.display1 = false
       this.display2 = false
@@ -318,8 +322,10 @@ export class PreviewContractPage implements OnInit {
       this.navCtrl.navigateForward([
         '/rate',
         {
+          leasingID:this.leasingID,
           propertyID:this.propertyID,
           address:this.address,
+          propertyImage:this.propertyImage
         }
       ])
     }
