@@ -31,6 +31,9 @@ export class PreviewContractPage implements OnInit {
   address:any;
   leasing_status:any;
   leasingID:any;
+  lessorID: any
+  lesseeID: any
+  userID: any
 
   button1 = ''
   button2 = ''
@@ -42,12 +45,13 @@ export class PreviewContractPage implements OnInit {
 
   images: LocalFile[] = [];
   signbase64 = '';
-
+  response: any[];
   @ViewChild('signature') signature: IonInput;
 
   propertyImage:any;
-  leasingID:any;
+  data: any[]
 
+  complaineeID:any
   constructor(
     private activatedroute:ActivatedRoute,
     private http:HttpClient,
@@ -63,21 +67,34 @@ export class PreviewContractPage implements OnInit {
     // pdfDefaultOptions.assetsFolder = 'bleeding-edge';
     // pdfDefaultOptions.assetsFolder = '../www/assets/bleeding-edge';
   
-    console.log(this.propertyID);
    }
 
    async ngOnInit() {
     // this.getPDF();
+  
     this.propertyID = this.activatedroute.snapshot.paramMap.get('propertyID');
     this.address = this.activatedroute.snapshot.paramMap.get('address');
     this.leasing_status = this.activatedroute.snapshot.paramMap.get('leasing_status');
     this.leasingID = this.activatedroute.snapshot.paramMap.get('leasingID');
     this.propertyImage = await this.activatedroute.snapshot.paramMap.get('propertyImage');
-    
+    this.lessorID = this.activatedroute.snapshot.paramMap.get('lessorID');
+    this.lesseeID = this.activatedroute.snapshot.paramMap.get('lesseeID');
+    this.userID = this.activatedroute.snapshot.paramMap.get('userID');
+
+    console.log(this.leasing_status)
     if (this.leasing_status === 'ongoing'){
       this.display1 = false
       this.display2 = false
-      this.display3 = false
+      const response = await this.http.get(this.API_URL+`complaints?leasingID=${this.leasingID}`).subscribe((data) => {
+        if (typeof data === 'string') {
+          this.data = JSON.parse(data);
+          this.button3 = 'See Complaints'
+
+        } else {
+          this.data = Object.values(data);
+          this.button3 = 'File Complaint'
+        }
+      });
     }
     else if (this.leasing_status === 'pending') {
       this.button1 = 'Sign'
@@ -86,28 +103,63 @@ export class PreviewContractPage implements OnInit {
     }
     else if(this.leasing_status === 'finished'){
       this.button1 = 'Rate'
-      this.button2 = 'Finished'
+      this.button2 = 'Finish'
       this.button3 = 'Renew'      
+    }
+    else if(this.leasing_status === 'for review'){
+      this.display1 = false
+      this.display2 = false
+      this.display3 = false     
     }
   }
 
   async checkSignature(){
-    const value = this.signature.value;
-    console.log('value '+value)
-    if (value === null || value == undefined){
-      const alert = await this.alertController.create({
-        header: 'Oops!',
-        subHeader: 'One more requirement..',
-        message: 'Please upload your signature first.',
-        buttons: ['OK'],
-      });
+    if (this.button3 === 'File Complaint'){
+      console.log('file a complaint')
+      if (this.userID === this.lessorID){
+        this.complaineeID = this.lesseeID
+      }
+      else {
+        this.complaineeID = this.lessorID
+      }
+      const data = {
+        complaintID: this.leasingID,
+        complainerID: this.userID,
+        complaineeID: this.complaineeID
+      }
+      this.navCtrl.navigateForward('/add-complaint', { queryParams: { data } });
+    }
+    else if (this.button3 === 'See Complaints'){
+      console.log('see a complaint')
+      const data = {
+        complaintID: this.leasingID
+      }
+      this.navCtrl.navigateForward('/complaint-thread', { queryParams: { data } });
+    }
+    else {
+      const value = this.signature.value;
+      console.log('value '+value)
+      if (value === null || value == undefined){
+        const alert = await this.alertController.create({
+          header: 'Oops!',
+          subHeader: 'One more requirement..',
+          message: 'Please upload your signature first.',
+          buttons: ['OK'],
+        });
 
-      await alert.present();
-    } else {
-      this.approveContract();
+        await alert.present();
+      } else {
+        this.approveContract();
+      }
     }
   }
 
+  clearImages(){
+    for (let i = 0; i < this.images.length; i++) {
+      this.deleteImage(this.images[i]);
+    }
+  }
+  
   async approveContract(){
     const alert = await this.alertController.create({
       header: 'Success!',
@@ -133,6 +185,8 @@ export class PreviewContractPage implements OnInit {
       console.log(error);
       // Handle the error
     }
+
+    this.clearImages()
 
   }
 

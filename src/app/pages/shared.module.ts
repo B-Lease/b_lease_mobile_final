@@ -7,6 +7,7 @@ import { DashboardPage } from './dashboard/dashboard.page';
 import { ListOfMessagesPage } from './list-of-messages/list-of-messages.page';
 import { NotificationPage } from './notification/notification.page';
 import { ProfilePage } from './profile/profile.page';
+import { AddComplaintPipe } from './add-complaint.pipe';
 
 const routes: Routes = [
     { path: 'dashboard', component: DashboardPage },
@@ -20,7 +21,7 @@ const routes: Routes = [
   ];
 
 @NgModule({
-  declarations: [FooterComponent],
+  declarations: [FooterComponent, AddComplaintPipe],
   imports: [
     CommonModule,
     IonicModule,
