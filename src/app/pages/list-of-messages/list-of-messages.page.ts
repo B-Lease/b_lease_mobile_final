@@ -108,8 +108,6 @@ async getListMessages(){
     console.log('USER ID : '+userID_data);
     this.sessionID = sessionID_data;
     this.userID = userID_data;
-
-
  }
  
 
