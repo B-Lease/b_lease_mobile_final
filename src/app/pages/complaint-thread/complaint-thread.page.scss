@@ -1,0 +1,23 @@
+.lease-fields {
+    border: 1px solid #B4B4BB;
+    border-radius: 5.62px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    color: #363636;
+    --padding-start: 10px;
+    height: 500px;
+}
+
+.message{
+    --ion-grid-column-padding: 15px;
+    border-radius: 29px;
+}
+
+.left{
+    background-color: #D0EDD2;
+}
+
+.right{
+    background-color: #40A047;
+    color: #fff;
+}

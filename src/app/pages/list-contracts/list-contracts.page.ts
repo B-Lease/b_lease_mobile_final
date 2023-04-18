@@ -186,12 +186,14 @@ getFilter(event: Event) {
       
       this.navCtrl.navigateForward(['/preview-contract',
       {
-        leasingID:leasingID,
+        leasingID:this.leasingData[i].leasingID,
         propertyID:propertyID,
         address: this.leasingData[i].address,
         leasing_status:this.leasingData[i].leasing_status,
-        leasingID:this.leasingData[i].leasingID
-        propertyImage:propertyImage
+        propertyImage:propertyImage,
+        lessorID: this.leasingData[i].lessorID,
+        lesseeID: this.leasingData[i].lesseeID,
+        userID: this.userID
       }
     ]);
     }
