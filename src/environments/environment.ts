@@ -9,6 +9,7 @@ export const environment = {
   },
   API_URL: 'http://192.168.161.130:5000/',
   SOCKET_API_URL: 'http://192.168.161.130:5001',
+
 };
 
 /*

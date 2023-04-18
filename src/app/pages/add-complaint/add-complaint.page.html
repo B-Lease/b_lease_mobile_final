@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-row class="header">
+    <ion-col>
+      <ion-text color="dark" id="header_favorites" (click)="goBack()"><ion-icon name="arrow-back-outline"></ion-icon></ion-text>
+    </ion-col>
+    <ion-col>  <ion-img id="header_logo" src="assets\logo\b-lease_main.svg"></ion-img> </ion-col>
+    <ion-col></ion-col>
+  </ion-row>
+</ion-header>
+
+<ion-content>
+  <div class="main-container">
+    <ion-grid [fixed]="true" class="container">
+      <ion-row class="center">File a Complaint</ion-row>
+      <form (ngSubmit) = "onSubmit()">
+        <ion-list>
+          <ion-item class="lease-fields" lines="none">
+            <ion-select placeholder="Choose" [(ngModel)]="complaint_subject">
+              <ion-select-option value="Payment Issues">Payment Issues</ion-select-option>
+              <ion-select-option value="Contract Breach">Contract Breach</ion-select-option>
+              <ion-select-option value="Undelivered Services">Undelivered Services</ion-select-option>
+              <ion-select-option value="Others">Others</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-list>
+
+        <ion-textarea class="lease-fields" rows="10" placeholder="Please describe the situation.." [(ngModel)]="complaint_desc"></ion-textarea>
+
+        <ion-row class="center">
+          <ion-button class="success-button" shape="round" color="success" type="submit">File</ion-button>
+        </ion-row><br><br>
+      <!---->
+      </form>
+    </ion-grid>
+  </div>
+ 
+</ion-content>
+
+

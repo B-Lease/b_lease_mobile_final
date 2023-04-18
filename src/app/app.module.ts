@@ -24,10 +24,10 @@ import { Drivers } from '@ionic/storage';
 import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 
 import { File } from '@ionic-native/file/ngx';
-import { FileTransfer } from '@ionic-native/file-transfer/ngx';
+import { FileOpener } from '@ionic-native/file-opener/ngx'
+import { DocumentViewer } from '@ionic-native/document-viewer/ngx';
 
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
-import { DocumentViewer } from '@ionic-native/document-viewer/ngx';
 import { environment } from 'src/environments/environment.prod';
 const config: SocketIoConfig = { url: environment.SOCKET_API_URL, options: {}};
 
@@ -37,7 +37,7 @@ const config: SocketIoConfig = { url: environment.SOCKET_API_URL, options: {}};
 
   ],
   imports: [
-    BrowserModule, 
+    BrowserModule,
     IonicModule.forRoot(), 
     AppRoutingModule, 
     HttpClientModule, 
@@ -55,7 +55,7 @@ const config: SocketIoConfig = { url: environment.SOCKET_API_URL, options: {}};
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     Network,NetworkInterface, File,
-    FileTransfer,
+    FileOpener,
     DocumentViewer
   ],
 

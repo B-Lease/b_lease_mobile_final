@@ -187,6 +187,18 @@ const routes: Routes = [
     path: 'rate',
     loadChildren: () => import('./pages/rate/rate.module').then( m => m.RatePageModule)
   },
+  {
+    path: 'payment-form',
+    loadChildren: () => import('./payment-form/payment-form.module').then( m => m.PaymentFormPageModule)
+  },
+  {
+    path: 'add-complaint',
+    loadChildren: () => import('./pages/add-complaint/add-complaint.module').then( m => m.AddComplaintPageModule)
+  },
+  {
+    path: 'complaint-thread',
+    loadChildren: () => import('./pages/complaint-thread/complaint-thread.module').then( m => m.ComplaintThreadPageModule)
+  },
 
 
 

@@ -79,7 +79,7 @@ export class ListContractsPage implements OnInit {
     if(this.filter === 'ongoing')
     {
       for (let i = 0; i<this.data.length;i++){
-        if (this.data[i].leasing_status == 'open')
+        if (this.data[i].leasing_status == 'ongoing')
         {
           this.leasingData.push(this.data[i])
         }
@@ -102,6 +102,7 @@ export class ListContractsPage implements OnInit {
           this.leasingData.push(this.data[i])
         }
       }
+
     }
   });
  }
@@ -134,7 +135,7 @@ export class ListContractsPage implements OnInit {
     {
   
       for (let i = 0; i<this.data.length;i++){
-        if (this.data[i].leasing_status == 'open')
+        if (this.data[i].leasing_status == 'ongoing')
         {
           this.leasingData.push(this.data[i])
         }
@@ -185,10 +186,14 @@ getFilter(event: Event) {
       
       this.navCtrl.navigateForward(['/preview-contract',
       {
-        leasingID:leasingID,
+        leasingID:this.leasingData[i].leasingID,
         propertyID:propertyID,
         address: this.leasingData[i].address,
-        propertyImage:propertyImage
+        leasing_status:this.leasingData[i].leasing_status,
+        propertyImage:propertyImage,
+        lessorID: this.leasingData[i].lessorID,
+        lesseeID: this.leasingData[i].lesseeID,
+        userID: this.userID
       }
     ]);
     }

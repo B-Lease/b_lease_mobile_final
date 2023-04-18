@@ -1,9 +1,13 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>payment-successful</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
-
+  <!-- <button (click)="sendRequest()">Send Request</button> -->
+  <!-- <iframe #iframeContainer></iframe> -->
+  <!-- <a href="https://app-sandbox.nextpay.world/#/pl/NjWAW10p5" target="_self">Click here</a> -->
+  <div class="main-container">
+    <ion-grid [fixed]="true" class="container">
+      <ion-row class="center">
+        <ion-button (click)="getLink()" color="success">Check Validity</ion-button>
+        <ion-label>{{message}}</ion-label>
+      </ion-row>
+    </ion-grid>
+  </div>
 </ion-content>
