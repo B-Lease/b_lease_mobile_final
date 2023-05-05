@@ -135,6 +135,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/preview-lease-request/preview-lease-request.module').then( m => m.PreviewLeaseRequestPageModule)
   },
   {
+    path: 'chatroom/:leasingID/:userID/:lesseeID/:lessorID/:msg_senderID/:msg_receiverID',
+    loadChildren: () => import('./pages/chatroom/chatroom.module').then( m => m.ChatroomPageModule)
+  },
+  {
     path: 'chatroom',
     loadChildren: () => import('./pages/chatroom/chatroom.module').then( m => m.ChatroomPageModule)
   },
@@ -179,7 +183,8 @@ const routes: Routes = [
   {
     path: 'payment-successful',
     loadChildren: () => import('./payment-successful/payment-successful.module').then( m => m.PaymentSuccessfulPageModule)
-  },  {
+  },
+  {
     path: 'edit-individual-listing',
     loadChildren: () => import('./pages/edit-individual-listing/edit-individual-listing.module').then( m => m.EditIndividualListingPageModule)
   },

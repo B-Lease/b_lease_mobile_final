@@ -82,8 +82,15 @@
               </ion-avatar>
             </ion-col>
             <ion-col>
-              <ion-text color="success">{{user_fname}} {{user_lname}} </ion-text> <br>
+              <ion-text color="success">{{propertyData['user_fname']}} {{propertyData['user_lname']}} </ion-text> <br>
               <ion-text>B-Lessor</ion-text>
+            </ion-col>
+            <ion-col class="product_bookmark" size="auto">
+              <ion-text style="font-size:200%" color="success" id="" *ngIf="favorite_propertyIDs?.includes(propertyData['propertyID'])" (click)="actionFavorites(propertyData['propertyID'])"><ion-icon
+                  name="bookmark"></ion-icon></ion-text>
+              <ion-text style="font-size:200%" color="medium" id="" *ngIf="!favorite_propertyIDs?.includes(propertyData['propertyID'])" (click)="actionFavorites(propertyData['propertyID'])"><ion-icon
+                  name="bookmark-outline"></ion-icon></ion-text>
+  
             </ion-col>
         </ion-row>
     </ion-col>

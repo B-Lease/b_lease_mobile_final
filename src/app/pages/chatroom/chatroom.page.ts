@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { NavController } from '@ionic/angular';
 import { IonContent } from '@ionic/angular';
 import { environment } from 'src/environments/environment.prod';
+import axios from 'axios';
 @Component({
   selector: 'app-chatroom',
   templateUrl: './chatroom.page.html',
@@ -42,21 +43,71 @@ export class ChatroomPage implements OnInit {
     private socket:Socket,
     private navCtrl: NavController
     ) {
-
+     
     }
 
 
-  ngOnInit() {
-    const data = this.activatedroute.snapshot.queryParams['data'];
-    this.leasingID = data['leasingID'];  
-    this.lessorID = data['lessorID']
-    this.lesseeID = data['lesseeID']
-    this.msg_senderID = data['msg_senderID'];     //user 
-    this.msg_receiverID = data['msg_receiverID']
+   async  ngOnInit() {
+    
+    // const data =  await this.activatedroute.snapshot.queryParams['data'];
+     const data = this.activatedroute.snapshot.queryParams['data'];
+    console.log("DATA")
+    console.log(data)
+    if(data != null)
+    {
+      this.leasingID = data.leasingID;
+      this.lessorID = data.lessorID;
+      this.lesseeID = data.lesseeID;
+      this.msg_senderID = data.msg_senderID;
+      this.msg_receiverID = data.msg_receiverID;
+      this.userID = data.userID;
+    }
+    // this.activatedroute.paramMap.subscribe(queryParams =>{
+    //   const data = queryParams.get('data');
+    //   console.log("DATA")
+    //   console.log(data)
+    // });
+    
+    if(data == null)
+    {
 
-    //for going back to the list of messages
-    this.userID = data['userID'];
+    
+    await this.activatedroute.paramMap.subscribe(params => {
+      this.leasingID = params.get('leasingID');
+      this.lessorID = params.get('lessorID');
+      this.lesseeID = params.get('lesseeID');
+      this.msg_senderID = params.get('msg_senderID');
+      this.msg_receiverID = params.get('msg_receiverID');
+      this.userID = params.get('userID');
 
+  
+      // rest of the code
+    });
+    // this.leasingID = await  this.activatedroute.snapshot.paramMap['leasingID'];
+    // this.lessorID = await  this.activatedroute.snapshot.paramMap['lessorID'];
+    // this.lesseeID =  await this.activatedroute.snapshot.paramMap['lesseeID'];
+    // this.msg_senderID =  await this.activatedroute.snapshot.paramMap['msg_senderID'];
+    // this.msg_receiverID =  await this.activatedroute.snapshot.paramMap['msg_receiverID'];
+    // this.userID = await  this.activatedroute.snapshot.paramMap['userID'];
+
+    console.log("LeasingID: "+ this.leasingID);
+    console.log("LessorID: "+ this.lessorID);
+    console.log("LesseeID: "+ this.lesseeID);
+    console.log("MSG_SENDERID: "+ this.msg_senderID);
+    console.log("MSG_RECEIVERID: "+ this.msg_receiverID);
+    console.log("USERID: "+ this.userID);
+  }
+
+    // this.activatedroute.paramMap.subscribe(params => {
+    //   this.leasingID = params.get('leasingID');  
+    //   this.lessorID = params.get('lessorID');
+    //   this.lesseeID = params.get('lesseeID');
+    //   this.msg_senderID = params.get('msg_senderID');     //user 
+    //   this.msg_receiverID = params.get('msg_receiverID');
+  
+    //   //for going back to the list of messages
+    //   this.userID = params.get('userID');
+    // });
     //if the sender of the message is the lessee,
     //he or she can't set contracts (link is hidden) 
     if (this.msg_senderID == this.lesseeID){
@@ -67,7 +118,7 @@ export class ChatroomPage implements OnInit {
       this.hideforlessee = false;
     }
 
-    this.getCurrentMessages(this.leasingID);
+     this.getCurrentMessages(this.leasingID);
 
     this.getMessages().subscribe( message => {
       this.messages.push(message);
@@ -75,8 +126,17 @@ export class ChatroomPage implements OnInit {
       //nga array kay mu notify kas lessor
       console.log(this.messages)
     });
+
+
+
+   
+    
   }
+
+
   
+
+
   ionViewDidEnter(){
     this.content.scrollToBottom(0);
   }

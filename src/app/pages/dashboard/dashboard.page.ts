@@ -6,7 +6,8 @@ import { NavController } from '@ionic/angular';
 import { SessionService } from 'src/app/shared/session.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment.prod';
-
+import { ToastController } from '@ionic/angular';
+import axios from 'axios';
 
 @Component({
   selector: 'app-dashboard',
@@ -22,6 +23,7 @@ export class DashboardPage implements OnInit {
   private sessionID;
   private userID;
   public dataLoaded = false;
+  favorite_propertyIDs:any[] = [];
   // private  sessionData = [];
   
 
@@ -45,7 +47,8 @@ export class DashboardPage implements OnInit {
     private activatedroute:ActivatedRoute,
     private router:Router,
     private session:SessionService,
-    private http:HttpClient
+    private http:HttpClient,
+    private toastCtrl:ToastController
     
     ) { 
       // this.loadSession();
@@ -77,16 +80,18 @@ export class DashboardPage implements OnInit {
   }
   
   async ionViewWillEnter(){
-    await this.session.init();
-    await this.getSessionData();
-    await this.getPropertyListings();
+
   }
 
 
 
   
   async ngOnInit() {
+    await this.session.init();
+    await this.getSessionData();
+    await this.getPropertyListings();
 
+    await this.getPropertyFavoriteIDs();
   }
 
   getPropertyListings(){
@@ -116,5 +121,78 @@ export class DashboardPage implements OnInit {
 
 
  }
+
+ async actionFavorites(propertyID:string){
+      console.log(propertyID);
+
+
+      if(this.favorite_propertyIDs?.includes(propertyID))
+      {
+        axios.delete(environment.API_URL+`favorites?propertyID=${propertyID}&userID=${this.userID}&sessionID=${this.sessionID}`)
+        .then(response => {
+          console.log('Property removed from favorites');
+          this.showToast("Property removed from favorites");
+          this.getPropertyFavoriteIDs();
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+       
+      }
+      else{
+
+
+        const data = {
+          userID: this.userID,
+          propertyID:propertyID,
+          sessionID:this.sessionID
+        };
+
+        axios.post(environment.API_URL+'favorites', data)
+        .then(response => {
+          console.log(response);
+          this.showToast("Property added to favorites");
+          this.getPropertyFavoriteIDs();
+
+          
+        })
+        .catch(error => {
+          console.log(error);
+
+        });
+
+               }
+  
+ }
+
+async getPropertyFavoriteIDs(){
+  await axios.get(`${environment.API_URL}propertyFavorites?sessionID=${this.sessionID}&userID=${this.userID}`)
+  .then(response => {
+    console.log(response.data);
+    this.favorite_propertyIDs = response.data.favorite_propertyIDs;
+    console.log(this.favorite_propertyIDs);
+    // handle the response data here
+  })
+  .catch(error => {
+    console.error(error);
+    // handle the error here
+  });
+}
+
+async showToast(msg){
+  let toast = await this.toastCtrl.create({
+    message: msg,
+    duration: 2000
+
+  });
+  toast.present();
+}
+
+async openFavorites()
+{
+
+
+  this.navCtrl.navigateForward("/property-favorites");
+}
 
 }
