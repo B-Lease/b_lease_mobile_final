@@ -94,15 +94,7 @@ export class ProfilePage implements OnInit {
       console.error(error);
     }
   }
-  async ionViewDidEnter() {
-    await this.getProfileInfo();
 
-   
-  }
-
-  async ionViewWillEnter(){
-    await this.getProfileInfo();
-  }
 
   navigateMyListing(){
 

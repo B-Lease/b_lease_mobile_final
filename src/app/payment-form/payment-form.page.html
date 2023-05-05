@@ -1,29 +1,22 @@
 <ion-content>
   <div class="main-container">
     <ion-grid [fixed]="true" class="container">
-      <br>
-      <ion-row class="center ion-no-padding">
-          <ion-col size="auto"><ion-text color="primary">Pay Rental</ion-text></ion-col>
-      </ion-row>
-    
-      <form (ngSubmit) = "onSubmit()">
-          <ion-row class="ion-no-padding"> 
-            <ion-col>
-              <ion-label color="primary"  class="lease-labels">Enter GCash Number</ion-label>
-              <ion-input class="lease-fields" type="text" required [(ngModel)]="purpose"></ion-input>
-            </ion-col>
-          </ion-row>
-          <ion-row class="center">
-            <ion-col>
-              <ion-label color="primary"  class="lease-labels">Payment thru </ion-label>
-              <ion-icon name="heart"></ion-icon>
-            </ion-col>
-          </ion-row>
-          <ion-row class="center">
-            <ion-button class="success-button" shape="round" color="success" type="submit">Continue</ion-button>
-          </ion-row>
-      </form>
+      
+      <!-- <ion-row>
+        <ion-col class="column"><iframe [src]="safeUrl"></iframe></ion-col>
+      </ion-row> -->
+
+      <!-- <div class="modal">
+        <iframe src="https://ewallet-mock-connector.xendit.co/v1/ewallet_connector/checkouts?token=cha55j6nrr4pp701r34g"></iframe>
+      </div> -->
+
     </ion-grid>
   </div>
 </ion-content>
+
+
+
+
+
+
 
