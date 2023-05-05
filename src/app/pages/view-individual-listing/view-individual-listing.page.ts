@@ -7,6 +7,8 @@ import * as L from 'leaflet';
 import { NavController } from '@ionic/angular';
 import { environment } from 'src/environments/environment.prod';
 import axios from 'axios';
+import { ToastController } from '@ionic/angular';
+
 @Component({
   selector: 'app-view-individual-listing',
   templateUrl: './view-individual-listing.page.html',
@@ -23,6 +25,7 @@ export class ViewIndividualListingPage implements OnInit {
   totalFeedback:any;
   userData: any;
   averageRating:any;
+  favorite_propertyIDs:any[] = [];
   private viewIndividualListingMap: L.Map;
   private marker: L.Marker;
 
@@ -46,8 +49,9 @@ export class ViewIndividualListingPage implements OnInit {
     private http:HttpClient,
     private loading:LoadingService,
     private route: ActivatedRoute,
-    private navCtrl:NavController
-
+    private navCtrl:NavController,
+    private toastCtrl:ToastController
+    
     
   ) { 
   }
@@ -56,6 +60,8 @@ export class ViewIndividualListingPage implements OnInit {
 
     await this.session.init();
     await this.getSessionData();
+    
+    await this.getPropertyFavoriteIDs();
     await this.route.params.subscribe(params => {
       this.propertyID = params['propertyID'];
     });
@@ -66,6 +72,7 @@ export class ViewIndividualListingPage implements OnInit {
     await this.getTotalPropertyFeedbacks();
     await this.getAverageRating();
     //await this.getProfileInfo();
+
   }
 
   async ionViewWillEnter(){
@@ -195,7 +202,7 @@ export class ViewIndividualListingPage implements OnInit {
 }
 
 navigateDashboard(){
-  this.navCtrl.navigateBack(['/home/dashboard']);
+  this.navCtrl.navigateRoot(['/home/dashboard']);
 }
 
 async createChat(){
@@ -219,7 +226,13 @@ async createChat(){
             msg_senderID: params.lesseeID,
             msg_receiverID : params.lessorID
           }
-
+      
+          console.log("Generating greeting message");
+          const currentDateTime: string = this.getCurrentDateTime();
+          var message = environment.greeting_message;
+          await this.saveMessage(response.body.leasingID, message, params.lesseeID, params.lessorID, currentDateTime);
+  
+          // this.router.navigate([`/chatroom/${this.leasingID}/${params.lesseeID}/${params.lesseeID}/${params.lessorID}/${params.lesseeID}/${params.lessorID}`]);
           this.navCtrl.navigateForward('chatroom', { queryParams: { data } });
         } else {
 
@@ -230,16 +243,18 @@ async createChat(){
       }
 
     } else {
-      const data = {
-        leasingID : this.leasingID,
-        userID: params.lesseeID,
-        lesseeID: params.lesseeID,
-        lessorID: params.lessorID,
-        msg_senderID: params.lesseeID,
-        msg_receiverID : params.lessorID,
-      }
+      // const data = {
+      //   leasingID : this.leasingID,
+      //   userID: params.lesseeID,
+      //   lesseeID: params.lesseeID,
+      //   lessorID: params.lessorID,
+      //   msg_senderID: params.lesseeID,
+      //   msg_receiverID : params.lessorID,
+      // }
 
-      this.navCtrl.navigateForward('chatroom', { queryParams: { data } });
+  
+      this.router.navigate([`/chatroom/${this.leasingID}/${params.lesseeID}/${params.lesseeID}/${params.lessorID}/${params.lesseeID}/${params.lessorID}`]);
+      // this.navCtrl.navigateForward('chatroom', { queryParams: { data } });
 
     }
 
@@ -307,6 +322,110 @@ async createChat(){
         // handle the error here
       });
   }
+
+
+  async saveMessage(leasingID: string, message: string, msg_senderID: string, msg_receiverID: string, currentDateTime: string) {
+    const body = { 
+      'leasingID': leasingID,
+      'msg_content': message,  
+      'msg_senderID': msg_senderID, 
+      'msg_receiverID': msg_receiverID,
+      'sent_at': currentDateTime
+    };
+
+    try {
+      const response: HttpResponse<any> = await this.http.post(environment.API_URL+'messages', body, { observe: 'response' }).toPromise();
+      if(response.status === 201){
+        console.log(response)
+      } else {
+      }
+    } catch (error) {
+      console.log(error);
+      // Handle the error
+    }
+  }
   
+
+  getCurrentDateTime(): string {
+    const currentDate = new Date();
   
+    const year = currentDate.getFullYear().toString().padStart(4, '0');
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+    const day = currentDate.getDate().toString().padStart(2, '0');
+    const hours = currentDate.getHours().toString().padStart(2, '0');
+    const minutes = currentDate.getMinutes().toString().padStart(2, '0');
+    const seconds = currentDate.getSeconds().toString().padStart(2, '0');
+  
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  }
+  
+
+  async getPropertyFavoriteIDs(){
+    await axios.get(`${environment.API_URL}propertyFavorites?sessionID=${this.sessionID}&userID=${this.userID}`)
+    .then(response => {
+    console.log(response.data);
+    this.favorite_propertyIDs = response.data.favorite_propertyIDs;
+    console.log(this.favorite_propertyIDs);
+    // handle the response data here
+    
+    })
+    .catch(error => {
+    console.error(error);
+    // handle the error here
+    });
+    }
+
+    async actionFavorites(propertyID:string){
+      console.log(propertyID);
+
+
+      if(this.favorite_propertyIDs?.includes(propertyID))
+      {
+        axios.delete(environment.API_URL+`favorites?propertyID=${propertyID}&userID=${this.userID}&sessionID=${this.sessionID}`)
+        .then(response => {
+          console.log('Property removed from favorites');
+          this.showToast("Property removed from favorites");
+          this.getPropertyFavoriteIDs();
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+       
+      }
+      else{
+
+
+        const data = {
+          userID: this.userID,
+          propertyID:propertyID,
+          sessionID:this.sessionID
+        };
+
+        axios.post(environment.API_URL+'favorites', data)
+        .then(response => {
+          console.log(response);
+          this.showToast("Property added to favorites");
+          this.getPropertyFavoriteIDs();
+
+          
+        })
+        .catch(error => {
+          console.log(error);
+
+        });
+
+               }
+  
+ }
+    
+  
+ async showToast(msg){
+  let toast = await this.toastCtrl.create({
+    message: msg,
+    duration: 2000
+
+  });
+  toast.present();
+}
+
 }
