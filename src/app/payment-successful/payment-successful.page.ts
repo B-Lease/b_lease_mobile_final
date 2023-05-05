@@ -47,10 +47,28 @@ export class PaymentSuccessfulPage implements OnInit {
 
     if (this.payments_count > 0){
       this.message = "Paid successfully!";
+      this.updatePaymentStatus(paymentID);
     } else {
       this.message = "Payment failed! Please try again.";
     }
   }
+
+  async updatePaymentStatus(paymentID: string){
+    try {
+      const response = await this.http.put(`${this.apiURL}pay?paymentID=${paymentID}`, { observe: 'response' }).toPromise();
+      if(response !== undefined){
+        console.log(response)
+
+      } else {
+
+      }
+    } catch (error) {
+      console.log(error);
+      // Handle the error
+    }
+    
+  }
+
 
   sendRequest() {
     this.http.get(`${this.apiURL}pay`, { observe: 'response' }).subscribe(response => {

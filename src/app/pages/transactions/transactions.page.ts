@@ -3,8 +3,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SessionService } from 'src/app/shared/session.service';
 import { environment } from 'src/environments/environment';
-import { Browser, BrowserPlugin } from '@capacitor/browser';
+//import { Browser, BrowserPlugin } from '@capacitor/browser';
 import { NavController } from '@ionic/angular';
+import { Capacitor } from '@capacitor/core';
+
+
 
 @Component({
   selector: 'app-transactions',
@@ -19,7 +22,7 @@ export class TransactionsPage implements OnInit {
   constructor(private http: HttpClient,
     private router: Router,
     private session:SessionService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
     ) { }
 
   ngOnInit() {
@@ -31,6 +34,7 @@ export class TransactionsPage implements OnInit {
     this.userID = await this.session.getUserID()
     console.log(this.userID)
     this.makeGetRequest()
+
   }
   
   async makeGetRequest() {
@@ -46,7 +50,7 @@ export class TransactionsPage implements OnInit {
     });
   }
 
-  async createPaymentLink(pay_fee) {
+  async createPaymentLink(pay_fee:number) {
     const currentTimestamp = new Date().getTime();
 
     let transact_fee = Number((pay_fee * 0.022).toFixed(2));
@@ -63,24 +67,29 @@ export class TransactionsPage implements OnInit {
       "nonce": currentTimestamp
     }
 
+
   
     try {
-      const response: HttpResponse<any> = await this.http.post(apiUrl, formData, { observe: 'response' }).toPromise();
-      if(response.status === 201){
-        console.log(response.body.url)
-        const url = response.body.url
-        const paymentID = response.body.id
-        this.openBrowser(url, paymentID)
+      // const response: HttpResponse<any> = await this.http.post(apiUrl, formData, { observe: 'response' }).toPromise();
+      // if(response.status === 201){
+      //   console.log(response)
+      //   console.log(response.body.url)
+      //   const url = response.body.url
+      //   const url = response.body.url
+      //   const paymentID = response.body.id
 
-        const data = {
-          paymentID: paymentID
-        }
 
-        console.log('transactions: '+paymentID)
-        this.navCtrl.navigateForward('/payment-successful', { queryParams: { data } });
-      } else {
+        this.openBrowser('http://capacitorjs.com/')
 
-      }
+      //   const data = {
+      //     paymentID: paymentID
+      //   }
+
+      //   console.log('transactions: '+paymentID)
+      //   // this.navCtrl.navigateForward('/payment-successful', { queryParams: { data } });
+      // } else {
+
+      // }
     } catch (error) {
       console.log(error);
       // Handle the error
@@ -89,26 +98,38 @@ export class TransactionsPage implements OnInit {
 
   }
 
-  async openBrowser(url, paymentID){
-    await Browser.open({
-      url: url,
-      toolbarColor: '#FF0000',
-      presentationStyle: 'popover',
-    });
+  async openBrowser(url){
+    // await Browser.open({
+    //   url: url,
+    //   toolbarColor: '#FF0000',
+    //   presentationStyle: 'popover',
+    // });
   
     // Browser.addListener('browserFinished', () => {
-    //   const data = {
-    //     paymentID: paymentID
-    //   }
-
-    //     console.log('transactions: '+paymentID)
-    //     this.navCtrl.navigateForward('/payment-successful', { queryParams: { data } });
-
+    //   // Do something when the browser tab is closed
+    //   console.log('Browser tab closed');
     // });
+    // const browser = await Browser.open({ url: 'http://capacitorjs.com/' });
 
+    // await browser?.addListener('browserPageLoaded', () => {
+    //   console.log('Page loaded!');
+    // });
+    
 
-
-
+    
   }
+
+
+  // async function openBrowser(url: string) {
+  //   const browser = await CapacitorBrowser.open({ url });
+  //   await CapacitorBrowser.addListener('browserFinished', () => {
+  //     CapacitorBrowser.close();
+  //     window.location.href = '/another-page';
+  //   }, { windowId: browser.windowId });
+  //   await CapacitorBrowser.waitForClose({ windowId: browser.windowId });
+  // }
+  
+
+
 
 }

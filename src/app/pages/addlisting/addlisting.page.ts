@@ -8,7 +8,6 @@ import { Directory, FileInfo, Filesystem } from '@capacitor/filesystem';
 import { LoadingController, Platform, AlertController, NavController, ToastController } from '@ionic/angular';
 import { finalize } from 'rxjs';
 import { File } from '@ionic-native/file/ngx';
-import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ngx';
 
 import { SessionService } from 'src/app/shared/session.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -60,7 +59,6 @@ export class AddlistingPage implements OnInit {
     private loadingCtrl: LoadingController,
     private http: HttpClient,
     private file: File,
-    private transfer: FileTransfer,
     private session: SessionService,
     private alertController: AlertController,
     private router: Router,

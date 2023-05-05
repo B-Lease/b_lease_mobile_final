@@ -27,6 +27,7 @@ import { File } from '@ionic-native/file/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx'
 import { DocumentViewer } from '@ionic-native/document-viewer/ngx';
 
+
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { environment } from 'src/environments/environment.prod';
 const config: SocketIoConfig = { url: environment.SOCKET_API_URL, options: {}};
