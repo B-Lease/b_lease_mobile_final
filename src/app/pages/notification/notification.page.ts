@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActionSheetController } from '@ionic/angular';
+import { ActionSheetController, NavController } from '@ionic/angular';
 import axios from 'axios';
 import { environment } from 'src/environments/environment.prod';
 import { SessionService } from 'src/app/shared/session.service';
@@ -15,10 +15,12 @@ export class NotificationPage implements OnInit {
   sessionID:any;
   userID:any;
   notificationData;
+  unreadNotifications:number = 0;
   constructor(
     private actionSheetCtrl: ActionSheetController,
     private session:SessionService,
-    private router:Router
+    private router:Router,
+    private navCtrl:NavController
     ) { }
 
   ngOnInit() {
@@ -30,6 +32,8 @@ export class NotificationPage implements OnInit {
 
     await this.getSessionData();
     await this.getNotifications();
+
+    await this.countUnreadNotifications();
    
   }
 
@@ -110,6 +114,67 @@ export class NotificationPage implements OnInit {
         this.router.navigate(['/viewmylistingproperty/'+propertyID]);
       }
     }
+    if(categ === 'Property Inquiries')
+    {
+      var message_data = notification.data.split("*|*");
+
+      const data = {
+        userID: message_data[0],
+        leasingID : message_data[1],
+  
+        'lessorID':message_data[2] ,
+        'lessor_fname' : message_data[3],
+        'lessor_mname' : message_data[4],
+        'lessor_lname' :message_data[5],
+  
+        'lesseeID' : message_data[6],
+        'lessee_fname' : message_data[7],
+        'lessee_mname' : message_data[8],
+        'lessee_lname' :message_data[9] ,
+  
+        'address' : message_data[10],
+        'land_description' : message_data[11],
+  
+        'msg_senderID': message_data[12],
+        'msg_receiverID' :message_data[13] ,
+        'msg_receivername': message_data[14]
+      };
+  
+  
+  
+      this.navCtrl.navigateForward('chatroom', { queryParams: { data } });
+    }
+    if(categ === 'Leasing Contract')
+    {
+        console.log('Leasing Contract');
+        var contract_data =  notification.data.split("*|*");
+
+        this.navCtrl.navigateForward(['/preview-contract',
+        {
+          leasingID: contract_data[0],
+          propertyID:contract_data[1],
+          address: contract_data[2],
+          leasing_status:contract_data[3],
+          propertyImage:contract_data[4],
+          lessorID: contract_data[5],
+          lesseeID: contract_data[6],	
+          userID: this.userID
+        }
+      ]);
+    }
+  }
+
+  async countUnreadNotifications()
+  {
+    const result = await axios.get(environment.API_URL +`notifications/countUnread?userID=${this.userID}`)
+    .then(response =>{
+      console.log("TOTAL UNREAD NOTIFICATIONS");
+      console.log(response.data['unreadNotifications']);
+      this.unreadNotifications = response.data['unreadNotifications'];
+    })
+    .catch(error =>{
+      console.error(error);
+    });  
   }
 
 }

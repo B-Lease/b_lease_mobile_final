@@ -6,7 +6,7 @@
 
 <ion-content>
 
-  <ion-card-subtitle align="center" style="margin-top:20px; font-size: 18px;">5 unread notifications</ion-card-subtitle>
+  <ion-card-subtitle align="center" style="margin-top:20px; font-size: 18px;" *ngIf="unreadNotifications > 0">{{unreadNotifications}} unread notifications</ion-card-subtitle>
   <br>
   <div *ngFor="let notification of notificationData">
 
@@ -15,7 +15,7 @@
   <ng-template #thenBlock>
 
 
-  <ion-item  id="unread"   lines="none" >
+  <ion-item  id="unread"  class="notification_list" lines="none" >
     <div (click)="viewNotification(notification)" class="flexer">
     <ion-avatar slot="start">
       <img *ngIf="notification.notification_categ == 'Property Listing Approval' "  [src]="environment.API_URL + '/propertyimages/'+notification.data.split(',')[0]+'/'+notification.data.split(',')[1]"/>
@@ -34,10 +34,13 @@
   <ng-template #elseBlock>
 
 
-  <ion-item    lines="none">
+  <ion-item class="notification_list">
     <div (click)="viewNotification(notification)" class="flexer">
-    <ion-avatar slot="start">
-      <img *ngIf="notification.notification_categ == 'Property Listing Approval' "  [src]="environment.API_URL + '/propertyimages/'+notification.data.split(',')[0]+'/'+notification.data.split(',')[1]"/>
+    <ion-avatar slot="start" *ngIf="notification.notification_categ === 'Property Listing Approval' ">
+      <img [src]="environment.API_URL + 'propertyimages/'+notification.data.split(',')[0]+'/'+notification.data.split(',')[1]"/>
+    </ion-avatar>
+    <ion-avatar slot="start" *ngIf="notification.notification_categ === 'Property Inquiries' " >
+      <img [src]="environment.API_URL + 'propertyimages/'+notification.data.split('*|*')[15]+'/'+notification.data.split('*|*')[16]"/>
     </ion-avatar>
     <ion-label>
       <h2>{{notification.notification_categ}}</h2>
