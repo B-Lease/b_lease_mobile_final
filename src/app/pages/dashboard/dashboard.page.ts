@@ -15,8 +15,8 @@ import axios from 'axios';
   styleUrls: ['./dashboard.page.scss'],
 })
 export class DashboardPage implements OnInit {
-  @ViewChild(IonModal)
-  modal!: IonModal;
+  @ViewChild(IonModal) modal: IonModal;
+
   message = 'This modal example uses triggers to automatically open a modal when the button is clicked.';
   name!: string;
   propertyData: any[] = [];
@@ -195,4 +195,8 @@ async openFavorites()
   this.navCtrl.navigateForward("/property-favorites");
 }
 
+onEnter(value: string) {
+  // Do something with the search value entered by the user
+  console.log('Search value:', value);
+}
 }

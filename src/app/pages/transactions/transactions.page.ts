@@ -36,7 +36,7 @@ export class TransactionsPage implements OnInit {
   async ionViewDidEnter(){
     this.userID = await this.session.getUserID()
     console.log(this.userID)
-    this.makeGetRequest()
+    await this.makeGetRequest()
 
   }
   
@@ -104,16 +104,16 @@ export class TransactionsPage implements OnInit {
     Browser.addListener('browserFinished', () => {
       console.log(data)
       // this.navCtrl.navigateForward(['/payment-successful'], { queryParams: { data } });
-      
+      this.getLink(data)
     })
   }
   
 
 
   
-  async showAlert(message:string, header:string) {
+  async showAlert(message:string) {
     const alert = await this.alertController.create({
-      header: header,
+      header: 'Lessee Rental',
       subHeader: '',
       message: message,
       buttons: ['OK'],
@@ -122,35 +122,56 @@ export class TransactionsPage implements OnInit {
     await alert.present();
   }
 
-  
+  payments_count:any;
+  message: string;
 
-  // async getLink() {
-  //   const paymentID = await this.activatedroute.snapshot.queryParams['data']['paymentID'];
-  //   const npPaymentID = await this.activatedroute.snapshot.queryParams['data']['npPaymentID'];
-  //   console.log('payment IDDD')
-  //   const apiUrl = `${this.apiURL}payLinks?paymentID=${npPaymentID}`
-  //   this.http.get(apiUrl).subscribe(async (data) => {
-  //     if (typeof data === 'string') {
-  //       this.response = JSON.parse(data);
-  //       console.log(this.response)
-  //     } else {
-  //       this.response = Object.values(data);
-  //       console.log(this.response)
-  //       console.log('payments_count')
-  //       this.payments_count = this.response['9']
+  async getLink(data) {
+    const paymentID = data['paymentID'];
+    const npPaymentID = data['npPaymentID'];
+    console.log('payment IDDD')
+    const apiUrl = `${this.apiURL}payLinks?paymentID=${npPaymentID}`
+    this.http.get(apiUrl).subscribe(async (data) => {
+      if (typeof data === 'string') {
+        this.response = JSON.parse(data);
+        console.log(this.response)
+      } else {
+        this.response = Object.values(data);
+        console.log(this.response)
+        console.log('payments_count')
+        this.payments_count = this.response['9']
   
-  //       if (this.payments_count > 0){
-  //         this.message = "Paid successfully!";
-  //         await this.updatePaymentStatus(paymentID);
+        if (this.payments_count > 0){
+          this.message = "Paid successfully!";
+          await this.updatePaymentStatus(paymentID);
+          await this.showAlert(this.message);
+          await this.makeGetRequest();
          
-  //         //await this.getLink();
-  //       } else {
-  //         this.message = "Payment failed! Please try again.";
-   
-  //       }
-  //     }
-  //   });
-  // }
+          //await this.getLink();
+        } else {
+          this.message = "Payment failed! Please try again.";
+          await this.showAlert(this.message);
+          await this.makeGetRequest();
+        }
+      }
+    });
+  }
+
+  async updatePaymentStatus(paymentID: string){
+    console.log('PAID')
+    try {
+      const response = await this.http.put(`${this.apiURL}pay?paymentID=${paymentID}`, { observe: 'response' }).toPromise();
+      if(response !== undefined){
+        console.log(response)
+
+      } else {
+
+      }
+    } catch (error) {
+      console.log(error);
+      // Handle the error
+    }
+    
+  }
   
 
 
