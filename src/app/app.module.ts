@@ -30,6 +30,8 @@ import { DocumentViewer } from '@ionic-native/document-viewer/ngx';
 
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { environment } from 'src/environments/environment.prod';
+
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 const config: SocketIoConfig = { url: environment.SOCKET_API_URL, options: {}};
 
 @NgModule({
@@ -57,7 +59,8 @@ const config: SocketIoConfig = { url: environment.SOCKET_API_URL, options: {}};
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     Network,NetworkInterface, File,
     FileOpener,
-    DocumentViewer
+    DocumentViewer,
+    InAppBrowser
   ],
 
 

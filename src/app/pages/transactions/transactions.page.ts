@@ -3,11 +3,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SessionService } from 'src/app/shared/session.service';
 import { environment } from 'src/environments/environment';
-//import { Browser, BrowserPlugin } from '@capacitor/browser';
+import { Browser, BrowserPlugin } from '@capacitor/browser';
 import { NavController } from '@ionic/angular';
 import { Capacitor } from '@capacitor/core';
-
-
+import { InAppBrowser, InAppBrowserObject } from '@ionic-native/in-app-browser/ngx';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-transactions',
@@ -19,10 +19,13 @@ export class TransactionsPage implements OnInit {
   response:any
   apiURL = environment.API_URL
 
+
   constructor(private http: HttpClient,
     private router: Router,
     private session:SessionService,
     private navCtrl: NavController,
+    private inAppBrowser: InAppBrowser,
+    private alertController:AlertController
     ) { }
 
   ngOnInit() {
@@ -50,7 +53,7 @@ export class TransactionsPage implements OnInit {
     });
   }
 
-  async createPaymentLink(pay_fee:number) {
+  async createPaymentLink(pay_fee:number, paymentID: string) {
     const currentTimestamp = new Date().getTime();
 
     let transact_fee = Number((pay_fee * 0.022).toFixed(2));
@@ -70,26 +73,23 @@ export class TransactionsPage implements OnInit {
 
   
     try {
-      // const response: HttpResponse<any> = await this.http.post(apiUrl, formData, { observe: 'response' }).toPromise();
-      // if(response.status === 201){
-      //   console.log(response)
-      //   console.log(response.body.url)
-      //   const url = response.body.url
-      //   const url = response.body.url
-      //   const paymentID = response.body.id
+      const response: HttpResponse<any> = await this.http.post(apiUrl, formData, { observe: 'response' }).toPromise();
+      if(response.status === 201){
+        console.log(response)
+        const url = response.body.url
+        const id = response.body.id
+
+        const data = {
+          npPaymentID: id,
+          paymentID: paymentID
+        }
+
+        this.openBrowser(url, data)
 
 
-        this.openBrowser('http://capacitorjs.com/')
+      } else {
 
-      //   const data = {
-      //     paymentID: paymentID
-      //   }
-
-      //   console.log('transactions: '+paymentID)
-      //   // this.navCtrl.navigateForward('/payment-successful', { queryParams: { data } });
-      // } else {
-
-      // }
+      }
     } catch (error) {
       console.log(error);
       // Handle the error
@@ -98,38 +98,62 @@ export class TransactionsPage implements OnInit {
 
   }
 
-  async openBrowser(url){
-    // await Browser.open({
-    //   url: url,
-    //   toolbarColor: '#FF0000',
-    //   presentationStyle: 'popover',
-    // });
+  async openBrowser(url:string, data:any) {
+
+    await Browser.open({url: url})
+    Browser.addListener('browserFinished', () => {
+      console.log(data)
+      // this.navCtrl.navigateForward(['/payment-successful'], { queryParams: { data } });
+      
+    })
+  }
   
-    // Browser.addListener('browserFinished', () => {
-    //   // Do something when the browser tab is closed
-    //   console.log('Browser tab closed');
-    // });
-    // const browser = await Browser.open({ url: 'http://capacitorjs.com/' });
 
-    // await browser?.addListener('browserPageLoaded', () => {
-    //   console.log('Page loaded!');
-    // });
-    
 
-    
+  
+  async showAlert(message:string, header:string) {
+    const alert = await this.alertController.create({
+      header: header,
+      subHeader: '',
+      message: message,
+      buttons: ['OK'],
+    });
+
+    await alert.present();
   }
 
+  
 
-  // async function openBrowser(url: string) {
-  //   const browser = await CapacitorBrowser.open({ url });
-  //   await CapacitorBrowser.addListener('browserFinished', () => {
-  //     CapacitorBrowser.close();
-  //     window.location.href = '/another-page';
-  //   }, { windowId: browser.windowId });
-  //   await CapacitorBrowser.waitForClose({ windowId: browser.windowId });
+  // async getLink() {
+  //   const paymentID = await this.activatedroute.snapshot.queryParams['data']['paymentID'];
+  //   const npPaymentID = await this.activatedroute.snapshot.queryParams['data']['npPaymentID'];
+  //   console.log('payment IDDD')
+  //   const apiUrl = `${this.apiURL}payLinks?paymentID=${npPaymentID}`
+  //   this.http.get(apiUrl).subscribe(async (data) => {
+  //     if (typeof data === 'string') {
+  //       this.response = JSON.parse(data);
+  //       console.log(this.response)
+  //     } else {
+  //       this.response = Object.values(data);
+  //       console.log(this.response)
+  //       console.log('payments_count')
+  //       this.payments_count = this.response['9']
+  
+  //       if (this.payments_count > 0){
+  //         this.message = "Paid successfully!";
+  //         await this.updatePaymentStatus(paymentID);
+         
+  //         //await this.getLink();
+  //       } else {
+  //         this.message = "Payment failed! Please try again.";
+   
+  //       }
+  //     }
+  //   });
   // }
   
 
 
 
 }
+

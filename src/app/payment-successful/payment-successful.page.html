@@ -5,8 +5,9 @@
   <div class="main-container">
     <ion-grid [fixed]="true" class="container">
       <ion-row class="center">
-        <ion-button (click)="getLink()" color="success">Check Validity</ion-button>
         <ion-label>{{message}}</ion-label>
+        <ion-button (click)="gotoTransactions()" color="success">Transactions</ion-button>
+        <ion-button (click)="getLink()" color="success">Check Validity</ion-button>
       </ion-row>
     </ion-grid>
   </div>

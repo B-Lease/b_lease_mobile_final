@@ -9,7 +9,7 @@
 
   <div class="container">
     <ion-list *ngFor="let item of response"> 
-      <ion-item button detail="false" (click)="createPaymentLink(item.pay_fee)">
+      <ion-item button detail="false" (click)="createPaymentLink(item.pay_fee, item.paymentID)">
         <ion-row style="padding-bottom:7px">
           <ion-col size="10" class="ion-no-padding">
             <ion-text *ngIf="item.leasing_payment_frequency === '1'" style="font-size:9px;">One-Time Payment</ion-text>
