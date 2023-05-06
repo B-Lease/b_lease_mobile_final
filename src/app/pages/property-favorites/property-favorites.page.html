@@ -11,9 +11,13 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-text color="medium" *ngIf="favorite_property == null">
+
+  <div class="center-all" *ngIf="favorite_property == null">
+  <ion-text color="medium" >
     <h3>No property favorites</h3>
   </ion-text>
+  
+</div>
 
   <ion-card class="product_card" *ngFor="let property of favorite_property">
 

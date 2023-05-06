@@ -70,6 +70,13 @@
   align-content: center;
 }
 
+.center-all {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height:100%;
+}
+
 .container {
   --ion-grid-padding: 250px;
 }

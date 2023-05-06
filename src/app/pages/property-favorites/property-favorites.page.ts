@@ -17,7 +17,7 @@ import axios from 'axios';
 export class PropertyFavoritesPage implements OnInit {
   private sessionID;
   private userID;
-  favorite_property:any;
+  favorite_property:any = null;
   public dataLoaded = false;
   favorite_propertyIDs:any[] = [];
   IMAGES_URL = environment.API_URL+'propertyimages/'
@@ -57,8 +57,16 @@ export class PropertyFavoritesPage implements OnInit {
  async getMyPropertyFavorites(){
   await axios.get(`${environment.API_URL}favorites?sessionID=${this.sessionID}&userID=${this.userID}`)
   .then(response => {
- 
-    this.favorite_property = response.data;
+    if (response.data.message === "No property favorites")
+    {
+     this.favorite_property = null;
+    }
+    else{
+      this.favorite_property = response.data;
+    }
+
+
+    
     this.dataLoaded = true;
     // handle the response data here
   })
@@ -75,13 +83,17 @@ export class PropertyFavoritesPage implements OnInit {
     axios.delete(environment.API_URL+`favorites?propertyID=${propertyID}&userID=${this.userID}&sessionID=${this.sessionID}`)
     .then(response => {
       console.log('Property removed from favorites');
+    
       this.showToast("Property removed from favorites");
-      this.getPropertyFavoriteIDs();
-      this.getMyPropertyFavorites();
+      
     })
     .catch(error => {
       console.error('Error:', error);
     });
+    await this.getPropertyFavoriteIDs();
+    await this.getMyPropertyFavorites();
+
+
   
   
 
@@ -112,6 +124,6 @@ toast.present();
 }
 
 navigateDashboard(){
-  this.navCtrl.navigateBack("/dashboard");
+  this.navCtrl.navigateRoot("/dashboard");
 }
 }
