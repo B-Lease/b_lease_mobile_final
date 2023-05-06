@@ -23,6 +23,7 @@ export class DashboardPage implements OnInit {
   private sessionID;
   private userID;
   public dataLoaded = false;
+  searchQuery:string = "";
   favorite_propertyIDs:any[] = [];
   // private  sessionData = [];
   
@@ -102,12 +103,22 @@ export class DashboardPage implements OnInit {
         
       }),
     };
-
-    this.http.get(this.apiURL+"?sessionID="+this.sessionID, httpOptions).subscribe((data: any[]) => {
-      this.propertyData = data;
-      console.log(this.propertyData);
-      this.dataLoaded = true;
-    });
+    if(this.searchQuery != "")
+    {
+      this.http.get(environment.API_URL+"searchProperty?sessionID="+this.sessionID+"&query="+this.searchQuery, httpOptions).subscribe((data: any[]) => {
+        this.propertyData = data;
+        console.log(this.propertyData);
+        this.dataLoaded = true;
+      });
+    }
+    else{
+      this.http.get(this.apiURL+"?sessionID="+this.sessionID, httpOptions).subscribe((data: any[]) => {
+        this.propertyData = data;
+        console.log(this.propertyData);
+        this.dataLoaded = true;
+      });
+    }
+  
    }
 
 
@@ -195,8 +206,12 @@ async openFavorites()
   this.navCtrl.navigateForward("/property-favorites");
 }
 
-onEnter(value: string) {
-  // Do something with the search value entered by the user
-  console.log('Search value:', value);
+async onEnter() {
+  console.log('Search value:', this.searchQuery);
+   await this.getPropertyListings();
+}
+
+async onClearSearch() {
+  await this.getPropertyListings();
 }
 }
