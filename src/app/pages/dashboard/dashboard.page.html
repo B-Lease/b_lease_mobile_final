@@ -16,7 +16,8 @@
   <div class="search">
     <ion-row>
       <ion-col class="search_bar_col">
-        <ion-searchbar animated="true" placeholder="Search" (keyup.enter)="onEnter($event.target.value)"></ion-searchbar>
+        <ion-searchbar (ionClear)="onClearSearch()" animated="true" [(ngModel)] = "searchQuery" placeholder="Search" (keyup.enter)="onEnter()"></ion-searchbar>
+
       </ion-col>
       <!-- Filter Icon -->
       <!-- <ion-col class="search_filter_col">
@@ -25,7 +26,7 @@
         </span>
       </ion-col> -->
     </ion-row>
-  </div>
+  </div>~
 
 
   <!-- filter modal -->
