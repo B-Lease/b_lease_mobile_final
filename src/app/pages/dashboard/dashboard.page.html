@@ -12,7 +12,9 @@
 </ion-header>
 
 <ion-content>
-
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <div class="search">
     <ion-row>
       <ion-col class="search_bar_col">
@@ -131,7 +133,7 @@
 
     <ion-slides pager="true" class="list_image_slides" [routerLink]="['/view-individual-listing/'+property.propertyID]">
       <ion-slide *ngFor="let img of property.images">
-        <img alt="Silhouette of mountains" [src]="IMAGES_URL+property.propertyID+'/'+img" class="cover" />
+        <img alt="Property Images" [src]="IMAGES_URL+property.propertyID+'/'+img" class="cover" />
 
       </ion-slide>
 
@@ -142,7 +144,7 @@
         <ion-row>
           <ion-col class="product_title" *ngIf="dataLoaded"
             [routerLink]="['/view-individual-listing/'+property.propertyID]">
-            {{property.address}}
+           <b> {{property.address}}</b>
           </ion-col>
           <ion-col class="product_title" *ngIf="!dataLoaded"
             [routerLink]="['/view-individual-listing/'+property.propertyID]">

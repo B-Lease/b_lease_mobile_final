@@ -81,20 +81,26 @@
 
 .terms {
     display: flex;
-   
+    height:100%;
+    width:100%;
+    align-items: center;
+    justify-content: center;
     
 
 }
 
 .terms-check {
-    margin-right: 20px;
-    align-items: center;
-    justify-content: center;
-    margin-top:10px;
+float:right;
+height:100%;
 }
 
 .terms-desc {
     font-family: Inter Light;
+    display:flex;
+    height:100%;
+    width:100%;
+    align-items: center;
+    justify-content: center;
 }
 
 

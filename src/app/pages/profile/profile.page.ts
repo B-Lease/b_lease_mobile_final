@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavController } from '@ionic/angular';
-import { Router,ActivatedRoute, Route } from '@angular/router';
+import { Router, ActivatedRoute, Route } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { SessionService } from 'src/app/shared/session.service';
 import { ActionSheetController } from '@ionic/angular';
 import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
 import { isPlatform } from '@ionic/angular';
 import { environment } from 'src/environments/environment.prod';
+import { IonModal } from '@ionic/angular';
+import { OverlayEventDetail } from '@ionic/core/components';
 
 @Component({
   selector: 'app-profile',
@@ -14,69 +16,87 @@ import { environment } from 'src/environments/environment.prod';
   styleUrls: ['./profile.page.scss'],
 })
 export class ProfilePage implements OnInit {
+  @ViewChild(IonModal) modal: IonModal;
 
   public dataLoaded = false;
 
   private sessionID;
   private userID;
-  userData:any;
+  userData: any;
 
 
-  phone:any
-  firstname:any
-  middlename:any
-  lastname:any
-  email:any
-  address:any
+  phone: any
+  firstname: any
+  middlename: any
+  lastname: any
+  email: any
+  address: any
   user_img: any;
 
   constructor(
     public navCtrl: NavController,
-    private activatedroute:ActivatedRoute,
-    private router:Router,
+    private activatedroute: ActivatedRoute,
+    private router: Router,
     private http: HttpClient,
-    private session:SessionService,
-    private actionSheetCtrl:ActionSheetController
-    ) { 
+    private session: SessionService,
+    private actionSheetCtrl: ActionSheetController
+  ) {
 
 
 
-    if (!isPlatform('capacitor')){
+    if (!isPlatform('capacitor')) {
       GoogleAuth.initialize();
     }
 
   }
-  
+
   apiURL = environment.API_URL;
   async ngOnInit() {
 
-  // Call the method here to make sure the page has fully loaded
-  await this.session.init();
-  await this.getSessionData();
-  await this.getProfileInfo();
+    // Call the method here to make sure the page has fully loaded
+    await this.session.init();
+    await this.getSessionData();
+    await this.getProfileInfo();
   }
 
-  async ngAfterInit(){
+  async handleRefresh(event) {
+    await setTimeout(() => {
+
+      this.session.init();
+      this.getSessionData();
+      this.getProfileInfo();
+
+      event.target.complete();
+    }, 2000);
   }
 
-  
-  async getSessionData(){
+
+  async ngAfterInit() {
+  }
+
+  closeTerms() {
+    this.modal.dismiss(null, 'cancel');
+  }
+
+
+
+  async getSessionData() {
     let sessionID_data = await this.session.getSessionID();
     let userID_data = await this.session.getUserID();
-    console.log('SESSION ID : '+sessionID_data);
-    console.log('USER ID : '+userID_data);
+    console.log('SESSION ID : ' + sessionID_data);
+    console.log('USER ID : ' + userID_data);
     this.sessionID = sessionID_data;
     this.userID = userID_data;
 
- }
+  }
 
   public async getProfileInfo() {
     try {
       const headers = new HttpHeaders().set('Content-Type', 'application/json');
       const data = await this.http.get(this.apiURL + '/user?userID=' + this.userID, { headers }).toPromise();
-  
+
       this.userData = JSON.parse(data.toString());
-      
+
       console.log(this.userData);
 
       this.phone = this.userData.phone_number;
@@ -87,8 +107,8 @@ export class ProfilePage implements OnInit {
       this.address = this.userData.address;
       this.user_img = this.userData.user_img;
 
-      this.user_img = this.user_img === null?"assets/icon/user.svg":this.user_img;
-      this.address = this.userData.address === null?"No address yet":this.userData.address;
+      this.user_img = this.user_img === null ? "assets/icon/user.svg" : this.user_img;
+      this.address = this.userData.address === null ? "No address yet" : this.userData.address;
       this.dataLoaded = true;
     } catch (error) {
       console.error(error);
@@ -96,12 +116,12 @@ export class ProfilePage implements OnInit {
   }
 
 
-  navigateMyListing(){
+  navigateMyListing() {
 
-      this.router.navigate(['/my-listing']);
+    this.router.navigate(['/my-listing']);
 
   }
- 
+
   async logoutActionSheet() {
     const actionSheet = await this.actionSheetCtrl.create({
       header: 'Log out',
@@ -127,18 +147,18 @@ export class ProfilePage implements OnInit {
     await actionSheet.present();
 
     const result = await actionSheet.onDidDismiss();
-    if( result.data?.action == 'logout'){
+    if (result.data?.action == 'logout') {
       await GoogleAuth.signOut();
       await this.session.logOutSession();
-         
-        
-        
-    
+
+
+
+
     }
   }
 
 
-  navigateMyContracts(){
+  navigateMyContracts() {
     this.navCtrl.navigateForward(['/list-contracts']);
   }
 

@@ -1,4 +1,115 @@
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  
+  <ion-modal trigger="open-terms-modal" style=" --background: #fff">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="closeTerms()">Close</ion-button>
+          </ion-buttons>
+          <ion-title>Terms and Conditions</ion-title>
+      
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding" style="background-color: white;--background: #fff; ">
+        <ion-row>
+        <ion-item>
+          <ion-text ><h3>TERMS AND CONDITIONS FOR THE USE OF B-LEASE APPLICATION</h3></ion-text>
+        </ion-item>
+      </ion-row>
+      <br><br>
+      <ion-row>
+        <br>
+        <ion-text  class="text-justify">
+          Welcome to B-Lease, the mobile application that allows you to lease and rent properties easily. These terms and conditions (the "Agreement") govern your use of the B-Lease application ("the App") and all related services provided by B-Lease Inc. ("the Company"). By downloading, installing or using the App, you agree to be bound by the terms and conditions of this Agreement.
+        </ion-text>
+        <br>
+      </ion-row>
+        <br><hr><br>
+        <ion-row>
+          <ion-text class="text-justify">
+           <b> 1. REGISTRATION: </b> In order to use the App, you must register and create an account. You agree to provide accurate and complete information during registration and to keep your account information up-to-date. You are responsible for maintaining the confidentiality of your account login credentials and for all activities that occur under your account.
+          </ion-text>
+        </ion-row>
+        <br><br>
+        <ion-row>
+          <ion-text class="text-justify" >
+           <b> 2. USE OF THE APP: </b>The App is designed to facilitate the leasing and renting of properties. You agree to use the App only for lawful purposes and in compliance with all applicable laws, rules, and regulations. You may not use the App to engage in any activity that is illegal, unethical, or harmful.
+          </ion-text>
+        </ion-row>
+        <br><br>
+        <ion-row>
+          <ion-text class="text-justify">
+           <b> 3. PROPERTY LISTINGS:</b> The Company does not own, lease or rent any properties listed on the App. The Company is not responsible for the accuracy, completeness, or legality of any property listing on the App. The Company reserves the right to remove or modify any property listing on the App at any time and without notice.
+          </ion-text>
+        </ion-row>
+        <br><br>
+        <ion-row>
+          <ion-text class="text-justify">
+           <b> 4. FEES: </b>The use of the App is free for lessees and lessors. The Company reserves the right to change its fee structure at any time and without notice. Lessors will be charged a commission of 12% of their income for every successful lease transaction. Lessees will be charged a fixed transactional fee of Php 210 for every successful lease transaction. Properties listed for lease must have a minimum monthly rental price of Php 19,000. Lease contracts must have a minimum duration of 6 months.
+          </ion-text>
+        </ion-row>
+        <br><br>
+        <ion-row>
+          <ion-text class="text-justify">
+          <b> 5. PAYMENTS:</b> Both lessees and lessors may be subject to fees for the use of the App or related services. The Company reserves the right to change its fee structure at any time and without notice. The App may allow for the payment of rental fees, service fees, and other charges. You agree to pay all fees and charges in accordance with the terms and conditions set forth on the App. All payments are processed through a third-party payment processor and the Company is not responsible for any errors or disputes related to payments made through the App.
+          </ion-text>
+        </ion-row>
+        <br><br>
+        <ion-row>
+          <ion-text class="text-justify">
+          <b> 6. INTELLECTUAL PROPERTY: </b>The App and all content and materials on the App, including but not limited to, logos, text, graphics, images, and software, are owned by the Company or its licensors and are protected by copyright, trademark, and other intellectual property laws. You may not use or reproduce any of the content or materials on the App without the prior written consent of the Company.
+          </ion-text>
+        </ion-row>
+        <br><br>
+        <ion-row>
+          <ion-text class="text-justify">
+           <b> 7. DISCLAIMER OF WARRANTIES: </b>The App and all related services are provided on an “as is” and “as available” basis without warranties of any kind, either express or implied. The company disclaims all warranties, including, but not limited to, implied warranties of merchantability, fitness for a particular purpose, and non infringement.
+          </ion-text>
+        </ion-row>
+        <br><br>
+        <ion-row>
+          <ion-text class="text-justify">
+          <b>  8. LIMITATION OF LIABILITY:</b> The company shall not be liable for any direct, indirect, incidental, special, or consequential damages arising out of or in connection with your use of the App or related services. In no event shall the company’s total liability exceed the amount you paid to the company in the past six months.
+          </ion-text>
+        </ion-row>
+        <br><br>
+        <ion-row>
+          <ion-text class="text-justify">
+           <b> 9. INDEMNIFICATION: </b> You agree to indemnify, defend, and hold harmless the Company and its officers, directors, employees, and agents from any and all claims, damages, losses, liabilities, costs, and expenses (including reasonable attorneys' fees) arising out of or in connection with your use of the App or related services.
+          </ion-text>
+        </ion-row>
+        <br><br>
+        <ion-row>
+          <ion-text class="text-justify">
+           <b> 10. MODIFICATIONS: </b> The Company reserves the right to modify or update this Agreement at any time and without notice. Your continued use of the App following any such modification constitutes your agreement to be bound by the modified Agreement.
+          </ion-text>
+        </ion-row>
+        <br><br>
+        <ion-row>
+          <ion-text class="text-justify">
+           <b>11. GOVERNING LAW: </b> This Agreement shall be governed by and construed in accordance with the laws of the state where the Company is headquartered, without regard to its conflict of laws
+          </ion-text>
+        </ion-row>
+        <br><br>
+        <ion-row>
+          <ion-text class="text-justify">
+           <b> 12. RENTAL TERM:</b> The minimum rental term for any property listed on the App shall be 6 months. The Company is not responsible for any disputes related to rental terms and conditions agreed upon by the lessor and lessee.
+          </ion-text>
+        </ion-row>
+        <br><br>
+        <ion-row>
+          <ion-text class="text-justify">
+            <b> 13. CONTRACTS: </b> Lessors and lessees shall not enter into any rental agreements or contracts for any property listed on the App without notifying the Company and obtaining the Company's approval in writing. The Company reserves the right to refuse approval for any rental agreement or contract for any reason. The Company is not responsible for any disputes related to rental agreements or contracts entered into by lessors and lessees without the Company's approval.
+          </ion-text>
+        </ion-row>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
   <div class="user_info" *ngIf="dataLoaded">
     <div class="title"><ion-text><h3>Profile</h3></ion-text></div>
     <ion-row>
@@ -19,7 +130,8 @@
   <div class="colspan"></div>
   <div class="contact_info_details"><ion-icon name="mail"></ion-icon><ion-text class="details"><span>{{email}}</span></ion-text></div>
 </div>
-<div class="contact_info">
+<!-- address -->
+<!-- <div class="contact_info">
   <div class="colspan"></div>
   <div class="contact_info_details">
     <div class="icon">
@@ -29,7 +141,7 @@
     <ion-text><span >{{address}}</span></ion-text>
   </div>
   </div>
-</div>
+</div> -->
 </div>
 </div>
 
@@ -74,16 +186,13 @@
     <ion-col><ion-text>My Contract</ion-text></ion-col>
   </ion-row>
   <ion-row [routerLink] = "['/settings']" >
-    <ion-col size="auto"><ion-icon src="..\assets\icon\setting.svg"></ion-icon></ion-col>
+    <ion-col size="auto"><ion-icon name="settings"></ion-icon></ion-col>
     <ion-col><ion-text>Settings</ion-text></ion-col>
   </ion-row>
+  
   <ion-row>
-    <ion-col size="auto"><ion-icon name="link"></ion-icon></ion-col>
-    <ion-col><ion-text>Linked Accounts</ion-text></ion-col>
-  </ion-row>
-  <ion-row>
-    <ion-col size="auto"><ion-icon name="help-circle"></ion-icon></ion-col>
-    <ion-col><ion-text>Help and Support</ion-text></ion-col>
+    <ion-col size="auto"><ion-icon name="newspaper"></ion-icon></ion-col>
+    <ion-col id="open-terms-modal"><ion-text>Terms and Conditions</ion-text></ion-col>
   </ion-row>
   <ion-row (click)="logoutActionSheet()">
     <ion-col size="auto"><ion-icon name="log-out"></ion-icon></ion-col>

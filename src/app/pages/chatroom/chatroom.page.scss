@@ -1,6 +1,7 @@
 .message{
     --ion-grid-column-padding: 15px;
     border-radius: 29px;
+    max-width:75%;
 }
 
 .left{
@@ -11,6 +12,7 @@
     text-align: right;
     background-color: #40A047;
     color: #fff;
+    float:right
 }
 
 .set-contract{

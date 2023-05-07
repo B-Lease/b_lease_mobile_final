@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActionSheetController, NavController } from '@ionic/angular';
+import { ActionSheetController, NavController, ToastController } from '@ionic/angular';
 import axios from 'axios';
 import { environment } from 'src/environments/environment.prod';
 import { SessionService } from 'src/app/shared/session.service';
@@ -22,7 +22,8 @@ export class NotificationPage implements OnInit {
     private session:SessionService,
     private router:Router,
     private navCtrl:NavController,
-    private util:UtilService
+    private util:UtilService,
+    private toastCtrl:ToastController
     ) { }
 
   ngOnInit() {
@@ -65,6 +66,7 @@ export class NotificationPage implements OnInit {
           },  
           handler: () =>{
               console.log(notificationID);
+              this.deleteNotification(notificationID);
           }
         },
         {
@@ -93,6 +95,27 @@ export class NotificationPage implements OnInit {
     });
 
 
+    console.log(this.notificationData);
+  }
+  async deleteNotification(notificationID){
+    await axios.delete(environment.API_URL+'notifications'+`?sessionID=${this.sessionID}&userID=${this.userID}&notificationID=${notificationID}`)
+    .then(response => {
+      console.log(response.data);
+      if(response.data.message === 'Notification deleted')
+      {
+         this.showToast('Notification deleted');
+      }
+      else{
+        this.showToast('Error deleting notification');
+      }
+    })
+    .catch(error => {
+      console.log(error);
+    });
+
+    await this.getNotifications();
+
+    await this.countUnreadNotifications();
     console.log(this.notificationData);
   }
 
@@ -189,6 +212,14 @@ export class NotificationPage implements OnInit {
       console.error(error);
     });  
   }
+async showToast(msg){
+  let toast = await this.toastCtrl.create({
+    message: msg,
+    duration: 2000
+
+  });
+  toast.present();
+}
 
 
 }
