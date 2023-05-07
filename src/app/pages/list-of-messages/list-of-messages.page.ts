@@ -73,6 +73,7 @@ async getListMessages(){
       msg_receivername = item.lessor_fname;
     }
 
+
     const data = {
       userID: this.userID,
       leasingID : item.leasingID,
@@ -89,13 +90,14 @@ async getListMessages(){
 
       'address' : item.address,
       'land_description' : item.land_description,
+      'propertyID' : item.propertyID,
 
       'msg_senderID': msg_senderID,
       'msg_receiverID' : msg_receiverID,
       'msg_receivername': msg_receivername
     };
 
-
+    
 
     this.navCtrl.navigateForward('chatroom', { queryParams: { data } });
 

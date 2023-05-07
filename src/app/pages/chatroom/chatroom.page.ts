@@ -24,6 +24,7 @@ export class ChatroomPage implements OnInit {
   user_fname = '';
   lessorID = '';
   lesseeID = '';
+  propertyID = '';
 
   message = '';
   messages = [];
@@ -31,6 +32,7 @@ export class ChatroomPage implements OnInit {
 
   hideforlessee = true;
   hideforlessor = true;
+  ongoingcontract = true;
 
   @ViewChild('myContent', { static: true }) content: IonContent;
 
@@ -61,6 +63,7 @@ export class ChatroomPage implements OnInit {
       this.msg_senderID = data.msg_senderID;
       this.msg_receiverID = data.msg_receiverID;
       this.userID = data.userID;
+      this.propertyID = data.propertyID;
     }
     // this.activatedroute.paramMap.subscribe(queryParams =>{
     //   const data = queryParams.get('data');
@@ -79,16 +82,11 @@ export class ChatroomPage implements OnInit {
       this.msg_senderID = params.get('msg_senderID');
       this.msg_receiverID = params.get('msg_receiverID');
       this.userID = params.get('userID');
+      this.propertyID = params.get('propertyID');
 
   
       // rest of the code
     });
-    // this.leasingID = await  this.activatedroute.snapshot.paramMap['leasingID'];
-    // this.lessorID = await  this.activatedroute.snapshot.paramMap['lessorID'];
-    // this.lesseeID =  await this.activatedroute.snapshot.paramMap['lesseeID'];
-    // this.msg_senderID =  await this.activatedroute.snapshot.paramMap['msg_senderID'];
-    // this.msg_receiverID =  await this.activatedroute.snapshot.paramMap['msg_receiverID'];
-    // this.userID = await  this.activatedroute.snapshot.paramMap['userID'];
 
     console.log("LeasingID: "+ this.leasingID);
     console.log("LessorID: "+ this.lessorID);
@@ -98,18 +96,6 @@ export class ChatroomPage implements OnInit {
     console.log("USERID: "+ this.userID);
   }
 
-    // this.activatedroute.paramMap.subscribe(params => {
-    //   this.leasingID = params.get('leasingID');  
-    //   this.lessorID = params.get('lessorID');
-    //   this.lesseeID = params.get('lesseeID');
-    //   this.msg_senderID = params.get('msg_senderID');     //user 
-    //   this.msg_receiverID = params.get('msg_receiverID');
-  
-    //   //for going back to the list of messages
-    //   this.userID = params.get('userID');
-    // });
-    //if the sender of the message is the lessee,
-    //he or she can't set contracts (link is hidden) 
     if (this.msg_senderID == this.lesseeID){
       //user is a lessee, so the hideforlessor attribute becomes false
       this.hideforlessor = false;
@@ -122,25 +108,32 @@ export class ChatroomPage implements OnInit {
 
     this.getMessages().subscribe( message => {
       this.messages.push(message);
-      //murag diri ka mag insert sa code, if usa pa ang length sa message
-      //nga array kay mu notify kas lessor
       console.log(this.messages)
     });
 
+    this.checkOngoingContracts();
 
-
-   
-    
   }
-
-
-  
-
 
   ionViewDidEnter(){
     this.content.scrollToBottom(0);
   }
   
+  checkOngoingContracts(){
+    console.log('check ongoing contracts')
+    console.log(`${this.apiURL}leasing?check_existing=set&propertyID=${this.propertyID}`)
+    this.http.get(`${this.apiURL}leasing?check_existing=set&propertyID=${this.propertyID}`).subscribe((data) => {
+      if (typeof data === 'string') {
+        this.response = JSON.parse(data);
+        console.log(this.response)
+        this.ongoingcontract = false;
+
+      } else {
+        this.response = Object.values(data);
+        console.log(this.response)
+      }
+    });
+  }
 
   openInbox(){
     const data = {

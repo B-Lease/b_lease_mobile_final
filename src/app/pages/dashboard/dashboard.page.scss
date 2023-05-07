@@ -22,3 +22,37 @@
     text-align: center;
     
 }
+
+.fixed-element {
+    position: fixed;
+    top: 0;
+    left: 0;
+   
+    z-index: 9999;
+  }
+
+
+  .search {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .fixed-element {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-top: none;
+    max-height: 500px;
+    overflow-y:scroll;
+    
+
+  }
+  
+  .fixed-element ion-list {
+    margin: 0;
+    padding: 0;
+  }
+  

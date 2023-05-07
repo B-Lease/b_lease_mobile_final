@@ -35,9 +35,13 @@
     </ion-item>
   </ion-row>
   <ion-row class="center" [hidden]="hideforlessee">
-    <ion-item lines="none">
+    <ion-item lines="none" [hidden]="!ongoingcontract">
       <ion-text color="primary"><p style="margin-right:4px">Interested in leasing?</p></ion-text>
       <ion-text color="success" class="links" (click)="setContract()">Set a contract now.</ion-text>
+    </ion-item>
+
+    <ion-item lines="none" [hidden]="ongoingcontract">
+      <ion-text color="primary"><p style="margin-right:4px">There is an ongoing contract with this property.</p></ion-text>
     </ion-item>
   </ion-row>
   <ion-toolbar>

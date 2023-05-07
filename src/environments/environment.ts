@@ -10,9 +10,10 @@ export const environment = {
 
   // API URL and SOCKET_API_URL defined here
   //Change this if you change your server network
-  API_URL: 'http://192.168.1.3:5000/',
+
+  API_URL: 'http://192.168.1.12:5000/',
   
-  SOCKET_API_URL: 'http://192.168.1.3:5001',
+  SOCKET_API_URL: 'http://192.168.1.12:5001',
 
 
   //This is the template for greeting message when Lessees inquire properties

@@ -3,6 +3,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { UtilService } from 'src/app/shared/util.service';
 @Component({
   selector: 'app-add-complaint',
   templateUrl: './add-complaint.page.html',
@@ -12,7 +13,13 @@ export class AddComplaintPage implements OnInit {
   API_URL = environment.API_URL;
   complaint_subject = ''
   complaint_desc = ''
-  constructor(private http: HttpClient, private activatedroute: ActivatedRoute, private alertController: AlertController, private router: Router) { }
+  constructor(
+    private http: HttpClient, 
+    private activatedroute: ActivatedRoute, 
+    private alertController: AlertController, 
+    private router: Router,
+    private util:UtilService
+    ) { }
 
   ngOnInit() {
   }
@@ -31,10 +38,11 @@ export class AddComplaintPage implements OnInit {
       'complainerID': data['complainerID'],
       'complaineeID': data['complaineeID'],
       'complaint_status': 'pending',
-      'created_at': currentDate
+      'created_at': this.util.getCurrentDateTime()
     };
 
-    try {
+    try 
+    {
       const response: HttpResponse<any> = await this.http.post(`${this.API_URL}complaints`, formData, { observe: 'response' }).toPromise();
       if(response.status === 204){
         console.log(response.status)

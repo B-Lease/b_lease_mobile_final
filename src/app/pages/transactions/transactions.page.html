@@ -8,8 +8,39 @@
   <ion-button class="paid-button" shape="round" color="light" style="margin-left: 5px; zoom:0.8">Paid</ion-button> -->
 
   <div class="container">
+    <ion-segment class="ion-no-padding" (ionChange)="getFilter($event)" [value]="filter">
+      <ion-segment-button value="pay_lesseeID">
+        <ion-label class="button-labels">Rental Expenses</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="pay_lessorID">
+        <ion-label class="button-labels">Rental Income</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
     <ion-list *ngFor="let item of response"> 
-      <ion-item button detail="false" (click)="createPaymentLink(item.pay_fee, item.paymentID)">
+      <ion-item button detail="false" (click)="createPaymentLink(item.pay_fee, item.paymentID)" *ngIf="item.pay_status === 'pending' && filter === 'pay_lesseeID'" >
+        <ion-row style="padding-bottom:7px">
+          <ion-col size="10" class="ion-no-padding">
+            <ion-text *ngIf="item.leasing_payment_frequency === '1'" style="font-size:9px;">One-Time Payment</ion-text>
+            <ion-text *ngIf="item.leasing_payment_frequency === '2'" style="font-size:9px;">Monthly Payment</ion-text>
+            <ion-text *ngIf="item.leasing_payment_frequency === '3'" style="font-size:9px;">Quarterly Payment</ion-text>
+            <ion-text *ngIf="item.leasing_payment_frequency === '4'" style="font-size:9px;">Yearly Payment</ion-text>
+          </ion-col>
+          
+          <ion-icon *ngIf="item.pay_status === 'pending'" name="remove-circle" color="warning" style="zoom:0.8"></ion-icon>
+          <ion-icon *ngIf="item.pay_status === 'paid'" name="checkmark-circle" color="success" style="zoom:0.8"></ion-icon>
+  
+          <ion-label *ngIf="item.pay_status === 'pending'" style="font-size: 9px;" color="warning">{{item.pay_status}}</ion-label>
+          <ion-label *ngIf="item.pay_status === 'paid'" style="font-size: 9px;" color="success">{{item.pay_status}}</ion-label>
+          <ion-col size="9" class="ion-no-padding">
+            <ion-text style="font-size:11px; font-weight: bold;">{{item.address}}&nbsp;</ion-text><br>
+            <ion-text color="success" style="font-weight: bold; font-size: 10px;">Php {{item.pay_fee}}</ion-text>
+          </ion-col> 
+          
+          <ion-col size="10" class="ion-no-padding"><ion-text style="font-size:9px;">{{item.pay_date}}</ion-text></ion-col> 
+        </ion-row> 
+    </ion-item>   
+      <ion-item button detail="false"  *ngIf="item.pay_status === 'paid' || filter === 'pay_lessorID'">
         <ion-row style="padding-bottom:7px">
           <ion-col size="10" class="ion-no-padding">
             <ion-text *ngIf="item.leasing_payment_frequency === '1'" style="font-size:9px;">One-Time Payment</ion-text>
