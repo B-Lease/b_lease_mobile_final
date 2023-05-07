@@ -16,9 +16,16 @@
   <div class="search">
     <ion-row>
       <ion-col class="search_bar_col">
-        <ion-searchbar (ionClear)="onClearSearch()" animated="true" [(ngModel)] = "searchQuery" placeholder="Search" (keyup.enter)="onEnter()"></ion-searchbar>
+        <ion-searchbar debounce="500" (ionChange)="handleInput($event)" show-cancel-button="focus" show-clear-button="focus" (ionClear)="onClearSearch()" animated="true" [(ngModel)] = "searchQuery" placeholder="Search" (keyup.enter)="onEnter()"></ion-searchbar>
 
       </ion-col>
+      <div class="fixed-element">
+      <ion-list>
+        <ion-item *ngFor="let result of searchSuggestions">
+          <ion-label (click)="searchThis(result)" style="white-space:break-spaces">{{ result }}</ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
       <!-- Filter Icon -->
       <!-- <ion-col class="search_filter_col">
         <span id="open-modal"> <ion-text color="medium" id="search_filter"  expand="block"><ion-icon
@@ -26,7 +33,7 @@
         </span>
       </ion-col> -->
     </ion-row>
-  </div>~
+  </div>
 
 
   <!-- filter modal -->
