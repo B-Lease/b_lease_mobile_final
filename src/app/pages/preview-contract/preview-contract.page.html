@@ -30,7 +30,7 @@
       </ion-button>
     </ion-list>
 
-    <ion-button shape="round" color="light" *ngIf = "display2" (click)="declineContract()">{{button2}}</ion-button>
+    <ion-button shape="round" color="light" *ngIf = "display2" (click)="declineContract()" [disabled]="notpastdate">{{button2}}</ion-button>
     <ion-button shape="round" color="success" *ngIf = "display3" (click)="checkSignature()">{{button3}}</ion-button>
   </ion-grid>
   

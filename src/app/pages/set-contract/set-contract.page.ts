@@ -148,6 +148,14 @@ export class SetContractPage implements OnInit {
 
   }
 
+  onDateChanged() {
+    console.log(this.leasing_end)
+    console.log(this.leasing_start)
+    // Call your desired function with the selected date
+    //myFunction(selectedDate);
+  }
+  
+
   async openWordContract(){
     const leasingID = this.activatedroute.snapshot.queryParams['data']['leasingID'];
     const url = this.API_URL+`leasingdocs?leasingID=${leasingID}`
