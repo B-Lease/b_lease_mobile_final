@@ -19,7 +19,8 @@ export class TransactionsPage implements OnInit {
   response:any
   apiURL = environment.API_URL
 
-
+  filter = 'pay_lesseeID';
+  paymentData:any[] = [];
   constructor(private http: HttpClient,
     private router: Router,
     private session:SessionService,
@@ -28,7 +29,8 @@ export class TransactionsPage implements OnInit {
     private alertController:AlertController
     ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+  
   }
 
 
@@ -36,13 +38,20 @@ export class TransactionsPage implements OnInit {
   async ionViewDidEnter(){
     this.userID = await this.session.getUserID()
     console.log(this.userID)
-    await this.makeGetRequest()
+    await this.makeGetRequest();
 
+  }
+
+  getFilter(event: Event) {
+    this.filter = (event as CustomEvent<any>).detail.value;
+    this.makeGetRequest();
+    
   }
   
   async makeGetRequest() {
+    const userID = this.userID
+    const apiUrl = `${this.apiURL}pay?${this.filter}=${userID}`
 
-    const apiUrl = `${this.apiURL}pay?userID=${this.userID}`
     this.http.get(apiUrl).subscribe(data => {
       if (typeof data === 'string') {
         this.response = JSON.parse(data);
@@ -50,6 +59,7 @@ export class TransactionsPage implements OnInit {
       } else {
         this.response = Object.values(data);
       }
+
     });
   }
 
@@ -109,21 +119,8 @@ export class TransactionsPage implements OnInit {
   }
   
 
-
-  
-  async showAlert(message:string) {
-    const alert = await this.alertController.create({
-      header: 'Lessee Rental',
-      subHeader: '',
-      message: message,
-      buttons: ['OK'],
-    });
-
-    await alert.present();
-  }
-
-  payments_count:any;
-  message: string;
+  payments_count:number = 0;
+  message: string= '';
 
   async getLink(data) {
     const paymentID = data['paymentID'];
@@ -139,21 +136,37 @@ export class TransactionsPage implements OnInit {
         console.log(this.response)
         console.log('payments_count')
         this.payments_count = this.response['9']
-  
+        
         if (this.payments_count > 0){
           this.message = "Paid successfully!";
           await this.updatePaymentStatus(paymentID);
           await this.showAlert(this.message);
+          this.payments_count = 0;
+          this.message = "";
           await this.makeGetRequest();
-         
-          //await this.getLink();
+          //this.navCtrl.navigateRoot('/dashboard');
+
         } else {
           this.message = "Payment failed! Please try again.";
           await this.showAlert(this.message);
+          this.payments_count = 0;
+          this.message = "";
           await this.makeGetRequest();
+          //this.navCtrl.navigateRoot('/dashboard');
         }
       }
     });
+  }
+
+  async showAlert(message:string) {
+    const alert = await this.alertController.create({
+      header: 'Lessee Rental',
+      subHeader: '',
+      message: message,
+      buttons: ['OK'],
+    });
+
+    await alert.present();
   }
 
   async updatePaymentStatus(paymentID: string){

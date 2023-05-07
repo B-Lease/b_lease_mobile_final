@@ -4,6 +4,7 @@ import axios from 'axios';
 import { environment } from 'src/environments/environment.prod';
 import { SessionService } from 'src/app/shared/session.service';
 import { Router } from '@angular/router';
+import { UtilService } from 'src/app/shared/util.service';
 @Component({
   selector: 'app-notification',
   templateUrl: './notification.page.html',
@@ -20,7 +21,8 @@ export class NotificationPage implements OnInit {
     private actionSheetCtrl: ActionSheetController,
     private session:SessionService,
     private router:Router,
-    private navCtrl:NavController
+    private navCtrl:NavController,
+    private util:UtilService
     ) { }
 
   ngOnInit() {
@@ -95,9 +97,11 @@ export class NotificationPage implements OnInit {
   }
 
 
-  viewNotification(notification:any){
+ async viewNotification(notification:any){
     console.log(notification.notification_categ);
     var categ = notification.notification_categ;
+    
+   await this.util.readNotification(notification.notificationID, this.userID, this.sessionID);
     
     if(categ === 'Property Listing Approval')
     {
@@ -162,6 +166,15 @@ export class NotificationPage implements OnInit {
         }
       ]);
     }
+    if(categ === 'Complaints')
+    {
+
+      const data = {
+        complaintID: notification.data
+      }
+      this.navCtrl.navigateForward('/complaint-thread', { queryParams: { data } });
+
+    }
   }
 
   async countUnreadNotifications()
@@ -176,5 +189,6 @@ export class NotificationPage implements OnInit {
       console.error(error);
     });  
   }
+
 
 }

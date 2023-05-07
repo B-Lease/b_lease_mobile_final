@@ -24,6 +24,7 @@ export class DashboardPage implements OnInit {
   private userID;
   public dataLoaded = false;
   searchQuery:string = "";
+  searchSuggestions:string[];
   favorite_propertyIDs:any[] = [];
   // private  sessionData = [];
   
@@ -96,6 +97,7 @@ export class DashboardPage implements OnInit {
   }
 
   getPropertyListings(){
+    this.searchSuggestions = null;
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -208,10 +210,34 @@ async openFavorites()
 
 async onEnter() {
   console.log('Search value:', this.searchQuery);
+  this.searchSuggestions = null;
    await this.getPropertyListings();
 }
 
 async onClearSearch() {
-  await this.getPropertyListings();
+  this.searchQuery = "";
+  this.searchSuggestions = null;
+   this.getPropertyListings();
+}
+
+async handleInput(event) {
+  this.searchSuggestions = null;
+  const query = event.target.value.toLowerCase();
+  await axios.get(environment.API_URL+"searchPropertySuggestions?query="+query)
+  .then(response => {
+    console.log(response.data.data);
+    this.searchSuggestions = response.data.data;
+    // handle the response data here
+  })
+  .catch(error => {
+    console.error(error);
+    // handle the error here
+  });
+}
+
+async searchThis(result:string)
+{
+  this.searchQuery = result;
+  this.getPropertyListings();
 }
 }

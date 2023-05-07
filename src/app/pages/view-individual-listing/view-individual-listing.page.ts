@@ -224,7 +224,8 @@ async createChat(){
             lesseeID: params.lesseeID,
             lessorID: params.lessorID,
             msg_senderID: params.lesseeID,
-            msg_receiverID : params.lessorID
+            msg_receiverID : params.lessorID,
+            propertyID: params.propertyID
           }
       
           console.log("Generating greeting message");
@@ -253,7 +254,7 @@ async createChat(){
       // }
 
   
-      this.router.navigate([`/chatroom/${this.leasingID}/${params.lesseeID}/${params.lesseeID}/${params.lessorID}/${params.lesseeID}/${params.lessorID}`]);
+      this.router.navigate([`/chatroom/${this.leasingID}/${params.lesseeID}/${params.lesseeID}/${params.lessorID}/${params.lesseeID}/${params.lessorID}/${params.propertyID}`]);
       // this.navCtrl.navigateForward('chatroom', { queryParams: { data } });
 
     }

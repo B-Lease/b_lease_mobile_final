@@ -135,7 +135,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/preview-lease-request/preview-lease-request.module').then( m => m.PreviewLeaseRequestPageModule)
   },
   {
-    path: 'chatroom/:leasingID/:userID/:lesseeID/:lessorID/:msg_senderID/:msg_receiverID',
+    path: 'chatroom/:leasingID/:userID/:lesseeID/:lessorID/:msg_senderID/:msg_receiverID/:propertyID',
     loadChildren: () => import('./pages/chatroom/chatroom.module').then( m => m.ChatroomPageModule)
   },
   {
