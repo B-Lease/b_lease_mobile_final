@@ -1,9 +1,13 @@
 <ion-header>
   <ion-toolbar>
-    <ion-button slot="start" (click)="openInbox()">Go</ion-button>
-    <ion-title>
-      Messages
-    </ion-title>
+   
+    <ion-row class="header">
+      <ion-col>
+        <ion-text color="dark" (click)="openInbox()"><ion-icon name="arrow-back-outline"></ion-icon></ion-text>
+      </ion-col>
+      <ion-col>  <ion-title color="success">Messages</ion-title> </ion-col>
+      <ion-col></ion-col>
+    </ion-row>
   </ion-toolbar>
 </ion-header>
 
