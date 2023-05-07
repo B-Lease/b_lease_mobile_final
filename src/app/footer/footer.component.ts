@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 
+import { environment } from 'src/environments/environment.prod';
+
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
@@ -11,12 +13,17 @@ export class FooterComponent implements OnInit {
   isDashboard:boolean = true;
   isInbox:boolean = false;
   isProfile:boolean = false;
+  unreadNotifications:any;
   constructor(
   private navCtrl:NavController,
   private router:Router
-  ) { }
-
-  ngOnInit() {}
+  ) { 
+  
+  }
+  
+  async ngOnInit() {
+   
+  }
   async openInbox(){
     this.isDashboard = false;
     this.isInbox = true;
@@ -26,6 +33,8 @@ export class FooterComponent implements OnInit {
     this.updateButtonColor();
     
   }
+
+ 
   
   async navigateProfile(){
     this.isDashboard = false;

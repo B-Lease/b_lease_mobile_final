@@ -20,7 +20,9 @@
     </ion-tab-button>
 
     <ion-tab-button >
+    
       <ion-icon name="notifications"></ion-icon>
+      <ion-badge slot="end" *ngIf="unreadNotifications != '0' ">{{unreadNotifications}}</ion-badge>
       <ion-label>Notifications</ion-label>
     </ion-tab-button> 
     <ion-tab-button  (click)="navigateProfile()">

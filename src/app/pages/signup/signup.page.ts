@@ -1,5 +1,5 @@
 import {  HttpClient, HttpHeaders,HttpResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl } from "@angular/forms";
 import { Router,ActivatedRoute } from '@angular/router';
 import { Injectable } from '@angular/core';
@@ -10,6 +10,8 @@ import { AlertController, LoadingController, ToastController, NavController } fr
 import { MapboxServiceService } from 'src/app/shared/mapbox-service.service';
 import { SessionService } from 'src/app/shared/session.service';
 import { environment } from 'src/environments/environment.prod';
+import { IonModal } from '@ionic/angular';
+import { OverlayEventDetail } from '@ionic/core/components';
 
 
 @Component({
@@ -18,6 +20,7 @@ import { environment } from 'src/environments/environment.prod';
   styleUrls: ['./signup.page.scss'],
 })
 export class SignupPage implements OnInit {
+  @ViewChild(IonModal) modal: IonModal;
   API_URL = environment.API_URL;
   signupForm: FormGroup;
   pwdIcon = "eye-outline";
@@ -79,6 +82,11 @@ export class SignupPage implements OnInit {
     this.confirm_showPwd = !this.confirm_showPwd;
     this.confirm_pwdIcon = this.confirm_showPwd ? "eye-off-outline" : "eye-outline";
   }
+
+  closeTerms() {
+    this.modal.dismiss(null, 'cancel');
+  }
+
 
   ngOnInit() {
 
@@ -506,6 +514,17 @@ async accountExistsAlert(message:string) {
     this.ipAddress = data.ip;
 
   console.log('IP address:', this.ipAddress);
+}
+
+async presentTermsAndConditions(){
+  const alert = await this.alertController.create({
+    header: 'Terms and Conditions',
+    subHeader: '',
+    message: environment.terms,
+    buttons: ['OK'],
+  });
+
+  await alert.present();
 }
 
 }

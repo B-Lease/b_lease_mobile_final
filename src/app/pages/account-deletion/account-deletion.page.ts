@@ -75,6 +75,11 @@ export class AccountDeletionPage {
         await this.dismissConfirmPasswordAlert();
         await this.errorUserDoesNotExistAlert();
       }
+      if(response.body.message === 'there is ongoing leasing')
+      {
+        await this.dismissConfirmPasswordAlert();
+        await this.errorExistingLeasing();
+      }
      
    
     } catch (error) {
@@ -153,6 +158,7 @@ export class AccountDeletionPage {
             }
             else{
               this.passwordNotEqualAlert();
+              this.errorExistingLeasing();
             }
           }
         }
@@ -198,6 +204,16 @@ export class AccountDeletionPage {
       header: 'Error Deleting',
       subHeader: '',
       message: "Error deleting your account. It seems that your account doesn't exists. Please contact the admin. ",
+      buttons: ['OK'],
+    });
+
+    await alert.present();
+  }
+  async errorExistingLeasing() {
+    const alert = await this.alertController.create({
+      header: 'Error Deleting',
+      subHeader: '',
+      message: "Error deleting your account. It seems that you have an ongoing leasing. Finish your contract before you delete your account",
       buttons: ['OK'],
     });
 

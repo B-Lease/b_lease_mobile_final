@@ -57,6 +57,19 @@ export class DashboardPage implements OnInit {
     this.navCtrl.navigateForward('/dashboard', { animated: false });
     
   }
+
+async  handleRefresh(event) {
+    await setTimeout(() => {
+     
+        this.session.init();
+       this.getSessionData();
+       this.getPropertyListings();
+  
+       this.getPropertyFavoriteIDs();
+      event.target.complete();
+    }, 2000);
+  }
+
   IMAGES_URL = environment.API_URL+'propertyimages/'
   apiURL = environment.API_URL+'properties';
 
@@ -237,6 +250,7 @@ async handleInput(event) {
 
 async searchThis(result:string)
 {
+  this.searchSuggestions = null;
   this.searchQuery = result;
   this.getPropertyListings();
 }

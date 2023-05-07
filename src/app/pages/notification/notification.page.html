@@ -17,9 +17,7 @@
 
   <ion-item  id="unread"  class="notification_list" lines="none" >
     <div (click)="viewNotification(notification)" class="flexer">
-    <ion-avatar slot="start">
-      <img *ngIf="notification.notification_categ == 'Property Listing Approval' "  [src]="environment.API_URL + '/propertyimages/'+notification.data.split(',')[0]+'/'+notification.data.split(',')[1]"/>
-    </ion-avatar>
+
     <ion-label>
       <h2>{{notification.notification_categ}}</h2>
       <p><span class="notification-text">{{notification.notification_desc}}</span></p>
@@ -36,12 +34,8 @@
 
   <ion-item class="notification_list">
     <div (click)="viewNotification(notification)" class="flexer">
-    <ion-avatar slot="start" *ngIf="notification.notification_categ === 'Property Listing Approval' ">
-      <img [src]="environment.API_URL + 'propertyimages/'+notification.data.split(',')[0]+'/'+notification.data.split(',')[1]"/>
-    </ion-avatar>
-    <ion-avatar slot="start" *ngIf="notification.notification_categ === 'Property Inquiries' " >
-      <img [src]="environment.API_URL + 'propertyimages/'+notification.data.split('*|*')[15]+'/'+notification.data.split('*|*')[16]"/>
-    </ion-avatar>
+
+
     <ion-label>
       <h2>{{notification.notification_categ}}</h2>
       <p><span class="notification-text">{{notification.notification_desc}}</span></p>

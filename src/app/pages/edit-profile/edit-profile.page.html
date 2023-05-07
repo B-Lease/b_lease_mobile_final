@@ -8,19 +8,64 @@
   <div class="main-container">
     <div class="form">
 
-      <div><img [src]="imageUrl" alt="Avatar" class="avatar" (click)="changeImage()" style="width:100px; height:100px;"></div>
+     <ion-row style="width:100%; display:flex; justify-content:center;align-items: center;"> <img [src]="imageUrl" alt="Avatar" class="avatar" align="center" style="width:100px; height:100px; margin:auto"></ion-row>
       <br>
       <br>
+      <ion-row>
+        <ion-text>
+          <h3><b>Basic Information</b></h3>
+        </ion-text>
 
- 
-        <ion-input class="signup-fields" placeholder="First Name" type="text" [(ngModel)]="firstname"></ion-input>
-        <ion-input class="signup-fields" placeholder="Middle Name" type="text"  [(ngModel)]="middlename"></ion-input>
-        <ion-input class="signup-fields" placeholder="Last Name" type="text"  [(ngModel)]="lastname"></ion-input>
-        <ion-input class="signup-fields" placeholder="Birthdate" type="date"  displayFormat="YYYY/MM/DD" [(ngModel)]="birthdate"></ion-input>
- 
+      </ion-row>
+   
+      <ion-row>
+        <ion-label style="margin-bottom:5px;">Firstname</ion-label> 
+      </ion-row>
+     
 
+      <ion-row style="padding-bottom:10px">
+        
+        <ion-col class="signup-fields"><ion-input class="signup-placeholder" placeholder="First Name" [(ngModel)]="firstname"></ion-input></ion-col>
+      </ion-row >
+     
+      <ion-row>
+        <ion-label style="margin-bottom:5px;">Middlename</ion-label> 
+      </ion-row>
+     
+      <ion-row style="padding-bottom:10px">
+        <ion-col class="signup-fields"><ion-input class="signup-placeholder" placeholder="Middle Name" [(ngModel)]="middlename"></ion-input></ion-col>
+      </ion-row >
+    
+      <ion-row>
+        <ion-label style="margin-bottom:5px;">Lastname</ion-label> 
+      </ion-row>
+      <ion-row style="padding-bottom:10px">
+        <ion-col class="signup-fields"><ion-input class="signup-placeholder" placeholder="Last Name" [(ngModel)]="lastname"></ion-input></ion-col>
+      </ion-row >
+   
+      <ion-row>
+        <ion-label style="margin-bottom:5px;">Birthdate</ion-label> 
+      </ion-row>
+      <ion-row style="padding-bottom:10px">
+        <ion-col class="signup-fields"><ion-input class="signup-placeholder" placeholder="Birthdate" type="date"  displayFormat="YYYY/MM/DD" [(ngModel)]="birthdate"></ion-input></ion-col>
+      </ion-row >
+
+
+      <br>
+      <br>
+      <ion-row>
+        <ion-text>
+          <h3><b>Contact Information</b></h3>
+        </ion-text>
+
+      </ion-row>
+   
+      <br>
+      <ion-row>
+        <ion-label style="margin-bottom:5px;">Phone Number</ion-label> 
+      </ion-row>
         <ion-row style="padding-bottom:10px">
-          <ion-row class="signup-with-icons">
+          <ion-row class="signup-with-icons" style="height:50px;">
             <ion-col><ion-input  [(ngModel)]="phone_number" placeholder="Phone Number" class="signup-placeholder signup-placeholder-with-icons" maxlength="11" type="text"></ion-input></ion-col>
             <ion-col size="auto"><ion-icon name="call" color="success"></ion-icon></ion-col>
           </ion-row>
@@ -30,9 +75,10 @@
         <br>
         <br>
         <br>
+        <div style="width:100%; display:flex; justify-content: center; align-items: center; margin:auto">
        <ion-button class="cancel-button" shape="round" color="light" slot="start" [routerLink] = "['/settings']">Cancel</ion-button>
        <ion-button class="update-button" shape="round" color="success" slot="end" (click)="updateProfileInfo()">Update</ion-button>
-
+      </div>
     </div>
   </div>
 </ion-content>
