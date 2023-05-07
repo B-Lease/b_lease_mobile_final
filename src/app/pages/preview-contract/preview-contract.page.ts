@@ -34,6 +34,8 @@ export class PreviewContractPage implements OnInit {
   lessorID: any
   lesseeID: any
   userID: any
+  leasing_start:any;
+  leasing_end:any;
 
   button1 = ''
   button2 = ''
@@ -52,6 +54,7 @@ export class PreviewContractPage implements OnInit {
   data: any[]
 
   complaineeID:any
+  notpastdate = false;
   constructor(
     private activatedroute:ActivatedRoute,
     private http:HttpClient,
@@ -80,11 +83,16 @@ export class PreviewContractPage implements OnInit {
     this.lessorID = this.activatedroute.snapshot.paramMap.get('lessorID');
     this.lesseeID = this.activatedroute.snapshot.paramMap.get('lesseeID');
     this.userID = this.activatedroute.snapshot.paramMap.get('userID');
+    this.leasing_start = this.activatedroute.snapshot.paramMap.get('leasing_start');
+    this.leasing_end = this.activatedroute.snapshot.paramMap.get('leasing_end');
 
     console.log(this.leasing_status)
-    if (this.leasing_status === 'ongoing'){
-      this.display1 = false
-      this.display2 = false
+    if (this.leasing_status == 'ongoing' || this.leasing_status == 'lessor_finished' || this.leasing_status == 'lessee_finished'){
+      // this.display1 = false
+      // this.display2 = false
+      this.button1 = 'Rate'
+      this.button2 = 'Finish'
+
       const response = await this.http.get(this.API_URL+`complaints?leasingID=${this.leasingID}`).subscribe((data) => {
         if (typeof data === 'string') {
           this.data = JSON.parse(data);
@@ -95,22 +103,37 @@ export class PreviewContractPage implements OnInit {
           this.button3 = 'File Complaint'
         }
       });
+      if (this.button2 == 'Finish') { this.checkDateDifference(this.leasing_end); }
     }
-    else if (this.leasing_status === 'pending') {
+    else if (this.leasing_status === 'pending' && (this.userID == this.lesseeID)) {
       this.button1 = 'Sign'
       this.button2 = 'Reject'
       this.button3 = 'Approve'
     }
-    else if(this.leasing_status === 'finished'){
-      this.button1 = 'Rate'
-      this.button2 = 'Finish'
-      this.button3 = 'Renew'      
-    }
-    else if(this.leasing_status === 'for review'){
+    else{
       this.display1 = false
       this.display2 = false
-      this.display3 = false     
+      this.display3 = false       
     }
+
+    
+  }
+
+  checkDateDifference(leasing_end:any){
+    const mysqlDatetime = leasing_end;
+    console.log(mysqlDatetime);
+    const dateObj = new Date(mysqlDatetime);
+
+    const currentDate = new Date();
+    if (currentDate.getTime() >= dateObj.getTime()) {
+      console.log('The current date and time is past or equal to the MySQL datetime.');
+      this.notpastdate = false;
+    } else {
+      console.log('The current date and time is before the MySQL datetime.');
+      this.notpastdate = true;
+    }
+
+
   }
 
   async checkSignature(){
@@ -137,9 +160,9 @@ export class PreviewContractPage implements OnInit {
       this.navCtrl.navigateForward('/complaint-thread', { queryParams: { data } });
     }
     else {
-      const value = this.signature.value;
-      console.log('value '+value)
-      if (value === null || value == undefined){
+      const signature = this.signbase64;
+      console.log('value '+signature)
+      if (signature === null || signature === undefined || signature === ''){
         const alert = await this.alertController.create({
           header: 'Oops!',
           subHeader: 'One more requirement..',
@@ -149,7 +172,7 @@ export class PreviewContractPage implements OnInit {
 
         await alert.present();
       } else {
-        this.approveContract();
+        this.approveContract(signature);
       }
     }
   }
@@ -160,10 +183,10 @@ export class PreviewContractPage implements OnInit {
     }
   }
   
-  async approveContract(){
+  async approveContract(signature){
     const alert = await this.alertController.create({
       header: 'Success!',
-      subHeader: 'Contract approved successfully',
+      subHeader: 'Contract signed successfully',
       message: 'Please wait 1-2 business days for the admin to approve your contract',
       buttons: ['OK'],
     });
@@ -171,7 +194,7 @@ export class PreviewContractPage implements OnInit {
     try {
       const formData = {
         leasingID: this.leasingID,
-        leasing_status: '1'
+        signature: signature
       }
       const response: HttpResponse<any> = await this.http.put(`${environment.API_URL}leasingstatus?leasingID=${this.leasingID}&leasing_status=1`, formData, { observe: 'response' }).toPromise();
       if(response.status === 201){
@@ -191,28 +214,102 @@ export class PreviewContractPage implements OnInit {
   }
 
   async declineContract(){
-    const alert = await this.alertController.create({
-      header: 'Rejected contract',
-      subHeader: 'Your contract has been declined.',
-      buttons: ['OK'],
-    });
+    console.log(this.leasing_status)
+    if(this.button2 == 'Finish'){
+      console.log('You can finish it')
+      //3 ang status -- meaning wait for the other user to finish before sha ma 4 jud
+      if(this.leasing_status == 'ongoing'){
+        const alert = await this.alertController.create({
+          header: 'Contract marked as finished!',
+          subHeader: 'You marked the contract as finished. Let us wait for the other side to mark it as well.',
+          buttons: ['OK'],
+        });
 
-    try {
-      const formData = {
-        leasingID: this.leasingID,
-        leasing_status: '1'
-      }
-      const response: HttpResponse<any> = await this.http.put(`${environment.API_URL}leasingstatus?leasingID=${this.leasingID}&leasing_status=2`, formData, { observe: 'response' }).toPromise();
-      if(response.status === 201){
-        console.log(response.status)
-        await alert.present();
-        
-      } else {
+        if(this.userID == this.lesseeID){
+          try {
+            const formData = {
+              leasingID: this.leasingID,
+            }
+            const response: HttpResponse<any> = await this.http.put(`${environment.API_URL}leasingstatus?leasingID=${this.leasingID}&leasing_status=3`, formData, { observe: 'response' }).toPromise();
+            if(response.status === 201){
+              console.log(response.status)
+              await alert.present();
+              
+            } else {
+    
+            }
+          } catch (error) {
+            console.log(error);
+            // Handle the error
+          }
+        } else if(this.userID == this.lessorID){
+          try {
+            const formData = {
+              leasingID: this.leasingID,
+            }
+            const response: HttpResponse<any> = await this.http.put(`${environment.API_URL}leasingstatus?leasingID=${this.leasingID}&leasing_status=4`, formData, { observe: 'response' }).toPromise();
+            if(response.status === 201){
+              console.log(response.status)
+              await alert.present();
+              
+            } else {
+    
+            }
+          } catch (error) {
+            console.log(error);
+            // Handle the error
+          }
+        }
 
       }
-    } catch (error) {
-      console.log(error);
-      // Handle the error
+      else if((this.leasing_status == 'lessor_finished' && (this.userID == this.lesseeID)) || (this.leasing_status == 'lessee_finished' && (this.userID == this.lessorID))){
+        const alert = await this.alertController.create({
+          header: 'Contract finished!',
+          subHeader: 'The contract has been marked as finished by both parties.',
+          buttons: ['OK'],
+        });
+
+        try {
+          const formData = {
+            leasingID: this.leasingID,
+          }
+          const response: HttpResponse<any> = await this.http.put(`${environment.API_URL}leasingstatus?leasingID=${this.leasingID}&leasing_status=5`, formData, { observe: 'response' }).toPromise();
+          if(response.status === 201){
+            console.log(response.status)
+            await alert.present();
+            
+          } else {
+  
+          }
+        } catch (error) {
+          console.log(error);
+          // Handle the error
+        }
+
+      }
+    } else {
+      const alert = await this.alertController.create({
+        header: 'Rejected contract',
+        subHeader: 'Your contract has been declined.',
+        buttons: ['OK'],
+      });
+
+      try {
+        const formData = {
+          leasingID: this.leasingID,
+        }
+        const response: HttpResponse<any> = await this.http.put(`${environment.API_URL}leasingstatus?leasingID=${this.leasingID}&leasing_status=2`, formData, { observe: 'response' }).toPromise();
+        if(response.status === 201){
+          console.log(response.status)
+          await alert.present();
+          
+        } else {
+
+        }
+      } catch (error) {
+        console.log(error);
+        // Handle the error
+      }
     }
 
   }

@@ -79,7 +79,7 @@ export class ListContractsPage implements OnInit {
     if(this.filter === 'ongoing')
     {
       for (let i = 0; i<this.data.length;i++){
-        if (this.data[i].leasing_status == 'ongoing')
+        if (this.data[i].leasing_status == 'ongoing' || this.data[i].leasing_status == 'lessor_finished' || this.data[i].leasing_status == 'lessee_finished')
         {
           this.leasingData.push(this.data[i])
         }
@@ -193,7 +193,9 @@ getFilter(event: Event) {
         propertyImage:propertyImage,
         lessorID: this.leasingData[i].lessorID,
         lesseeID: this.leasingData[i].lesseeID,
-        userID: this.userID
+        userID: this.userID,
+        leasing_start: this.leasingData[i].leasing_start,
+        leasing_end: this.leasingData[i].leasing_end,
       }
     ]);
     }
