@@ -162,18 +162,18 @@ export class PreviewContractPage implements OnInit {
     else {
       const signature = this.signbase64;
       console.log('value '+signature)
-      if (signature === null || signature === undefined || signature === ''){
-        const alert = await this.alertController.create({
-          header: 'Oops!',
-          subHeader: 'One more requirement..',
-          message: 'Please upload your signature first.',
-          buttons: ['OK'],
-        });
+      // if (signature === null || signature === undefined || signature === ''){
+      //   const alert = await this.alertController.create({
+      //     header: 'Oops!',
+      //     subHeader: 'One more requirement..',
+      //     message: 'Please upload your signature first.',
+      //     buttons: ['OK'],
+      //   });
 
-        await alert.present();
-      } else {
+      //   await alert.present();
+      // } else {
         this.approveContract(signature);
-      }
+      // }
     }
   }
 
@@ -342,6 +342,30 @@ export class PreviewContractPage implements OnInit {
     }
 
   }
+
+  // async openWordContract(fileUrl: string, fileType: string) {
+  //   const arrayBuffer = await this.http.get(fileUrl, { responseType: 'arraybuffer' }).toPromise();
+  
+  //   const fileName = 'Lease Contract' + (fileType === 'pdf' ? '.pdf' : '.docx');
+  //   const filePath = this.file.dataDirectory + fileName;
+  
+  //   await this.file.writeFile(this.file.dataDirectory, fileName, arrayBuffer, { replace: true });
+  
+  //   if (this.platform.is('android')) {
+  //     const mimeType = fileType === 'pdf' ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+  //     this.fileOpener.open(filePath, mimeType)
+  //       .then(() => console.log('File opened successfully'))
+  //       .catch(e => console.log('Error opening file', e));
+  //   } else {
+  //     const options: DocumentViewerOptions = {
+  //       title: 'My Contract',
+  //       openWith: { enabled: true }
+  //     };
+  //     const path = `${filePath}/${fileName}`;
+  //     this.document.viewDocument(path, fileType === 'pdf' ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', options);
+  //   }
+  // }
+  
 
   async selectImage() {
     console.log('upload')
