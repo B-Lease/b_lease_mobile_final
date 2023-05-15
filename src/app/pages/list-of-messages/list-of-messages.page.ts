@@ -40,18 +40,15 @@ export class ListOfMessagesPage implements OnInit {
 
 
 async getListMessages(){
-      this.loading.present('Loading Messages');
       // get user ID from dashboard or chatroom
-      await this.http.get(this.apiURL+`leasing?check_existing=no&userID=${this.userID}`).subscribe((data: any[]) => {
+      this.http.get(this.apiURL+`leasing?check_existing=no&userID=${this.userID}`).subscribe((data: any[]) => {
         if (typeof data === 'string') {
           console.log(data);
           this.response = JSON.parse(data);
           console.log(this.response)
-          this.loading.dismiss();
         } else {
           this.response = Object.values(data);
           console.log(this.response)
-          this.loading.dismiss();
         }
       });
 }

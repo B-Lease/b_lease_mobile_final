@@ -5,7 +5,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Browser } from '@capacitor/browser';
 import { ActivatedRoute } from '@angular/router';
-import { SessionService } from '../shared/session.service';
+import { SessionService } from 'src/app/shared/session.service';
 import { NavController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 

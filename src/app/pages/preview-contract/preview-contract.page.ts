@@ -10,13 +10,14 @@ import { Directory, FileInfo, Filesystem } from '@capacitor/filesystem';
 import { DocumentViewer, DocumentViewerOptions } from '@ionic-native/document-viewer/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
+
+
 const IMAGE_DIR = 'stored-images/';
 interface LocalFile {
   name: string;
   path: string;
   data: string;
 }
-
 @Component({
   selector: 'app-preview-contract',
   templateUrl: './preview-contract.page.html',
@@ -32,10 +33,17 @@ export class PreviewContractPage implements OnInit {
   leasing_status:any;
   leasingID:any;
   lessorID: any
+  lessor_fname: any;
+  lessor_mname:any;
+  lessor_lname:any;
   lesseeID: any
+  lessee_fname: any;
+  lessee_mname:any;
+  lessee_lname:any;
   userID: any
   leasing_start:any;
   leasing_end:any;
+  land_description:any;
 
   button1 = ''
   button2 = ''
@@ -51,7 +59,7 @@ export class PreviewContractPage implements OnInit {
   @ViewChild('signature') signature: IonInput;
 
   propertyImage:any;
-  data: any[]
+  data: any
 
   complaineeID:any
   notpastdate = false;
@@ -74,17 +82,31 @@ export class PreviewContractPage implements OnInit {
 
    async ngOnInit() {
     // this.getPDF();
-  
+
+
+    this.userID = this.activatedroute.snapshot.paramMap.get('userID');
+
     this.propertyID = this.activatedroute.snapshot.paramMap.get('propertyID');
     this.address = this.activatedroute.snapshot.paramMap.get('address');
-    this.leasing_status = this.activatedroute.snapshot.paramMap.get('leasing_status');
+    this.propertyImage = this.activatedroute.snapshot.paramMap.get('propertyImage');
+    this.land_description = this.activatedroute.snapshot.paramMap.get('land_description');
+
     this.leasingID = this.activatedroute.snapshot.paramMap.get('leasingID');
-    this.propertyImage = await this.activatedroute.snapshot.paramMap.get('propertyImage');
-    this.lessorID = this.activatedroute.snapshot.paramMap.get('lessorID');
-    this.lesseeID = this.activatedroute.snapshot.paramMap.get('lesseeID');
-    this.userID = this.activatedroute.snapshot.paramMap.get('userID');
+    this.leasing_status = this.activatedroute.snapshot.paramMap.get('leasing_status');
     this.leasing_start = this.activatedroute.snapshot.paramMap.get('leasing_start');
     this.leasing_end = this.activatedroute.snapshot.paramMap.get('leasing_end');
+   
+    this.lessorID = this.activatedroute.snapshot.paramMap.get('lessorID');
+    this.lessor_fname = this.activatedroute.snapshot.paramMap.get('lessor_fname');
+    this.lessor_mname = this.activatedroute.snapshot.paramMap.get('lessor_mname');
+    this.lessor_lname = this.activatedroute.snapshot.paramMap.get('lessor_lname');
+    
+    this.lesseeID = this.activatedroute.snapshot.paramMap.get('lesseeID');
+    this.lessee_fname = this.activatedroute.snapshot.paramMap.get('lessee_fname');
+    this.lessee_mname = this.activatedroute.snapshot.paramMap.get('lessee_mname');
+    this.lessee_lname = this.activatedroute.snapshot.paramMap.get('lessee_lname');
+
+
 
     console.log(this.leasing_status)
     if (this.leasing_status == 'ongoing' || this.leasing_status == 'lessor_finished' || this.leasing_status == 'lessee_finished'){
@@ -93,7 +115,7 @@ export class PreviewContractPage implements OnInit {
       this.button1 = 'Rate'
       this.button2 = 'Finish'
 
-      const response = await this.http.get(this.API_URL+`complaints?leasingID=${this.leasingID}`).subscribe((data) => {
+      const response = this.http.get(this.API_URL+`complaints?leasingID=${this.leasingID}`).subscribe((data) => {
         if (typeof data === 'string') {
           this.data = JSON.parse(data);
           this.button3 = 'See Complaints'
@@ -109,6 +131,11 @@ export class PreviewContractPage implements OnInit {
       this.button1 = 'Sign'
       this.button2 = 'Reject'
       this.button3 = 'Approve'
+    }
+    else if (this.leasing_status === 'finished' && (this.userID == this.lessorID)) {
+      this.display1 = false
+      this.display2 = false
+      this.button3 = 'Renew'
     }
     else{
       this.display1 = false
@@ -141,7 +168,7 @@ export class PreviewContractPage implements OnInit {
       console.log('file a complaint')
       if (this.userID === this.lessorID){
         this.complaineeID = this.lesseeID
-      }
+      } 
       else {
         this.complaineeID = this.lessorID
       }
@@ -159,21 +186,38 @@ export class PreviewContractPage implements OnInit {
       }
       this.navCtrl.navigateForward('/complaint-thread', { queryParams: { data } });
     }
+    else if(this.button3 === 'Renew'){
+      console.log('renew contract')
+      const data = {
+        'leasingID' : this.leasingID,
+        'lessorID': this.lessorID,
+        'lessor_fname' : this.lessor_fname,
+        'lessor_mname' : this.lessor_mname,
+        'lessor_lname' : this.lessor_lname,
+        'lesseeID' : this.lesseeID,
+        'lessee_fname' : this.lessee_fname,
+        'lessee_mname' : this.lessee_mname,
+        'lessee_lname' : this.lessee_lname,
+        'address' : this.address,
+        'land_description' : this.land_description
+      }
+      this.navCtrl.navigateForward('set-contract', { queryParams: { data } });
+    }
     else {
       const signature = this.signbase64;
       console.log('value '+signature)
-      // if (signature === null || signature === undefined || signature === ''){
-      //   const alert = await this.alertController.create({
-      //     header: 'Oops!',
-      //     subHeader: 'One more requirement..',
-      //     message: 'Please upload your signature first.',
-      //     buttons: ['OK'],
-      //   });
+      if (signature === '' || this.images.length<1){
+        const alert = await this.alertController.create({
+          header: 'Oops!',
+          subHeader: 'One more requirement..',
+          message: 'Please upload your signature first.',
+          buttons: ['OK'],
+        });
 
-      //   await alert.present();
-      // } else {
+        await alert.present();
+      } else {
         this.approveContract(signature);
-      // }
+      }
     }
   }
 
@@ -184,6 +228,11 @@ export class PreviewContractPage implements OnInit {
   }
   
   async approveContract(signature){
+    const loading = await this.ldingCtrl.create({
+      message: "Signing Contract...",
+    });
+    await loading.present();
+
     const alert = await this.alertController.create({
       header: 'Success!',
       subHeader: 'Contract signed successfully',
@@ -199,6 +248,7 @@ export class PreviewContractPage implements OnInit {
       const response: HttpResponse<any> = await this.http.put(`${environment.API_URL}leasingstatus?leasingID=${this.leasingID}&leasing_status=1`, formData, { observe: 'response' }).toPromise();
       if(response.status === 201){
         console.log(response.status)
+        await loading.dismiss();
         await alert.present();
         
       } else {
@@ -316,57 +366,58 @@ export class PreviewContractPage implements OnInit {
 
   async openWordContract(){
     const url = this.API_URL+`leasingdocs?leasingID=${this.leasingID}`
-  
-    // Get the ArrayBuffer from the HTTP response
+
     const arrayBuffer = await this.http.get(url, { responseType: 'arraybuffer' }).toPromise();
+    this.http.get(url, { responseType: 'arraybuffer', observe: 'response' }).subscribe((response: HttpResponse<ArrayBuffer>) => {
+      const contentType = response.headers.get('content-type');
 
-    // Create a temporary file in the data directory
-    const fileName = 'temp.docx';
-    const filePath = this.file.dataDirectory + fileName;
+      if (this.platform.is('android')) {
+        // Check the file type based on the content type
+        if (contentType === 'application/pdf') {
+          // It's a PDF file   
+          const fileName = 'lease_contract.pdf';
+          const filePath = this.file.dataDirectory + fileName;
 
+          this.file.writeFile(this.file.dataDirectory, fileName, arrayBuffer, { replace: true });
 
-    if (this.platform.is('android')) {
-      await this.file.writeFile(this.file.dataDirectory, fileName, arrayBuffer, { replace: true });
+          // Open the file with the file opener plugin
+          this.fileOpener.open(filePath, 'application/pdf')
+            .then(() => console.log('File opened successfully'))
+            .catch(e => console.log('Error opening file', e));
+          
+        } else if (contentType === 'application/msword' || contentType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+          // It's a Word document
 
-      // Open the file with the file opener plugin
-      this.fileOpener.open(filePath, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')
-        .then(() => console.log('File opened successfully'))
-        .catch(e => console.log('Error opening file', e));
+          const fileName = 'lease_contract.docx';
+          const filePath = this.file.dataDirectory + fileName;
 
+          this.file.writeFile(this.file.dataDirectory, fileName, arrayBuffer, { replace: true });
 
-    } else {
-      const options: DocumentViewerOptions = {
-        title: 'My Leasing Contract'
-      }
-      this.document.viewDocument(`${filePath}/${fileName}`,'application/vnd.openxmlformats-officedocument.wordprocessingml.document', options)
-    }
+          // Open the file with the file opener plugin
+          this.fileOpener.open(filePath, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+            .then(() => console.log('File opened successfully'))
+            .catch(e => console.log('Error opening file', e));
+
+        } else {
+          // It's a different file type
+          // Handle or ignore accordingly
+        }
+      }  else {
+          console.log('this file cannot be viewed on a non-Android platform')
+        }
+
+      // You can access the file data using response.body
+      const fileData = response.body;
+      // Perform further actions with the file data
+    }, (error: any) => {
+      // Handle the error
+    });
 
   }
 
-  // async openWordContract(fileUrl: string, fileType: string) {
-  //   const arrayBuffer = await this.http.get(fileUrl, { responseType: 'arraybuffer' }).toPromise();
-  
-  //   const fileName = 'Lease Contract' + (fileType === 'pdf' ? '.pdf' : '.docx');
-  //   const filePath = this.file.dataDirectory + fileName;
-  
-  //   await this.file.writeFile(this.file.dataDirectory, fileName, arrayBuffer, { replace: true });
-  
-  //   if (this.platform.is('android')) {
-  //     const mimeType = fileType === 'pdf' ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-  //     this.fileOpener.open(filePath, mimeType)
-  //       .then(() => console.log('File opened successfully'))
-  //       .catch(e => console.log('Error opening file', e));
-  //   } else {
-  //     const options: DocumentViewerOptions = {
-  //       title: 'My Contract',
-  //       openWith: { enabled: true }
-  //     };
-  //     const path = `${filePath}/${fileName}`;
-  //     this.document.viewDocument(path, fileType === 'pdf' ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', options);
-  //   }
-  // }
-  
 
+
+  //FOR IMAGE UPLOAD
   async selectImage() {
     console.log('upload')
     const image = await Camera.getPhoto({
@@ -378,6 +429,8 @@ export class PreviewContractPage implements OnInit {
     console.log(image);
     if (image) {
       this.saveImage(image);
+    } else {
+      console.log('not okay')
     }
   }
 
@@ -471,21 +524,15 @@ export class PreviewContractPage implements OnInit {
       directory: Directory.Data,
       path: file.path
     });
+
+    this.images = this.images.filter((item) => item !== file);
+    console.log(this.images.length)
     this.loadFiles();
+    
 
   }
 
 
-
-  // getPDF() {
-  //   this.http.get(this.API_URL+'leasingdocs/48a089ac5b003f70bfb38e5590c14035/2d1026c114023569a611afbd8ed1ebde_contract.pdf', { responseType: 'blob' })
-  //     .subscribe((response: any) => {
-  //       const blob = new Blob([response], { type: 'application/pdf' });
-  //       this.pdfSrc = URL.createObjectURL(blob);
-  //     }, error => {
-  //       console.log(error);
-  //     });
-  // }
   navigateMyContracts(){
     this.navCtrl.navigateBack(['/list-contracts']);
   }
