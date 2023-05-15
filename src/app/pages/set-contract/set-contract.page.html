@@ -21,14 +21,35 @@
             <ion-input class="lease-fields" type="text" required [(ngModel)]="purpose"></ion-input>
             <!-- <ion-input class="lease-fields" formControlName="purpose" type="text" required [(ngModel)]="mypurpose"></ion-input> -->
 
-            <ion-label color="primary"  class="lease-labels">Total Fee</ion-label>
-            <ion-input class="lease-fields" [(ngModel)]="leasing_total_fee" type="number"></ion-input>
+            <ion-row class="ion-no-padding">
+              <ion-col size="6" >
+                <ion-label color="primary"  class="lease-labels">Rental Type</ion-label>
+                <ion-select class="lease-fields" placeholder="Choose" [(ngModel)]="leasing_payment_type">
+                  <ion-select-option value="cash rent">Cash</ion-select-option>
+                  <ion-select-option value="crop share">Crop Share</ion-select-option>
+                </ion-select>
+              </ion-col>
+              <ion-col size="6">
+                <ion-label color="primary"  class="lease-labels">Total Rental</ion-label>
 
+                <span style="margin-left:50px;"><ion-icon name="information-circle-outline" id="click-trigger" color="success"></ion-icon></span>
+                <ion-popover trigger="click-trigger" triggerAction="click">
+                  <ng-template>
+                    <ion-content class="ion-padding">
+                      If you chose cash, input the total amount of cash the lessee needs to pay during the lease term.<br><br>
+                      If you chose crop share, input the total percentage of the produced crops the lessee needs to share as their payment.
+                    </ion-content>
+                  </ng-template>
+                </ion-popover>
+
+                <ion-input class="lease-fields" [(ngModel)]="leasing_total_fee" type="number"></ion-input>
+              </ion-col>
+            </ion-row>
 
             <ion-row class="ion-no-padding">
               <ion-col size="6" >
                 <ion-label color="primary"  class="lease-labels">Start date</ion-label>
-                <ion-input type="date" class="lease-fields date-placeholder" [(ngModel)]="leasing_start"></ion-input>
+                <ion-input type="date" class="lease-fields date-placeholder" [(ngModel)]="leasing_start" (ionChange)="onStartDateChanged()"></ion-input>
               </ion-col>
               <ion-col size="6">
                 <ion-label color="primary"  class="lease-labels">End date</ion-label>
@@ -67,7 +88,7 @@
         </ion-row>
 
         <ion-row>
-          <ion-col><ion-button expand="full" (click)="selectImage()">Add Image</ion-button></ion-col>
+          <ion-col><ion-button expand="full" (click)="selectImage()" [disabled]="images.length > 0">Add Signature</ion-button></ion-col>
         
         </ion-row>
         <ion-list>
@@ -85,7 +106,7 @@
               <ion-item-option color="danger" (click)="deleteImage(file)"> <ion-icon slot="icon-only" name="trash"></ion-icon></ion-item-option>
             </ion-item-options>
           </ion-item-sliding>
-          </ion-list>
+        </ion-list>
 
         <ion-row class="center">
           <ion-button class="success-button" shape="round" color="success" type="submit">Next</ion-button>

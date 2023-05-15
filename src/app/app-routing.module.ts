@@ -182,7 +182,7 @@ const routes: Routes = [
   },
   {
     path: 'payment-successful',
-    loadChildren: () => import('./payment-successful/payment-successful.module').then( m => m.PaymentSuccessfulPageModule)
+    loadChildren: () => import('./pages/payment-successful/payment-successful.module').then( m => m.PaymentSuccessfulPageModule)
   },
   {
     path: 'edit-individual-listing',
@@ -194,7 +194,7 @@ const routes: Routes = [
   },
   {
     path: 'payment-form',
-    loadChildren: () => import('./payment-form/payment-form.module').then( m => m.PaymentFormPageModule)
+    loadChildren: () => import('./pages/payment-form/payment-form.module').then( m => m.PaymentFormPageModule)
   },
   {
     path: 'add-complaint',
