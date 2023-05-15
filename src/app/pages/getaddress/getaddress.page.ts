@@ -9,6 +9,7 @@ import { LoadingService } from 'src/app/shared/loading.service';
 import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
+import axios from 'axios';
 @Component({
   selector: 'app-getaddress',
   templateUrl: './getaddress.page.html',
@@ -35,6 +36,8 @@ export class GetaddressPage implements OnInit {
 
   pinned_lat:number;
   pinned_lng:number;
+
+  propertyCoordinates:any[] = [];
   constructor(
     private geolocation: Geolocation,
     private mapboxService: MapboxServiceService,
@@ -112,6 +115,7 @@ ngOnInit() {
   });
 
 
+
   this.map.on('click', (e: L.LeafletMouseEvent) => {
     if (this.marker) {
       this.map.removeLayer(this.marker);
@@ -185,6 +189,23 @@ cancelPin(){
     phone_number:this.phone_number
     
   }]);
+}
+
+async getPropertyCoordinates(){
+  await axios.get(`${environment.API_URL}propertyCoordinates`)
+  .then(response => {
+    console.log(response.data);
+
+    if(response.data.message != "No property coordinates")
+    {
+      this.propertyCoordinates = response.data;
+    }
+    // handle the response data here
+  })
+  .catch(error => {
+    console.error(error);
+    // handle the error here
+  });
 }
 
 }

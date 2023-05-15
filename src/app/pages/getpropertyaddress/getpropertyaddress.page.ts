@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { LoadingService } from 'src/app/shared/loading.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
-
+import axios from 'axios';
 
 @Component({
   selector: 'app-getpropertyaddress',
@@ -19,6 +19,7 @@ export class GetpropertyaddressPage implements OnInit {
 
   private getpropertyaddressmap: L.Map;
   private marker: L.Marker;
+  private existing_markers:L.Marker;
   private self_latitude: number;
   private self_longitude: number;
 
@@ -33,6 +34,7 @@ export class GetpropertyaddressPage implements OnInit {
   pinned_lat: number;
   pinned_lng: number;
 
+  propertyCoordinates:any[] = [];
   private propertyLandSize: string;
   private propertyLandSizeUnit: string;
   private legalLandDescription: string;
@@ -79,6 +81,7 @@ export class GetpropertyaddressPage implements OnInit {
   }
   async ngOnInit() {
     await this.loading.present('Loading Maps');
+    await this.getPropertyCoordinates();
     await this.getCurrentLocation();
     await this.loading.dismiss();
     this.getpropertyaddressmap = await L.map('getpropertymapId').setView([this.self_latitude, this.self_longitude], 18);
@@ -104,6 +107,35 @@ export class GetpropertyaddressPage implements OnInit {
       iconAnchor: [12, 41],
       popupAnchor: [0, -35],
     });
+
+    const existingIcon = L.icon({
+      iconUrl: 'assets/icon/b_lease_marker_existing.svg',
+      // shadowUrl: 'assets/icon/b_lease_marker-shadow.png',
+      iconSize: [25, 41],
+      // shadowSize: [35, 41],
+      iconAnchor: [12, 41],
+      // shadowAnchor: [12, 41],
+      popupAnchor: [0, -35],    
+    });
+  
+    if(this.propertyCoordinates.length > 0)
+    {
+      this.propertyCoordinates.forEach((each) =>{
+        let LatLng = {
+          lat:each['latitude'],
+          lng:each['longitude']
+        }
+        this.existing_markers = L.marker(LatLng, { icon: existingIcon }).addTo(this.getpropertyaddressmap);
+        this.existing_markers.bindPopup(`<b>${each['address']}</b><br> Property Type: <b> ${each['property_type']} </b> <br> Owner: <b>${each['user_fname']} ${each['user_lname']} </b>`);
+        this.existing_markers.on('click', function(e) {
+          if(this.existing_markers)
+          {
+            this.existing_markers.openPopup();
+          }
+      
+        });
+      });
+    }
 
 
     this.getpropertyaddressmap.on('click', (e: L.LeafletMouseEvent) => {
@@ -187,4 +219,21 @@ export class GetpropertyaddressPage implements OnInit {
       moreDetails : this.moreDetails
     }]);
   }
+  
+async getPropertyCoordinates(){
+  await axios.get(`${environment.API_URL}propertyCoordinates`)
+  .then(response => {
+    console.log(response.data);
+
+    if(response.data.message != "No property coordinates")
+    {
+      this.propertyCoordinates = response.data;
+    }
+    // handle the response data here
+  })
+  .catch(error => {
+    console.error(error);
+    // handle the error here
+  });
+}
 }
