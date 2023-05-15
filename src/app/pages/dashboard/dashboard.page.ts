@@ -15,34 +15,27 @@ import axios from 'axios';
   styleUrls: ['./dashboard.page.scss'],
 })
 export class DashboardPage implements OnInit {
-  @ViewChild(IonModal) modal: IonModal;
-
-  message = 'This modal example uses triggers to automatically open a modal when the button is clicked.';
-  name!: string;
+  isFilterModalOpen:boolean = false;
   propertyData: any[] = [];
   private sessionID;
   private userID;
   public dataLoaded = false;
-  searchQuery:string = "";
+  searchQuery:string = "  ";
   searchSuggestions:string[];
   favorite_propertyIDs:any[] = [];
-  // private  sessionData = [];
   
 
-  cancel() {
-    this.modal.dismiss(null, 'cancel');
-  }
+  // filter variables
+  // -------------------------------------------
+  filter_minimum_price:number = 0;
+  filter_maximum_price:number= 0;
+  filter_minimum_property_size:number = 0;
+  filter_maximum_property_size:number = 0;
+  filter_property_type:string = "any";
 
-  confirm() {
-    this.modal.dismiss(this.name, 'confirm');
-  }
 
-  onWillDismiss(event: Event) {
-    const ev = event as CustomEvent<OverlayEventDetail<string>>;
-    if (ev.detail.role === 'confirm') {
-      this.message = `Hello, ${ev.detail.data}!`;
-    }
-  }
+
+
   
   constructor(
     public navCtrl: NavController,
@@ -120,17 +113,33 @@ async  handleRefresh(event) {
     };
     if(this.searchQuery != "")
     {
-      this.http.get(environment.API_URL+"searchProperty?sessionID="+this.sessionID+"&query="+this.searchQuery, httpOptions).subscribe((data: any[]) => {
-        this.propertyData = data;
-        console.log(this.propertyData);
-        this.dataLoaded = true;
+      this.http.get(environment.API_URL+"searchProperty?sessionID="+this.sessionID+"&query="+this.searchQuery+`&min_price=${this.filter_minimum_price}&max_price=${this.filter_maximum_price}&min_property=${this.filter_minimum_property_size}&max_property=${this.filter_maximum_property_size}&property_type=${this.filter_property_type}`, httpOptions).subscribe((data: any[]) => {
+        if (data['message'] === 'No search results')
+        {
+          this.propertyData = [];
+          console.log("No search result");
+        }
+        else{
+          this.propertyData = data;
+          console.log(this.propertyData);
+          this.dataLoaded = true;
+        }
+    
       });
     }
     else{
-      this.http.get(this.apiURL+"?sessionID="+this.sessionID, httpOptions).subscribe((data: any[]) => {
-        this.propertyData = data;
-        console.log(this.propertyData);
-        this.dataLoaded = true;
+      this.http.get(environment.API_URL+"searchProperty?sessionID="+this.sessionID+"&query="+this.searchQuery+`&min_price=${this.filter_minimum_price}&max_price=${this.filter_maximum_price}&min_property=${this.filter_minimum_property_size}&max_property=${this.filter_maximum_property_size}&property_type=${this.filter_property_type}`, httpOptions).subscribe((data: any[]) => {
+        if (data['message'] === 'No search results')
+        {
+          this.propertyData = [];
+          console.log("No search result");
+        }
+        else{
+          this.propertyData = data;
+          console.log(this.propertyData);
+          this.dataLoaded = true;
+        }
+    
       });
     }
   
@@ -253,5 +262,27 @@ async searchThis(result:string)
   this.searchSuggestions = null;
   this.searchQuery = result;
   this.getPropertyListings();
+}
+
+async setOpenFilterModal(state:boolean){
+    this.isFilterModalOpen = state;
+}
+async confirm_filter(){
+  await this.getPropertyListings();
+  this.isFilterModalOpen = false;
+}
+
+async clearSearchFilter(){
+  this.filter_minimum_price = 0;
+  this.filter_maximum_price= 0;
+  this.filter_minimum_property_size = 0;
+  this.filter_maximum_property_size = 0;
+  this.filter_property_type = "any";
+  this.searchQuery = "";
+  this.searchSuggestions = null;
+  this.isFilterModalOpen = false;
+  this.getPropertyListings();
+
+  
 }
 }
