@@ -65,6 +65,7 @@ export class ListContractsPage implements OnInit {
 
   await this.http.get(this.API_URL+"?userID="+this.userID, httpOptions).subscribe((data: any[]) => {
     this.data = JSON.parse(data.toString());
+
     console.log(data);
     this.loading.dismiss();
     
@@ -192,11 +193,21 @@ getFilter(event: Event) {
         leasing_status:this.leasingData[i].leasing_status,
         propertyImage:propertyImage,
         lessorID: this.leasingData[i].lessorID,
+        lessor_fname: this.leasingData[i].lessor_fname,
+        lessor_mname: this.leasingData[i].lessor_mname,
+        lessor_lname: this.leasingData[i].lessor_lname,
         lesseeID: this.leasingData[i].lesseeID,
+        lessee_fname: this.leasingData[i].lessee_fname,
+        lessee_mname: this.leasingData[i].lessee_mname,
+        lessee_lname: this.leasingData[i].lessee_lname,
         userID: this.userID,
         leasing_start: this.leasingData[i].leasing_start,
         leasing_end: this.leasingData[i].leasing_end,
+        land_description: this.leasingData[i].land_description
+
       }
+
+
     ]);
     }
   }

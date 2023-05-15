@@ -29,10 +29,11 @@ export class SetContractPage implements OnInit {
   // form_lease: FormGroup;
 
   purpose: ''
-  leasing_start:''
+  leasing_start:any
   leasing_end: ''
   leasing_payment_frequency: ''
   leasing_total_fee: ''
+  leasing_payment_type: ''
 
   isFirstToggleOn = false;
   isSecondToggleOn = false;
@@ -42,7 +43,7 @@ export class SetContractPage implements OnInit {
   signbase64 = '';
   API_URL = environment.API_URL;
   data: any;
-  
+
   constructor(
     public fb_lease: FormBuilder, 
     private http:HttpClient, 
@@ -57,6 +58,8 @@ export class SetContractPage implements OnInit {
     private alertController: AlertController,
     private router: Router
     ) {
+
+      this.leasing_start = new Date().toISOString().slice(0, 10);
   }
 
   ngOnInit() {
@@ -79,80 +82,121 @@ export class SetContractPage implements OnInit {
 
 
   async onSubmit(){
-    const alert = await this.alertController.create({
-      header: 'Leasing Confirmation',
-      subHeader: 'Confirm lease request?',
-      message: 'Once you set a contract, you will not be able to edit it.',
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          handler: () => { }
-        },
-        {
-          text: 'OK',
-          role: 'confirm',
-          handler: () => { this.confirmLeaseRequest() }
-        }
-      ],
-    });
 
-    await alert.present();
+    if (this.purpose == undefined || this.leasing_payment_type == undefined || this.leasing_total_fee == undefined || this.leasing_start == undefined || this.leasing_end == undefined || this.leasing_payment_frequency == undefined){
+      const sign = await this.alertController.create({
+        header: 'Oops!',
+        subHeader: 'One or more fields are missing.',
+        message: 'Please input the necessary details.',
+        buttons: ['OK'],
+      });
+
+      await sign.present();
+    } 
+    else {
+      const alert = await this.alertController.create({
+        header: 'Leasing Confirmation',
+        subHeader: 'Confirm lease request?',
+        message: 'Once you set a contract, you will not be able to edit it.',
+        buttons: [
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            handler: () => { }
+          },
+          {
+            text: 'OK',
+            role: 'confirm',
+            handler: () => { this.confirmLeaseRequest() }
+          }
+        ],
+      });
+  
+      await alert.present();
+    }
+
+
 
   }
   
   async confirmLeaseRequest() {
     const data = this.activatedroute.snapshot.queryParams['data'];
+    if (this.signbase64 === '' || this.images.length<1){
+      const sign = await this.alertController.create({
+        header: 'Oops!',
+        subHeader: 'One more requirement..',
+        message: 'Please upload your signature first.',
+        buttons: ['OK'],
+      });
 
-    const formData = {
-      'leasingID' : data['leasingID'],
-      'leasing_status': 'pending',
-      'leasing_start': this.leasing_start,
-      'leasing_end': this.leasing_end,
-      'leasing_payment_frequency': this.leasing_payment_frequency,
-      'leasing_total_fee': this.leasing_total_fee,
+      await sign.present();
+    } else {
+      const formData = {
+        'leasingID' : data['leasingID'],
+        'leasing_status': 'pending',
+        'leasing_start': this.leasing_start,
+        'leasing_end': this.leasing_end,
+        'leasing_payment_frequency': this.leasing_payment_frequency,
+        'leasing_payment_type': this.leasing_payment_type,
+        'leasing_total_fee': this.leasing_total_fee,
 
-      'lessorID': data['lessorID'],
-      'lessor_name' : data['lessor_fname'] + ' ' + data['lessor_mname'] + ' ' + data['lessor_lname'],
-      'lesseeID' : data['lesseeID'],
-      'lessee_name' : data['lessee_fname'] + ' ' + data['lessee_mname'] + ' ' + data['lessee_lname'],
-      'address' : data['address'],
-      'land_description' : data['land_description'],
+        'lessorID': data['lessorID'],
+        'lessor_name' : data['lessor_fname'] + ' ' + data['lessor_mname'] + ' ' + data['lessor_lname'],
+        'lesseeID' : data['lesseeID'],
+        'lessee_name' : data['lessee_fname'] + ' ' + data['lessee_mname'] + ' ' + data['lessee_lname'],
+        'address' : data['address'],
+        'land_description' : data['land_description'],
 
-      'purpose': this.purpose,
-      'security_deposit': this.isFirstToggleOn,
-      'improvements': this.isSecondToggleOn,
-      'erect_signage': this.isThirdToggleOn,
-      'signature': this.signbase64,
-    };
+        'purpose': this.purpose,
+        'security_deposit': this.isFirstToggleOn,
+        'improvements': this.isSecondToggleOn,
+        'erect_signage': this.isThirdToggleOn,
+        'signature': this.signbase64,
+      };
 
-    try {
-      const response: HttpResponse<any> = await this.http.put(`${environment.API_URL}leasing`, formData, { observe: 'response' }).toPromise();
-      if(response.status === 204){
-        console.log(response.status)
-        const data = {
-          'leasingID': this.activatedroute.snapshot.queryParams['data']['leasingID']
+      try {
+        const response: HttpResponse<any> = await this.http.put(`${environment.API_URL}leasing`, formData, { observe: 'response' }).toPromise();
+        if(response.status === 204){
+          console.log(response.status)
+          const data = {
+            'leasingID': this.activatedroute.snapshot.queryParams['data']['leasingID']
+          }
+          //await this.navCtrl.navigateForward('preview-lease-request', { queryParams: { data } });
+          this.openWordContract() 
+          this.router.navigate(['/home'])
+        } else {
+
         }
-        //await this.navCtrl.navigateForward('preview-lease-request', { queryParams: { data } });
-        this.openWordContract() 
-        this.router.navigate(['/home'])
-      } else {
-
+      } catch (error) {
+        console.log(error);
+        // Handle the error
       }
-    } catch (error) {
-      console.log(error);
-      // Handle the error
+
+      this.clearImages()
     }
-
-    this.clearImages()
-
   }
 
   onDateChanged() {
+    console.log('HELLOOOO')
     console.log(this.leasing_end)
     console.log(this.leasing_start)
-    // Call your desired function with the selected date
-    //myFunction(selectedDate);
+
+    
+  }
+
+  onStartDateChanged() {
+    console.log('HELLOOOO')
+    console.log(this.leasing_end)
+    console.log(this.leasing_start)
+
+    const selectedDate = new Date(this.leasing_start);
+    const leasing_start = new Date();
+  
+    if (selectedDate < leasing_start) {
+      this.leasing_start = (leasing_start.toISOString().slice(0, 10)).toString();
+    }
+
+    
   }
   
 
@@ -164,7 +208,7 @@ export class SetContractPage implements OnInit {
     const arrayBuffer = await this.http.get(url, { responseType: 'arraybuffer' }).toPromise();
 
     // Create a temporary file in the data directory
-    const fileName = 'temp.docx';
+    const fileName = 'Lease Contract.docx';
     const filePath = this.file.dataDirectory + fileName;
 
 
@@ -311,6 +355,7 @@ export class SetContractPage implements OnInit {
       directory: Directory.Data,
       path: file.path
     });
+    this.images = this.images.filter((item) => item !== file);
     this.loadFiles();
 
   }
